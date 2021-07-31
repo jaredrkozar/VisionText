@@ -1,0 +1,55 @@
+//
+//  TabBarController.swift
+//  VisionText
+//
+//  Created by Jared Kozar on 7/18/21.
+//
+
+import UIKit
+
+class TabBarController: UITabBarController {
+
+    private lazy var allDocumentsViewController = makeViewController()
+    private lazy var StarredDocumentsViewController = makeStarredViewController()
+    private lazy var searchDocumentsViewController = makeSearchDocumentsTableViewController()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewControllers = [allDocumentsViewController,
+                           StarredDocumentsViewController, searchDocumentsViewController]
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        selectedIndex = 0
+    }
+
+}
+
+private extension TabBarController {
+
+    private func makeViewController() -> UINavigationController {
+        let vc = AllDocsViewController()
+        vc.tabBarItem = UITabBarItem(title: "All Documents",
+                                     image: UIImage(systemName: "square.grid.2x2"),
+                                     tag: 0)
+        return UINavigationController(rootViewController: vc)
+    }
+
+    private func makeStarredViewController() -> UINavigationController {
+        let vc = StarredDocsViewController()
+        vc.tabBarItem = UITabBarItem(title: "Starred Documents",
+                                     image: UIImage(systemName: "star"),
+                                     tag: 1)
+        return UINavigationController(rootViewController: vc)
+    }
+
+    private func makeSearchDocumentsTableViewController() -> UINavigationController {
+        let vc = SearchDocsViewController()
+        vc.tabBarItem = UITabBarItem(title: "Search Documents",
+                                     image: UIImage(systemName: "magnifyingglass"),
+                                     tag: 2)
+        return UINavigationController(rootViewController: vc)
+    }
+    
+}
