@@ -28,27 +28,18 @@ class ScannedImageViewController: UIViewController {
         view.backgroundColor = UIColor.systemBackground
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
-        let scannedImageasdata = scannedImage.jpegData(compressionQuality: 0.75)
-        let scannedImage = scannedImageasdata?.uiImage
-        
-        switch UIDevice.current.userInterfaceIdiom {
-            case .phone:
-            image = makeThumbnail(thumbnail: scannedImage!, dimensions: CGSize(width: 600, height: 700))
-        case .pad, .mac:
-            image = makeThumbnail(thumbnail: scannedImage!, dimensions: CGSize(width: 700, height: 900))
-            default:
-                break
-        }
+
+        let image = scannedImage.downsizeImage(compression: 0.75, dimensions: CGSize(width: 500, height: 600))
         
         let imageView = UIImageView(image: image)
         
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
-            imageView.frame = CGRect(x: 50, y: 150, width: (image?.size.width)!, height: (image?.size.height)!)
+            imageView.frame = CGRect(x: 50, y: 150, width: (image.size.width), height: (image.size.height))
             case .pad:
-            imageView.frame = CGRect(x: 130, y: 50, width: (image?.size.width)!, height: (image?.size.height)!)
+            imageView.frame = CGRect(x: 130, y: 50, width: (image.size.width), height: (image.size.height))
             case .mac:
-            imageView.frame = CGRect(x: 500, y: 200, width: (image?.size.width)!, height: (image?.size.height)!)
+            imageView.frame = CGRect(x: 500, y: 200, width: (image.size.width), height: (image.size.height))
             default:
                 break
         }

@@ -25,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
             splitViewController.setViewController(SidebarViewController(), for: .primary)
             splitViewController.setViewController(TabBarController(), for: .compact)
-            splitViewController.setViewController(ScannedImageViewController(), for: .secondary)
             
             splitViewController.primaryBackgroundStyle = .sidebar
             window.rootViewController = splitViewController

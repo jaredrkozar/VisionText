@@ -25,19 +25,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        let defaults = UserDefaults.standard
-        
-        if let saveddetailedDocs = defaults.object(forKey: "documentDetails") as? Data {
-            if let decodeddetailedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(saveddetailedDocs) as? [Documents] {
-                documentDetails = decodeddetailedDocs
-            }
-        }
-        
-        if let savedDocs = defaults.object(forKey: "starredArray") as? Data {
-            if let decodedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedDocs) as? [Documents] {
-                starredArray = decodedDocs
-            }
-        }
+        documentDetails.load()
         
         setUpTableView()
         
@@ -353,14 +341,11 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
             let currentDate = self!.getCurrentShortDate()
             let uuid = UUID().uuidString
             
-            let thumbnailasdata = self!.sourcesArray[0].jpegData(compressionQuality: 0.25)
-            var thumbnail = thumbnailasdata?.uiImage
-            thumbnail = makeThumbnail(thumbnail: thumbnail!, dimensions: CGSize(width: 109, height: 142))
-            
-            let document = Documents(thumbnail:  self!.sourcesArray[0], name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
+            let downsizedThumbnail = self!.sourcesArray[0].downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
+            let document = Documents(thumbnail:  downsizedThumbnail, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
             self!.documentDetails.append(document)
         
-            self!.save()
+            self!.documentDetails.save()
             self!.tableView.reloadData()
             
         })
@@ -408,6 +393,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
         vc.titleDoc = document.name
         vc.scannedImage = document.thumbnail
+        
         
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         
@@ -485,8 +471,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         documentDetails.remove(at: indexPath.row)
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
-            self.saveStarred()
-            self.save()
+            self.documentDetails.save()
         }
     }
     
@@ -496,8 +481,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         document.isStarred = true
         
         DispatchQueue.global(qos: .userInitiated).async {
-            self.saveStarred()
-            self.save()
+            self.documentDetails.save()
         }
     }
     
@@ -517,8 +501,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         }
         
         DispatchQueue.global(qos: .userInteractive).async {
-            self.saveStarred()
-            self.save()
+            self.documentDetails.save()
         }
     }
     
@@ -533,25 +516,11 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             let textField = ac?.textFields![0]
             self!.documentDetails[indexPath.row].name = (textField?.text)!
-            self!.save()
+            self!.documentDetails.save()
             self!.tableView.reloadData()
             
         })
         present(ac, animated: true)
     }
-    
-    func save() {
-        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: documentDetails, requiringSecureCoding: false) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "documentDetails")
-        }
-    }
-    
-    func saveStarred() {
-        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: starredArray, requiringSecureCoding: false) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "starredArray")
-        }
-    }
-}
 
+}

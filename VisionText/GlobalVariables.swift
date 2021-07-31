@@ -38,3 +38,30 @@ func makeThumbnail(thumbnail: UIImage, dimensions: CGSize) -> UIImage {
 extension Data {
     var uiImage: UIImage? { UIImage(data: self) }
 }
+
+extension UIImage {
+    func downsizeImage(compression: Double, dimensions: CGSize) -> UIImage {
+        let thumbnailasdata = self.jpegData(compressionQuality: compression)
+        var thumbnail = thumbnailasdata?.uiImage
+        thumbnail = makeThumbnail(thumbnail: thumbnail!, dimensions: dimensions)
+        return thumbnail!
+    }
+}
+
+extension Array where Element == Documents {
+    func save() {
+        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false) {
+            let defaults = UserDefaults.standard
+            defaults.set(savedData, forKey: "\(self)")
+        }
+    }
+    
+    mutating func load() -> [Documents] {
+        if let saveddetailedDocs = UserDefaults.standard.object(forKey: "documentDetails") as? Data {
+            if let decodeddetailedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(saveddetailedDocs) as? [Documents] {
+                self = decodeddetailedDocs
+            }
+        }
+        return self
+    }
+}
