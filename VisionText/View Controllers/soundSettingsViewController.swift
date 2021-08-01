@@ -12,9 +12,11 @@ class SoundSettingsViewController: UIViewController {
     var speedText = UILabel()
     var speedValText = UILabel()
     var speedValStepper = UIStepper()
+    var speedValButton = UIButton()
     var pitchText = UILabel()
     var pitchValText = UILabel()
     let pitchValStepper = UIStepper()
+    var pitchValButton = UIButton()
     var volumeText = UILabel()
     var volumeValText = UILabel()
     let volumeSlider = UISlider()
@@ -72,14 +74,39 @@ class SoundSettingsViewController: UIViewController {
     }
     
     func addSpeedStepper() {
-        view.addSubview(speedValStepper)
-        speedValStepper.maximumValue = 2.0
-        speedValStepper.minimumValue = 0.5
-        speedValStepper.stepValue = 0.25
-        speedValStepper.autorepeat = true
-        speedValStepper.frame = CGRect(x: 264, y: 80, width: 94, height: 32)
-        speedValStepper.addTarget(self, action: #selector(didChangeSpeedVal(_:)), for: .valueChanged)
+        
+        switch UIDevice.current.userInterfaceIdiom {
+            case .phone, .pad:
+            
+                view.addSubview(speedValStepper)
+                speedValStepper.maximumValue = 2.0
+                speedValStepper.minimumValue = 0.5
+                speedValStepper.stepValue = 0.25
+                speedValStepper.autorepeat = true
+                speedValStepper.frame = CGRect(x: 264, y: 80, width: 94, height: 32)
+                speedValStepper.addTarget(self, action: #selector(didChangeSpeedVal(_:)), for: .valueChanged)
 
+
+            case .mac:
+                
+                view.addSubview(speedValButton)
+                speedValStepper.frame = CGRect(x: 264, y: 80, width: 94, height: 32)
+            
+                
+                let items = (1...5).map {
+                    UIAction(title: String(format: NSLocalizedString("ItemTitle", comment: ""), $0.description), handler: menuHandler)
+                }
+                speedValButton.menu = UIMenu(title: NSLocalizedString("ChooseItemTitle", comment: ""), children: items)
+            speedValButton.changesSelectionAsPrimaryAction = true
+                speedValButton.showsMenuAsPrimaryAction = true
+
+            default:
+                break
+        }
+    }
+        
+func menuHandler(action: UIAction) {
+        Swift.debugPrint("Menu Action '\(action.title)'")
     }
 
     @objc func didChangeSpeedVal(_ sender: UIStepper!) {
@@ -108,16 +135,25 @@ class SoundSettingsViewController: UIViewController {
         pitchValText.adjustsFontForContentSizeCategory = true
         view.addSubview(pitchValText)
     }
-    
-    
+
     func addPitchStepper() {
-        view.addSubview(pitchValStepper)
-        pitchValStepper.maximumValue = 2.0
-        pitchValStepper.minimumValue = 0.5
-        pitchValStepper.stepValue = 0.25
-        pitchValStepper.autorepeat = true
-        pitchValStepper.frame = CGRect(x: 264, y: 145, width: 94, height: 32)
-        pitchValStepper.addTarget(self, action: #selector(didChangePitchVal(_:)), for: .valueChanged)
+        switch UIDevice.current.userInterfaceIdiom {
+            case .phone, .pad:
+                view.addSubview(pitchValStepper)
+                pitchValStepper.maximumValue = 2.0
+                pitchValStepper.minimumValue = 0.5
+                pitchValStepper.stepValue = 0.25
+                pitchValStepper.autorepeat = true
+                pitchValStepper.frame = CGRect(x: 264, y: 145, width: 94, height: 32)
+                pitchValStepper.addTarget(self, action: #selector(didChangePitchVal(_:)), for: .valueChanged)
+            
+        case .mac:
+         
+           print("Rrur")
+
+        default:
+            break
+    }
     }
 
     @objc func didChangePitchVal(_ sender: UIStepper!) {

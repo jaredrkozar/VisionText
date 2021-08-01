@@ -46,6 +46,22 @@ extension UIImage {
         thumbnail = makeThumbnail(thumbnail: thumbnail!, dimensions: dimensions)
         return thumbnail!
     }
+    
+    func converttoString() -> String {
+        let data = self.jpegData(compressionQuality: 1)
+        return (data?.base64EncodedString(options: .endLineWithLineFeed))!
+            
+    }
+    
+}
+
+extension String {
+    func toImage() -> UIImage? {
+        if let data = Data(base64Encoded: self, options: .ignoreUnknownCharacters){
+            return UIImage(data: data)
+        }
+        return nil
+    }
 }
 
 extension Array where Element == Documents {

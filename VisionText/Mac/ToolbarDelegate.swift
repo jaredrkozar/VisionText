@@ -49,19 +49,19 @@ extension ToolbarDelegate: NSToolbarDelegate {
         switch itemIdentifier {
         case .sortDocs:
             let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
-            item.itemMenu = UIMenu(title: "JJJ", image: UIImage(systemName: "ellipsis.circle"), identifier: .window, options: .singleSelection, children: [UICommand(title: "A-Z", action: #selector(ViewController.sortDocsbyAZ)),
-                                                                       UICommand(title: "Z-A", action: #selector(ViewController.sortDocsByZA)),
-                                                                                                                                                           UICommand(title: "Date (Ascending)", action: #selector(ViewController.sortDocsbyDateAscending)),
-                                                                                                                                                           UICommand(title: "A-Z", action: #selector(ViewController.sortDocsbyDateDescending))
+            item.itemMenu = UIMenu(title: "JJJ", image: UIImage(systemName: "ellipsis.circle"), identifier: .window, options: .singleSelection, children: [UICommand(title: "A-Z", action: #selector(AllDocsViewController.sortDocsbyAZ)),
+                                                                       UICommand(title: "Z-A", action: #selector(AllDocsViewController.sortDocsByZA)),
+                                                                                                                                                           UICommand(title: "Date (Ascending)", action: #selector(AllDocsViewController.sortDocsbyDateAscending)),
+                                                                                                                                                           UICommand(title: "A-Z", action: #selector(AllDocsViewController.sortDocsbyDateDescending))
                                                                                                                                                           ])
                     item.image = UIImage(systemName: "arrow.up.arrow.down")
                     return item
             
         case .addDoc:
             let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
-            item.itemMenu = UIMenu(title: "JJJ", image: UIImage(systemName: "ellipsis.circle"), identifier: .window, options: .singleSelection, children: [UICommand(title: "Camera", action: #selector(ViewController.presentCamera)),
-                                                                                                                                                           UICommand(title: "Photo Library", action: #selector(ViewController.presentPhotoPicker)),
-                                                                                                                                                           UICommand(title: "URL", action: #selector(ViewController.presentURLPicker))
+            item.itemMenu = UIMenu(title: "JJJ", image: UIImage(systemName: "ellipsis.circle"), identifier: .window, options: .singleSelection, children: [UICommand(title: "Camera", action: #selector(AllDocsViewController.presentCamera)),
+                                                                                                                                                           UICommand(title: "Photo Library", action: #selector(AllDocsViewController.presentPhotoPicker)),
+                                                                                                                                                           UICommand(title: "URL", action: #selector(AllDocsViewController.presentURLPicker))
                                                                                                                                                           ])
                     item.image = UIImage(systemName: "plus")
                     return item

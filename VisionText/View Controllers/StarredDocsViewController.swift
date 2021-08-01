@@ -27,11 +27,8 @@ class StarredDocsViewController: UITableViewController {
         
         let defaults = UserDefaults.standard
 
-        if let savedDocs = defaults.object(forKey: "documentDetails") as? Data {
-            if let decodedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedDocs) as? [Documents] {
-                documentDetails = decodedDocs
-            }
-        }
+        documentDetails = documentDetails.load()
+        documentDetails = documentDetails.filter({$0.isStarred == true})
         
         print(documentDetails.count)
         tableView.reloadData()
@@ -62,7 +59,7 @@ class StarredDocsViewController: UITableViewController {
 
         cell.documentName.text = document.name
 
-        cell.documentThumbnail.image = document.thumbnail
+        cell.documentThumbnail.image = document.thumbnail.toImage()
 
         cell.documentDate.text = document.date
         print(document.thumbnail)

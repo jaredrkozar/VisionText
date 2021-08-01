@@ -109,7 +109,7 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         
         cell.documentName.text = document.name
 
-        cell.documentThumbnail.image = document.thumbnail
+        cell.documentThumbnail.image = document.thumbnail.toImage()
 
         cell.documentDate.text = document.date
         

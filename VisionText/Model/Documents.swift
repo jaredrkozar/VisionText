@@ -8,13 +8,13 @@
 import UIKit
 
 class Documents: NSObject, NSCoding {
-    var thumbnail: UIImage
+    var thumbnail: String
     var name: String = ""
     var date: String = ""
     var isStarred: Bool = false
     var uuid:String
     
-    init(thumbnail: UIImage, name: String, date: String, isStarred: Bool, uuid: String) {
+    init(thumbnail: String, name: String, date: String, isStarred: Bool, uuid: String) {
         self.thumbnail = thumbnail
         self.name = name
         self.date = date
@@ -23,7 +23,7 @@ class Documents: NSObject, NSCoding {
     }
     
     required init(coder aDecoder: NSCoder) {
-        thumbnail = aDecoder.decodeObject(forKey: "thumbnail") as? UIImage ?? UIImage(systemName: "photo")!
+        thumbnail = aDecoder.decodeObject(forKey: "thumbnail") as? String ?? ""
         name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
         date = aDecoder.decodeObject(forKey: "date") as? String ?? ""
         isStarred = aDecoder.decodeObject(forKey: "isStarred") as? Bool ?? false

@@ -33,7 +33,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
-        
 
         let addDocButton = addDoc()
         
@@ -295,7 +294,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         picker.dismiss(animated: true, completion: nil)
     }
 
-    
     func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
         let errorAlert = UIAlertController(title: "Failed to scan document", message: "The document couldn't be scanned right now. Please try again.", preferredStyle: .alert)
         
@@ -309,7 +307,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
         dismiss(animated: true, completion: nil)
     }
-    
     
     func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
         dismiss(animated: true, completion: nil)
@@ -340,9 +337,9 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
                     
             let currentDate = self!.getCurrentShortDate()
             let uuid = UUID().uuidString
-            
-            let downsizedThumbnail = self!.sourcesArray[0].downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
-            let document = Documents(thumbnail:  downsizedThumbnail, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
+                        
+            let thumbnailasString = self?.sourcesArray[0].converttoString()
+            let document = Documents(thumbnail:  thumbnailasString!, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
             self!.documentDetails.append(document)
         
             self!.documentDetails.save()
@@ -365,7 +362,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
 
         cell.documentName.text = document.name
 
-        cell.documentThumbnail.image = document.thumbnail
+        cell.documentThumbnail.image = document.thumbnail.toImage()!.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
 
         cell.documentDate.text = document.date
         
@@ -393,7 +390,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
         vc.titleDoc = document.name
         vc.scannedImage = document.thumbnail
-        
         
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         

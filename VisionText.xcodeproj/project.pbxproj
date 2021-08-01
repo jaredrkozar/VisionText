@@ -54,6 +54,7 @@
 		7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recognizedTextViewController.swift; sourceTree = "<group>"; };
 		7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = soundSettingsViewController.swift; sourceTree = "<group>"; };
 		7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScannedImageViewController.swift; path = ../../ScannedImageViewController.swift; sourceTree = "<group>"; };
+		7FD9361326B70AB7009123ED /* VisionText.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisionText.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +87,7 @@
 		7F577ACA26B50C11001CF53B /* VisionText */ = {
 			isa = PBXGroup;
 			children = (
+				7FD9361326B70AB7009123ED /* VisionText.entitlements */,
 				7F577ACB26B50C11001CF53B /* AppDelegate.swift */,
 				7F577ACD26B50C11001CF53B /* SceneDelegate.swift */,
 				7F577AF726B50F94001CF53B /* GlobalVariables.swift */,
@@ -371,6 +373,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VisionText/VisionText.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UHNX49SSD;
@@ -388,9 +391,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jkozar.VisionText;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Debug;
 		};
@@ -399,6 +403,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VisionText/VisionText.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UHNX49SSD;
@@ -416,9 +421,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jkozar.VisionText;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,6";
 			};
 			name = Release;
 		};
