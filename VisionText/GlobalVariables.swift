@@ -52,7 +52,7 @@ extension Array where Element == Documents {
     func save() {
         if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false) {
             let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "\(self)")
+            defaults.set(savedData, forKey: "documentDetails")
         }
     }
     

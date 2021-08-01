@@ -25,7 +25,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        documentDetails.load()
+        documentDetails = documentDetails.load()
         
         setUpTableView()
         
@@ -489,8 +489,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let documents = documentDetails[indexPath.row]
         documents.isStarred = false
         
-        
-        
         let unstardoc = starredArray.map { $0.uuid }
         
         if unstardoc.contains(documents.uuid) {
@@ -522,5 +520,4 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         })
         present(ac, animated: true)
     }
-
 }
