@@ -12,7 +12,7 @@ import PhotosUI
 import MobileCoreServices
 import UniformTypeIdentifiers
 
-class AllDocsViewController: UITableViewController, VNDocumentCameraViewControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate & UINavigationControllerDelegate, UIDocumentPickerDelegate, UISearchBarDelegate, UISearchDisplayDelegate {
+class AllDocsViewController: UITableViewController, VNDocumentCameraViewControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate & UINavigationControllerDelegate, UIDocumentPickerDelegate, UITableViewDropDelegate {
     
     var sourcesArray = [UIImage]()
     var starredArray = [Documents]()
@@ -39,7 +39,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let sortButton = sortButtonTapped()
         
         navigationItem.rightBarButtonItems = [addDocButton, sortButton]
-        
     }
     
     @objc func addDoc() -> UIBarButtonItem {
@@ -105,6 +104,38 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         self.present(vc, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
+     
+      let destinationIndexPath: IndexPath
+
+      if let indexPath = coordinator.destinationIndexPath {
+          destinationIndexPath = indexPath
+      } else {
+          let section = tableView.numberOfSections - 1
+          let row = tableView.numberOfRows(inSection: section)
+          destinationIndexPath = IndexPath(row: row, section: section)
+      }
+      
+      // attempt to load strings from the drop coordinator
+      coordinator.session.loadObjects(ofClass: UIImage.self) { items in
+          // convert the item provider array to a string array or bail out
+          guard let strings = items as? [UIImage] else { return }
+
+          // create an empty array to track rows we've copied
+          var indexPaths = [IndexPath]()
+
+          // loop over all the strings we received
+          for (index, image) in strings.enumerated() {
+              // create an index path for this new row, moving it down depending on how many we've already inserted
+              let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
+
+              self.sourcesArray.append(image)
+              self.presentAlert(sourcesArray: self.sourcesArray)
+
+          }
+      }
+    }
+                                 
     @objc func presentPhotoPicker() {
         self.sourcesArray.removeAll()
         var configuration = PHPickerConfiguration()
@@ -240,6 +271,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     func setUpTableView() {
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = 167
+        tableView.dropDelegate = self
         NSLayoutConstraint.activate([
             tableView.heightAnchor.constraint(equalToConstant: 500),
            ])
