@@ -114,8 +114,8 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
     @objc func speedChanged(_ notification: Notification) {
         synth.stopSpeaking(at: .immediate)
         let speech = speaktext()
-        speech.rate = Float((UserDefaults.standard.double(forKey: "selectedSpeed") / 2))
-        speech.pitchMultiplier = Float((UserDefaults.standard.double(forKey: "selectedPitch")))
+        speech.rate = Float((UserDefaults.standard.double(forKey: "speed") / 2))
+        speech.pitchMultiplier = Float((UserDefaults.standard.double(forKey: "pitch")))
         speech.volume = Float((UserDefaults.standard.double(forKey:  "volumeSlider")))
         synth.speak(speech)
 
@@ -135,7 +135,7 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
             case .pad, .mac:
 
                 navigationController.modalPresentationStyle = UIModalPresentationStyle.popover
-                navigationController.preferredContentSize = CGSize(width: 375, height: 225)
+                navigationController.preferredContentSize = CGSize(width: 275, height: 225)
             default:
                     break
             }

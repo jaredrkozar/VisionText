@@ -362,7 +362,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
 
         cell.documentName.text = document.name
 
-        cell.documentThumbnail.image = document.thumbnail.toImage()!.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
+        cell.documentThumbnail.image = document.thumbnail.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
 
         cell.documentDate.text = document.date
         

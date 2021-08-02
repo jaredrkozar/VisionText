@@ -94,8 +94,15 @@ class ScannedImageViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        #if targetEnvironment(macCatalyst)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        #endif
+        
+        
+      switch UIDevice.current.userInterfaceIdiom {
+
+          case .mac:
+          navigationController?.setNavigationBarHidden(true, animated: animated)
+          default:
+                  break
+          }
+        
     }
 }

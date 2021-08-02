@@ -10,15 +10,14 @@ import UIKit
 class SoundSettingsViewController: UIViewController {
     
     var speedText = UILabel()
-    var speedValText = UILabel()
-    var speedValStepper = UIStepper()
-    var speedValButton = UIButton()
+    var speedValButton = UIButton(type: .system)
+    var speed: Double = 0
+    
     var pitchText = UILabel()
-    var pitchValText = UILabel()
-    let pitchValStepper = UIStepper()
-    var pitchValButton = UIButton()
+    var pitchValButton = UIButton(type: .system)
+    var pitch: Double = 0
+    
     var volumeText = UILabel()
-    var volumeValText = UILabel()
     let volumeSlider = UISlider()
     
     let nc = NotificationCenter.default
@@ -28,30 +27,21 @@ class SoundSettingsViewController: UIViewController {
         view.backgroundColor = UIColor.systemBackground
         // Do any additional setup after loading the view.
         title = "Sound Settings"
-        addSpeedStepper()
+        addSpeedMenu()
         addSpeedLabel()
-        addPitchStepper()
+        addPitchButton()
         addPitchLabel()
         addVolumeLabel()
         addVolumeSlider()
         
-        var selectedSpeed = UserDefaults.standard.double(forKey: "selectedSpeed")
+        var speed = UserDefaults.standard.double(forKey: "speed")
         
-        if selectedSpeed == 0.0 {
-            selectedSpeed = 1.0
-        }
+        speedValButton.setTitle(String(speed), for: .normal)
         
-        speedValStepper.value = Double(selectedSpeed)
-        speedValText.text = "\(selectedSpeed)x"
+        var pitch = UserDefaults.standard.double(forKey: "pitch")
         
-        var selectedPitch = UserDefaults.standard.double(forKey: "selectedPitch")
+        pitchValButton.setTitle(String(pitch), for: .normal)
         
-        if selectedPitch == 0.0 {
-            selectedPitch = 1.0
-        }
-        
-        pitchValStepper.value = Double(selectedPitch)
-        pitchValText.text = "\((round(100 * selectedPitch) / 100) / 2)"
         
         var volumeSliderValue = UserDefaults.standard.double(forKey: "volumeSlider")
         
@@ -67,62 +57,69 @@ class SoundSettingsViewController: UIViewController {
         speedText.font = UIFont.preferredFont(forTextStyle: .title3)
         speedText.adjustsFontForContentSizeCategory = true
         view.addSubview(speedText)
-        speedValText.frame = CGRect(x: 140, y: 80, width: 80, height: 27)
-        speedValText.font = UIFont.preferredFont(forTextStyle: .title3)
-        speedValText.adjustsFontForContentSizeCategory = true
-        view.addSubview(speedValText)
     }
     
-    func addSpeedStepper() {
+    func addSpeedMenu() {
+        
+        view.addSubview(speedValButton)
         
         switch UIDevice.current.userInterfaceIdiom {
+
             case .phone, .pad:
-            
-                view.addSubview(speedValStepper)
-                speedValStepper.maximumValue = 2.0
-                speedValStepper.minimumValue = 0.5
-                speedValStepper.stepValue = 0.25
-                speedValStepper.autorepeat = true
-                speedValStepper.frame = CGRect(x: 264, y: 80, width: 94, height: 32)
-                speedValStepper.addTarget(self, action: #selector(didChangeSpeedVal(_:)), for: .valueChanged)
-
-
-            case .mac:
-                
-                view.addSubview(speedValButton)
-                speedValStepper.frame = CGRect(x: 264, y: 80, width: 94, height: 32)
-            
-                
-                let items = (1...5).map {
-                    UIAction(title: String(format: NSLocalizedString("ItemTitle", comment: ""), $0.description), handler: menuHandler)
-                }
-                speedValButton.menu = UIMenu(title: NSLocalizedString("ChooseItemTitle", comment: ""), children: items)
-            speedValButton.changesSelectionAsPrimaryAction = true
-                speedValButton.showsMenuAsPrimaryAction = true
-
+                speedValButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
             default:
-                break
+                    break
         }
-    }
         
-func menuHandler(action: UIAction) {
-        Swift.debugPrint("Menu Action '\(action.title)'")
+        speedValButton.frame = CGRect(x: 200, y: 80, width: 64, height: 32)
+
+        var speeds: [UIAction] {
+            return [
+                UIAction(title: "0.5x", image:nil, handler: { (_) in
+                self.setSpeed(speed: 0.5)
+                }),
+                
+                UIAction(title: "0.75x", image:nil, handler: { (_) in
+                self.setSpeed(speed: 0.75)
+
+                }),
+                
+                UIAction(title: "1x", image:nil, handler: { (_) in
+                self.setSpeed(speed: 1.0)
+                }),
+                
+                UIAction(title: "1.25x", image: nil, handler: { (_) in
+                self.setSpeed(speed: 1.25)
+                }),
+                
+                UIAction(title: "1.50x", image: nil, handler: { (_) in
+                self.setSpeed(speed: 1.5)
+                }),
+                
+                UIAction(title: "1.75x", image: nil, handler: { (_) in
+                self.setSpeed(speed: 1.75)
+                }),
+                
+                UIAction(title: "2x", image: nil, handler: { (_) in
+                self.setSpeed(speed: 2.0)
+                }),
+            ]
+        }
+
+        speedValButton.menu = UIMenu(title: NSLocalizedString("Select Speed", comment: ""), children: speeds)
+        
+        speedValButton.changesSelectionAsPrimaryAction = true
+            speedValButton.showsMenuAsPrimaryAction = true
+        
     }
 
-    @objc func didChangeSpeedVal(_ sender: UIStepper!) {
+
+    func setSpeed(speed: Double) {
         
-        let selectedSpeed = Double(speedValStepper.value)
-               
-        speedValText.text = "\(selectedSpeed)x"
-        
-        UserDefaults.standard.set(selectedSpeed, forKey: "selectedSpeed")
-        
-        UserDefaults.standard.set(speedValStepper.value, forKey: "speedValStepper")
+        UserDefaults.standard.set(speed, forKey: "speed")
         
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
-
     }
-    
     
     func addPitchLabel() {
         pitchText.text = "Pitch"
@@ -130,41 +127,63 @@ func menuHandler(action: UIAction) {
         pitchText.font = UIFont.preferredFont(forTextStyle: .title3)
         pitchText.adjustsFontForContentSizeCategory = true
         view.addSubview(pitchText)
-        pitchValText.frame = CGRect(x: 140, y: 145, width: 80, height: 27)
-        pitchValText.font = UIFont.preferredFont(forTextStyle: .title3)
-        pitchValText.adjustsFontForContentSizeCategory = true
-        view.addSubview(pitchValText)
     }
 
-    func addPitchStepper() {
+    func addPitchButton() {
+        view.addSubview(pitchValButton)
+        
         switch UIDevice.current.userInterfaceIdiom {
+
             case .phone, .pad:
-                view.addSubview(pitchValStepper)
-                pitchValStepper.maximumValue = 2.0
-                pitchValStepper.minimumValue = 0.5
-                pitchValStepper.stepValue = 0.25
-                pitchValStepper.autorepeat = true
-                pitchValStepper.frame = CGRect(x: 264, y: 145, width: 94, height: 32)
-                pitchValStepper.addTarget(self, action: #selector(didChangePitchVal(_:)), for: .valueChanged)
-            
-        case .mac:
-         
-           print("Rrur")
+            pitchValButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+            default:
+                    break
+        }
+        
+        pitchValButton.frame = CGRect(x: 200, y: view.bounds.width, width: 64, height: 32)
 
-        default:
-            break
-    }
+        var pitches: [UIAction] {
+            return [
+                UIAction(title: "0.5x", image:nil, handler: { (_) in
+                self.setPitch(pitch: 0.5)
+                }),
+                
+                UIAction(title: "0.75x", image:nil, handler: { (_) in
+                self.setPitch(pitch: 0.75)
+                }),
+                
+                UIAction(title: "1x", image:nil, handler: { (_) in
+                self.setPitch(pitch: 1.0)
+                }),
+                
+                UIAction(title: "1.25x", image: nil, handler: { (_) in
+                self.setPitch(pitch: 1.25)
+                }),
+                
+                UIAction(title: "1.50x", image: nil, handler: { (_) in
+                self.setPitch(pitch: 1.5)
+                }),
+                
+                UIAction(title: "1.75x", image: nil, handler: { (_) in
+                self.setPitch(pitch: 1.75)
+                }),
+                
+                UIAction(title: "2x", image: nil, handler: { (_) in
+                self.setPitch(pitch: 2.0)
+                }),
+            ]
+        }
+
+        pitchValButton.menu = UIMenu(title: NSLocalizedString("Select Pitch", comment: ""), children: pitches)
+        
+        pitchValButton.changesSelectionAsPrimaryAction = true
+        pitchValButton.showsMenuAsPrimaryAction = true
+        
     }
 
-    @objc func didChangePitchVal(_ sender: UIStepper!) {
+    func setPitch(pitch: Double) {
         
-        let selectedPitch = Double(pitchValStepper.value)
-       
-        pitchValText.text = "\((round(100 * selectedPitch) / 100) / 2)"
-        
-        UserDefaults.standard.set(selectedPitch, forKey: "selectedPitch")
-        
-        UserDefaults.standard.set(pitchValStepper.value, forKey: "pitchValStepper")
+        UserDefaults.standard.set(pitch, forKey: "pitch")
         
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
     }
@@ -181,7 +200,7 @@ func menuHandler(action: UIAction) {
         volumeSlider.minimumValue = 0
         volumeSlider.maximumValue = 1
         volumeSlider.isContinuous = true
-        volumeSlider.frame = CGRect(x: 152, y: 220, width: 199, height: 31)
+        volumeSlider.frame = CGRect(x: 102, y: 220, width: view.bounds.width, height: 31)
         view.addSubview(volumeSlider)
         volumeSlider.addTarget(self, action: #selector(self.didChangeVolumeSlider(_:)), for: .valueChanged)
     }
