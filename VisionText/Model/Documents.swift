@@ -11,7 +11,7 @@ class Documents: NSObject, NSCoding {
     var thumbnail: String
     var name: String = ""
     var date: String = ""
-    var isStarred: Bool = false
+    var isStarred: Bool = true
     var uuid:String
     
     init(thumbnail: String, name: String, date: String, isStarred: Bool, uuid: String) {
@@ -26,7 +26,7 @@ class Documents: NSObject, NSCoding {
         thumbnail = aDecoder.decodeObject(forKey: "thumbnail") as? String ?? ""
         name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
         date = aDecoder.decodeObject(forKey: "date") as? String ?? ""
-        isStarred = aDecoder.decodeObject(forKey: "isStarred") as? Bool ?? false
+        isStarred = ((aDecoder.decodeBool(forKey: "isStarred") as? Bool)!)
         uuid = aDecoder.decodeObject(forKey: "uuid") as? String ?? ""
     }
 

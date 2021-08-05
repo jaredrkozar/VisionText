@@ -8,26 +8,29 @@
 import UIKit
 
 class StarredDocsViewController: UITableViewController {
-    var starredArray = [Documents]()
+    var documentDetails = [Documents]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Starred Documents"
+        
         setUpTableView()
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        documentDetails = documentDetails.load().filter({$0.isStarred == true})
+
+        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         #endif
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        starredArray = starredArray.loadStarred()
-        tableView.reloadData()
     }
     
     func setUpTableView() {
@@ -39,7 +42,7 @@ class StarredDocsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return starredArray.count
+        return documentDetails.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,13 +50,15 @@ class StarredDocsViewController: UITableViewController {
             fatalError("Unable to dequeue the image cell.")
         }
         
-        let document = starredArray[indexPath.row]
+        let document = documentDetails[indexPath.row]
 
         cell.documentName.text = document.name
 
         cell.documentThumbnail.image = document.thumbnail.toImage()
 
         cell.documentDate.text = document.date
+        
+        cell.layoutIfNeeded()
         return cell
     }
 
@@ -62,7 +67,7 @@ class StarredDocsViewController: UITableViewController {
             fatalError("Unable to dequeue the image cell.")
         }
         
-        let document = starredArray[indexPath.row]
+        let document = documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
         
         vc.titleDoc = document.name
@@ -81,7 +86,7 @@ class StarredDocsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let document = starredArray[indexPath.row]
+        let document = documentDetails[indexPath.row]
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
         UserDefaults.standard.set(row, forKey: "row")
@@ -92,19 +97,23 @@ class StarredDocsViewController: UITableViewController {
                 unstarDocument(indexPath: indexPath)
                 
             }
+            
+            
             return UIMenu(title: "", children: [unstarAction])
         }
     }
     
     func unstarDocument(indexPath: IndexPath) {
-        let starred = starredArray[indexPath.row]
+        let starred = documentDetails[indexPath.row]
         
         starred.isStarred = false
-        starredArray.remove(at: indexPath.row)
+        documentDetails.remove(at: indexPath.row)
+        tableView.reloadData()
         
         DispatchQueue.global(qos: .userInteractive).async {
-            self.starredArray.saveStarred()
+            self.documentDetails.save()
         }
-        tableView.reloadData()
+        
     }
+    
 }

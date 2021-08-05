@@ -80,21 +80,4 @@ extension Array where Element == Documents {
         }
         return self
     }
-    
-    func saveStarred() {
-        if let savedStarredData = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedStarredData, forKey: "starredArray")
-        }
-    }
-    
-    mutating func loadStarred() -> [Documents] {
-        if let savedstarredDocs = UserDefaults.standard.object(forKey: "starredArray") as? Data {
-            if let decodedstarredDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedstarredDocs) as? [Documents] {
-                self = decodedstarredDocs
-            }
-        }
-        return self
-    }
-    
 }

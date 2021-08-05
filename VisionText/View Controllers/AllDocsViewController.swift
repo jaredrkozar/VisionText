@@ -15,7 +15,6 @@ import UniformTypeIdentifiers
 class AllDocsViewController: UITableViewController, VNDocumentCameraViewControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate & UINavigationControllerDelegate, UIDocumentPickerDelegate, UITableViewDropDelegate {
     
     var sourcesArray = [UIImage]()
-    var starredArray = [Documents]()
     var documentDetails = [Documents]()
     var sortButton = UIButton()
     var sortMethod: String = ""
@@ -26,7 +25,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         view.addSubview(navBar)
 
         documentDetails = documentDetails.load()
-        starredArray = starredArray.loadStarred()
         
         setUpTableView()
         
@@ -437,6 +435,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let document = documentDetails[indexPath.row]
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
+        
         UserDefaults.standard.set(row, forKey: "row")
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
@@ -467,45 +466,30 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
                 renameDocument(tableView, indexPath: indexPath)
             }
             
-            let unstardoc = self.starredArray.map { $0.uuid }
-            
-            if unstardoc.contains(document.uuid) {
-                return UIMenu(title: "", children: [renameAction, unstarAction, deleteAction])
-            } else {
-                return UIMenu(title: "", children: [renameAction, starAction, deleteAction])
-            }
+            if document.isStarred == true {
+                           return UIMenu(title: "", children: [renameAction, unstarAction, deleteAction])
+                       } else {
+                           return UIMenu(title: "", children: [renameAction, starAction, deleteAction])
+                       }
         }
     }
     
     func deleteDocument(_ tableView: UITableView, indexPath: IndexPath) {
         let documents = documentDetails[indexPath.row]
         
-        DispatchQueue.global(qos: .background).async {
-            let deletefromstarred = self.starredArray.map { $0.uuid }
-            if deletefromstarred.contains(documents.uuid) {
-                let starredtoremove = deletefromstarred.firstIndex(of: documents.uuid)!
-                self.starredArray.remove(at: starredtoremove)
-                documents.isStarred = false
-
-            }
-        }
-        
         documentDetails.remove(at: indexPath.row)
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
-            self.starredArray.saveStarred()
         }
     }
     
     func starDocument(indexPath: IndexPath) {
         let document = documentDetails[indexPath.row]
-        starredArray.append(document)
         document.isStarred = true
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
-            self.starredArray.saveStarred()
         }
     }
     
@@ -513,17 +497,8 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let documents = documentDetails[indexPath.row]
         documents.isStarred = false
         
-        let unstardoc = starredArray.map { $0.uuid }
-        
-        if unstardoc.contains(documents.uuid) {
-            let starredtoremove = unstardoc.firstIndex(of: documents.uuid)!
-            self.starredArray.remove(at: starredtoremove)
-
-        }
-        
         DispatchQueue.global(qos: .userInteractive).async {
             self.documentDetails.save()
-            self.starredArray.saveStarred()
         }
     }
     
