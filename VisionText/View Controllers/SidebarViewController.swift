@@ -18,7 +18,6 @@ class SidebarViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(configureDataSource(_:)), name: NSNotification.Name( "configureDataSource"), object: nil)
         NotificationCenter.default.post(name: Notification.Name( "configureDataSource"), object: nil)
         
-        addNavigationButtons()
         setInitialSecondaryView()
 
     }
@@ -30,29 +29,6 @@ class SidebarViewController: UIViewController {
         splitViewController?.setViewController(supplementaryViewControllers[0], for: .supplementary)
     }
 
-    private func addNavigationButtons() {
-        let editsidebar = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: nil)
-        
-//        let addcollection = UIBarButtonItem(image: UIImage(systemName: "folder.badge.plus"), style: .plain, target: self, action: #selector(addFolderButtonTapped))
-//
-        navigationItem.rightBarButtonItems = [editsidebar]
-    }
-    
-//    @objc func addFolderButtonTapped(_ sender: UIBarButtonItem) {
-//        let ac = UIAlertController(title: "Add Folder", message: nil, preferredStyle: .alert)
-//        ac.addTextField()
-//
-//        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-//
-//        ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
-//            var textField = ac?.textFields![0]
-//            UserDefaults.standard.set(textField?.text, forKey: "text")
-//            print(collectionItems.count)
-//            NotificationCenter.default.post(name: Notification.Name( "configureDataSource"), object: nil)
-//        })
-//        present(ac, animated: true)
-//    }
-    
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -85,7 +61,7 @@ extension SidebarViewController {
                 // Use all the actions to create a swipe action configuration
                 // Return it to the swipe action configuration provider
                 
-                let sections: [Section] = [.tabs, .collections]
+                let sections: [Section] = [.tabs]
 
                 switch indexPath.section {
                     case 0:
@@ -167,7 +143,7 @@ extension SidebarViewController {
 
         // Creating and applying snapshots
 
-        let sections: [Section] = [.tabs, .collections]
+        let sections: [Section] = [.tabs]
         var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
         snapshot.appendSections(sections)
         dataSource.apply(snapshot, animatingDifferences: false)
@@ -179,20 +155,7 @@ extension SidebarViewController {
                 sectionSnapshot.append(tabsItems)
                 dataSource.apply(sectionSnapshot, to: section)
 
-            case .collections:
-                let headerItem = Item(title: section.rawValue, image: nil)
-                var sectionSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
-                sectionSnapshot.append([headerItem])
-                
-                var text = UserDefaults.standard.string(forKey: "text")
-                
-                if text != nil {
-                    collectionItems.append(Item(title: "\(text!)", image: UIImage(systemName: "folder")))
-                }
-                sectionSnapshot.append(collectionItems, to: headerItem)
-                
-                sectionSnapshot.expand([headerItem])
-                dataSource.apply(sectionSnapshot, to: section)
+            
                 
             }
         }
@@ -225,11 +188,6 @@ var tabsItems = [Item(title: "All Documents", image: UIImage(systemName: "square
                  Item(title: "Search Documents", image: UIImage(systemName: "magnifyingglass"))
                 ]
 
-
-var collectionItems = [
-    Item(title: "Sample Folder", image: UIImage(systemName: "folder"))]
-
 enum Section: String {
     case tabs
-    case collections = "Collections"
 }
