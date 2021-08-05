@@ -8,7 +8,7 @@
 import UIKit
 
 class StarredDocsViewController: UITableViewController {
-    var documentDetails = [Documents]()
+    var starredArray = [Documents]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,20 +17,16 @@ class StarredDocsViewController: UITableViewController {
         setUpTableView()
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
-    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         #endif
-        
-        let defaults = UserDefaults.standard
-
-        documentDetails = documentDetails.load()
-        documentDetails = documentDetails.filter({$0.isStarred == true})
-        
-        print(documentDetails.count)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        starredArray = starredArray.loadStarred()
         tableView.reloadData()
     }
     
@@ -42,12 +38,8 @@ class StarredDocsViewController: UITableViewController {
            ])
     }
     
-    func returnStarredDocs() -> [Documents] {
-        documentDetails = documentDetails.filter{$0.isStarred == true }
-        return documentDetails
-    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return documentDetails.count
+        return starredArray.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -55,15 +47,13 @@ class StarredDocsViewController: UITableViewController {
             fatalError("Unable to dequeue the image cell.")
         }
         
-        let document = documentDetails[indexPath.row]
+        let document = starredArray[indexPath.row]
 
         cell.documentName.text = document.name
 
         cell.documentThumbnail.image = document.thumbnail.toImage()
 
         cell.documentDate.text = document.date
-        print(document.thumbnail)
-        cell.layoutIfNeeded()
         return cell
     }
 
@@ -72,7 +62,7 @@ class StarredDocsViewController: UITableViewController {
             fatalError("Unable to dequeue the image cell.")
         }
         
-        let document = documentDetails[indexPath.row]
+        let document = starredArray[indexPath.row]
         let vc = ScannedImageViewController()
         
         vc.titleDoc = document.name
@@ -91,7 +81,7 @@ class StarredDocsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let document = documentDetails[indexPath.row]
+        let document = starredArray[indexPath.row]
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
         UserDefaults.standard.set(row, forKey: "row")
@@ -102,57 +92,19 @@ class StarredDocsViewController: UITableViewController {
                 unstarDocument(indexPath: indexPath)
                 
             }
-            
-                
-            let renameAction = UIAction(
-                //deletes the current cell
-              title: "Rename",
-              image: UIImage(systemName: "rectangle.and.pencil.and.ellipsis")) { [self] _ in
-                
-                renameDocument(tableView, indexPath: indexPath)
-            }
-            
-            return UIMenu(title: "", children: [renameAction, unstarAction])
+            return UIMenu(title: "", children: [unstarAction])
         }
     }
     
     func unstarDocument(indexPath: IndexPath) {
-        let starred = documentDetails[indexPath.row]
+        let starred = starredArray[indexPath.row]
         
         starred.isStarred = false
-        documentDetails.remove(at: indexPath.row)
+        starredArray.remove(at: indexPath.row)
         
         DispatchQueue.global(qos: .userInteractive).async {
-            self.saveStarred()
+            self.starredArray.saveStarred()
         }
         tableView.reloadData()
-    }
-    
-    func renameDocument(_ tableView: UITableView, indexPath: IndexPath) {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the image cell.")
-        }
-        
-        
-        let ac = UIAlertController(title: "Rename Document", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-
-        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            
-        ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
-            let textField = ac?.textFields![0]
-            self!.documentDetails[indexPath.row].name = (textField?.text)!
-            self!.saveStarred()
-            self!.tableView.reloadData()
-            
-        })
-        present(ac, animated: true)
-    }
-    
-    func saveStarred() {
-        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: documentDetails, requiringSecureCoding: false) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "documentDetails")
-        }
     }
 }

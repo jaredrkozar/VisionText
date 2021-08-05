@@ -71,15 +71,13 @@ extension ToolbarDelegate: NSToolbarDelegate {
             item.image = UIImage(systemName: "square.and.arrow.up")
             item.label = "Share Documents"
             item.action = #selector(ScannedImageViewController.shareButtonTapped)
-            item.target = nil
             toolbarItem = item
             
         case .getText:
             let item = NSToolbarItem(itemIdentifier: itemIdentifier)
             item.image = UIImage(systemName: "doc.text.magnifyingglass")
-            item.label = "Sort Documents"
+            item.label = "Recognize Text"
             item.action = #selector(ScannedImageViewController.didTapRecognizeTextButton)
-            item.target = nil
             toolbarItem = item
             
         

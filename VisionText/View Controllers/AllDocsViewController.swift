@@ -26,6 +26,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         view.addSubview(navBar)
 
         documentDetails = documentDetails.load()
+        starredArray = starredArray.loadStarred()
         
         setUpTableView()
         
@@ -42,7 +43,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     }
     
     @objc func addDoc() -> UIBarButtonItem {
-        print("FFFGJRJRJRJR")
+        
         var sources: [UIAction] {
             return [
                 UIAction(title: "Scan Document", image: UIImage(systemName: "doc.text.viewfinder"), handler: { (_) in
@@ -259,15 +260,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        let defaults = UserDefaults.standard
-        if let savedDocs = defaults.object(forKey: "starredArray") as? Data {
-            if let decodedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedDocs) as? [Documents] {
-                starredArray = decodedDocs
-            }
-        }
-    }
-    
     func setUpTableView() {
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = 167
@@ -417,12 +409,11 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let vc = ScannedImageViewController()
 
         let documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
-        documentCell.documentName.textColor = UIColor.white
-        documentCell.documentDate.textColor = UIColor.white
+        documentCell.documentName.textColor = UIColor.tertiaryLabel
+        documentCell.documentDate.textColor = UIColor.tertiaryLabel
         
         vc.titleDoc = document.name
         vc.scannedImage = document.thumbnail
-        
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         
         switch UIDevice.current.userInterfaceIdiom {
@@ -438,7 +429,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     
     override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         var documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
-        documentCell.documentName.textColor = UIColor.black
+        documentCell.documentName.textColor = UIColor.label
         documentCell.documentDate.textColor = UIColor.secondaryLabel
 
     }
@@ -447,6 +438,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
         UserDefaults.standard.set(row, forKey: "row")
+        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
             let starAction = UIAction(title: "Star", image: UIImage(systemName: "star")) { [self] _ in
@@ -475,7 +467,9 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
                 renameDocument(tableView, indexPath: indexPath)
             }
             
-            if document.isStarred == true {
+            let unstardoc = self.starredArray.map { $0.uuid }
+            
+            if unstardoc.contains(document.uuid) {
                 return UIMenu(title: "", children: [renameAction, unstarAction, deleteAction])
             } else {
                 return UIMenu(title: "", children: [renameAction, starAction, deleteAction])
@@ -500,6 +494,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
+            self.starredArray.saveStarred()
         }
     }
     
@@ -510,6 +505,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
+            self.starredArray.saveStarred()
         }
     }
     
@@ -522,12 +518,12 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         if unstardoc.contains(documents.uuid) {
             let starredtoremove = unstardoc.firstIndex(of: documents.uuid)!
             self.starredArray.remove(at: starredtoremove)
-            print(self.starredArray.count)
 
         }
         
         DispatchQueue.global(qos: .userInteractive).async {
             self.documentDetails.save()
+            self.starredArray.saveStarred()
         }
     }
     

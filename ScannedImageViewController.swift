@@ -14,8 +14,10 @@ class ScannedImageViewController: UIViewController {
     var titleDoc: String = ""
     let recognizeTextButton = UIButton(type: .roundedRect)
     var image: UIImage!
+    var imageView = UIImageView()
     
     override func viewDidLoad() {
+        
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
                 self.navigationItem.setHidesBackButton(false, animated: true)
@@ -29,7 +31,9 @@ class ScannedImageViewController: UIViewController {
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        let imageView = UIImageView(image: scannedImage.toImage()!.downsizeImage(compression: 0.75, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
+        if scannedImage != "" {
+            imageView = UIImageView(image: scannedImage.toImage()!.downsizeImage(compression: 0.75, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
+        }
         
         imageView.center = view.center
         imageView.contentMode = .scaleAspectFit
@@ -57,6 +61,11 @@ class ScannedImageViewController: UIViewController {
         
         title = "\(titleDoc)"
         setupRecognizeTextButton()
+    }
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        guard !scannedImage.isEmpty else { return false }
+      return super.canPerformAction(action, withSender: sender)
     }
     
     func setupRecognizeTextButton() {

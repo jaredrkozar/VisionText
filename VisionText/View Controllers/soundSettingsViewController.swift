@@ -71,7 +71,7 @@ class SoundSettingsViewController: UIViewController {
                     break
         }
         
-        speedValButton.frame = CGRect(x: 200, y: 80, width: view.bounds.width - 50, height: 32)
+        speedValButton.frame = CGRect(x: 160, y: 80, width: 100, height: 32)
 
         var speeds: [UIAction] {
             return [
@@ -140,7 +140,7 @@ class SoundSettingsViewController: UIViewController {
                     break
         }
         
-        pitchValButton.frame = CGRect(x: 200, y: 145, width: view.bounds.width - 50, height: 32)
+        pitchValButton.frame = CGRect(x: 160, y: 145, width: 100, height: 32)
 
         var pitches: [UIAction] {
             return [
