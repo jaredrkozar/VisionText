@@ -11,7 +11,7 @@ class Documents: NSObject, NSCoding {
     var thumbnail: String
     var name: String = ""
     var date: String = ""
-    var isStarred: Bool = true
+    var isStarred: Bool
     var uuid:String
     
     init(thumbnail: String, name: String, date: String, isStarred: Bool, uuid: String) {

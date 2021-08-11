@@ -47,7 +47,7 @@ extension SidebarViewController {
             
             config.trailingSwipeActionsConfigurationProvider = { [unowned self] (indexPath) in
                     
-                guard let item = dataSource.itemIdentifier(for: indexPath) else {
+                guard dataSource.itemIdentifier(for: indexPath) != nil else {
                         return nil
                     }
                     

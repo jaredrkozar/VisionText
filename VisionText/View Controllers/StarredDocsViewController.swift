@@ -1,7 +1,6 @@
 //
 //  StarredViewController.swift
-//  VisionText
-//
+//  Vision
 //  Created by Jared Kozar on 7/17/21.
 //
 
@@ -63,9 +62,6 @@ class StarredDocsViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the image cell.")
-        }
         
         let document = documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
@@ -86,19 +82,13 @@ class StarredDocsViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let document = documentDetails[indexPath.row]
-        //saves the row the user bought the context menu appear on in row
-        let row = indexPath.row
-        UserDefaults.standard.set(row, forKey: "row")
+        
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
             let unstarAction = UIAction(title: "Unstar", image: UIImage(systemName: "star.fill")) { [self] _ in
                 
                 unstarDocument(indexPath: indexPath)
-                
             }
-            
-            
             return UIMenu(title: "", children: [unstarAction])
         }
     }
@@ -113,7 +103,5 @@ class StarredDocsViewController: UITableViewController {
         DispatchQueue.global(qos: .userInteractive).async {
             self.documentDetails.save()
         }
-        
     }
-    
 }

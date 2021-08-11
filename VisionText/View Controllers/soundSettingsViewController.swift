@@ -34,11 +34,11 @@ class SoundSettingsViewController: UIViewController {
         addVolumeLabel()
         addVolumeSlider()
         
-        var speed = UserDefaults.standard.double(forKey: "speed")
+        let speed = UserDefaults.standard.double(forKey: "speed")
         
         speedValButton.setTitle(String(speed), for: .normal)
         
-        var pitch = UserDefaults.standard.double(forKey: "pitch")
+        let pitch = UserDefaults.standard.double(forKey: "pitch")
         
         pitchValButton.setTitle(String(pitch), for: .normal)
         

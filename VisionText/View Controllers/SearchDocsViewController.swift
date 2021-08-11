@@ -127,9 +127,6 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the image cell.")
-        }
         
         let document = searchedDocuments[indexPath.row]
         let vc = ScannedImageViewController()
