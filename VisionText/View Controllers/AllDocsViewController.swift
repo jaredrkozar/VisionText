@@ -18,7 +18,8 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     var documentDetails = [Documents]()
     var sortButton = UIButton()
     var sortMethod: String = ""
-
+    var sourceType: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
@@ -33,62 +34,50 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
 
-        let addDocButton = addDoc()
+        let addDocButton = Buttons().addDoc()
         
-        let sortButton = sortButtonTapped()
+        let sortButton = Buttons().sortButton()
         
         navigationItem.rightBarButtonItems = [addDocButton, sortButton]
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(addImage(_:)), name: NSNotification.Name( "addImage"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changedsortType(_:)), name: NSNotification.Name( "changedsortType"), object: nil)
+    }
+    
+    @objc func addImage(_ notification: Notification) {
+
+        if sourceTyper == "Scan Document" {
+            print("FFF")
+            presentDocumentScanner()
+        } else if sourceTyper == "Camera" {
+            presentCamera()
+        } else if sourceTyper == "Photo Library" {
+            presentPhotoPicker()
+        } else if sourceTyper == "Files" {
+            presentFilesPicker()
+        } else if sourceTyper == "URL" {
+            presentURLPicker()
+        }
+    }
+    
+    @objc func changedsortType(_ notification: Notification) {
+
+        if sortMethod == "A-Z" {
+            sortDocsbyAZ()
+        } else if sortMethod == "Z-A" {
+            sortDocsByZA()
+        } else if sortMethod == "DateAscending" {
+            sortDocsbyDateAscending()
+        } else if sortMethod == "DateDescending" {
+            sortDocsbyDateDescending()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         #endif
-        
-    }
-    
-    @objc func addDoc() -> UIBarButtonItem {
-        
-        var sources: [UIAction] {
-            return [
-                UIAction(title: "Scan Document", image: UIImage(systemName: "doc.text.viewfinder"), handler: { (_) in
-                self.presentDocumentScanner()
-                }),
-                
-                UIAction(title: "Camera", image: UIImage(systemName: "camera"), handler: { (_) in
-                self.presentCamera()
-                }),
-                
-                UIAction(title: "Photo Library", image: UIImage(systemName: "photo"), handler: { (_) in
-                self.presentPhotoPicker()
-                }),
-                
-                UIAction(title: "Files", image: UIImage(systemName: "folder"), handler: { (_) in
-                self.presentFilesPicker()
-                }),
-                
-                UIAction(title: "URL", image: UIImage(systemName: "link"), handler: { (_) in
-                self.presentURLPicker()
-                }),
-            ]
-        }
-        
-        var sourcesMenu: UIMenu {
-            return UIMenu(title: "Import image from...", image: nil, identifier: nil, options: [], children: sources)
-        }
-    
-        let addDocButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "plus"), primaryAction: nil, menu: sourcesMenu)
-        
-        switch UIDevice.current.userInterfaceIdiom {
-            case .phone, .pad:
-                    return addDocButton
-            case .mac:
-                addDocButton.menu = sourcesMenu
-            default:
-                break
-        }
-        
-        return addDocButton
         
     }
     
@@ -123,47 +112,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
 
           }
       }
-    }
-    
-    @objc func sortButtonTapped() -> UIBarButtonItem {
-        
-        var sortMethods: [UIAction] {
-            return [
-                UIAction(title: "A-Z", image:nil, handler: { (_) in
-                    self.sortDocsbyAZ()
-                }),
-                
-                UIAction(title: "Z-A", image:nil, handler: { (_) in
-                    self.sortDocsByZA()
-
-                }),
-                
-                UIAction(title: "Date (Ascending)", image:nil, handler: { (_) in
-                self.sortDocsbyDateAscending()
-                }),
-                
-                UIAction(title: "Date (Descending)", image: nil, handler: { (_) in
-                self.sortDocsbyDateDescending()
-                }),
-            ]
-        
-        }
-        
-        var sortMenu: UIMenu {
-            return UIMenu(title: "Sort documents by...", image: nil, identifier: nil, options: [.singleSelection], children: sortMethods)
-        }
-        
-        let sortButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "arrow.up.arrow.down"), primaryAction: nil, menu: sortMenu)
-        
-        switch UIDevice.current.userInterfaceIdiom {
-            case .phone, .pad:
-                    return sortButton
-            case .mac:
-                sortButton.menu = sortMenu
-            default:
-                break
-        }
-        return sortButton
     }
     
     @objc func sortDocsbyAZ() {
@@ -307,8 +255,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
 
     
     @objc func presentDocumentScanner() {
-        self.sourcesArray.removeAll()
-
         let vc = VNDocumentCameraViewController()
         vc.delegate = self
         self.present(vc, animated: true)

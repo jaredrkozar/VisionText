@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F428D2626D747B500A776FB /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F428D2526D747B500A776FB /* Buttons.swift */; };
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
 		7F577AD026B50C11001CF53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACF26B50C11001CF53B /* ViewController.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F428D2526D747B500A776FB /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		7F577AC826B50C11001CF53B /* VisionText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F577ACB26B50C11001CF53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F577ACD26B50C11001CF53B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			children = (
 				7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */,
 				7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */,
+				7F428D2526D747B500A776FB /* Buttons.swift */,
 				7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */,
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
 				7F577AF126B50F17001CF53B /* TabBarController.swift */,
@@ -219,6 +222,7 @@
 				7F577AE426B50C83001CF53B /* DocumentTableViewCell.swift in Sources */,
 				7F577AFC26B50FE1001CF53B /* recognizedTextViewController.swift in Sources */,
 				7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */,
+				7F428D2626D747B500A776FB /* Buttons.swift in Sources */,
 				7F577AD026B50C11001CF53B /* ViewController.swift in Sources */,
 				7F577AF026B50EE4001CF53B /* SidebarViewController.swift in Sources */,
 				7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */,

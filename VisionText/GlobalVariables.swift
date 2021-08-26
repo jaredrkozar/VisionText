@@ -6,6 +6,26 @@
 //
 
 import UIKit
+private(set) var vc = AllDocsViewController()
+
+public var sourceTyper: String {
+    get{
+       return vc.sourceType
+    }
+    set{
+       vc.sourceType = newValue
+    }
+}
+
+public var sortMethod: String {
+    get{
+       return vc.sortMethod
+    }
+    set{
+       vc.sortMethod = newValue
+    }
+}
+
 
 enum UIUserInterfaceIdiom: Int {
     case unspecified
@@ -26,7 +46,7 @@ func makeThumbnail(thumbnail: UIImage, dimensions: CGSize) -> UIImage {
     } else {
         newDimensions = CGSize(width: Double(thumbnail.size.width) * widthRatio, height: Double(thumbnail.size.height) * widthRatio)
     }
-    print(newDimensions)
+    
     //creates a new image based off of the dimensions found above
     UIGraphicsBeginImageContextWithOptions(newDimensions, false, 1.0)
     thumbnail.draw(in: CGRect(origin: .zero, size: newDimensions))

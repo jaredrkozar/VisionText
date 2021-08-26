@@ -140,7 +140,7 @@ class SoundSettingsViewController: UIViewController {
                     break
         }
         
-        pitchValButton.frame = CGRect(x: 160, y: 145, width: 100, height: 32)
+        pitchValButton.frame = CGRect(x: 160, y: 220, width: 100, height: 32)
 
         var pitches: [UIAction] {
             return [
@@ -200,7 +200,7 @@ class SoundSettingsViewController: UIViewController {
         volumeSlider.minimumValue = 0
         volumeSlider.maximumValue = 1
         volumeSlider.isContinuous = true
-        volumeSlider.frame = CGRect(x: 102, y: 220, width: view.bounds.width - 115, height: 31)
+        volumeSlider.frame = CGRect(x: 102, y: 220, width: 250, height: 31)
         view.addSubview(volumeSlider)
         volumeSlider.addTarget(self, action: #selector(self.didChangeVolumeSlider(_:)), for: .valueChanged)
     }

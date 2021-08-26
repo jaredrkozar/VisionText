@@ -13,23 +13,24 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
     
     var newImage: UIImage?
     let synth = AVSpeechSynthesizer()
-    lazy var recognizedText = UITextView()
+    var recognizedText = Buttons().setRecognizedText()
     var textWidth: Int = 0
+    let soundButton = Buttons().setsoundButton()
+    let gearButton = Buttons().gearButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         // Do any additional setup after loading the view.
         synth.stopSpeaking(at: .immediate)
-
-        setRecognizedText()
+        view.addSubview(recognizedText)
         
+        recognizeText(newImage: newImage!)
+        
+        title = "Recognized text"
         let sound = UIImage(systemName: "speaker.wave.3")!
         let gear = UIImage(systemName: "gearshape")!
-
-        let soundButton = UIBarButtonItem(image: sound,  style: .plain, target: self, action: #selector(speakText))
-        let gearButton = UIBarButtonItem(image: gear,  style: .plain, target: self, action: #selector(soundSettings))
-
+        
         let doneButton = UIBarButtonItem(title: "Done",  style: .done, target: self, action: #selector(doneButtonTapped))
         
         let copyButton = UIBarButtonItem(title: "Copy",  style: .plain, target: self, action: #selector(copyButtonTapped))
@@ -40,32 +41,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         NotificationCenter.default.addObserver(self, selector: #selector(speedChanged(_:)), name: NSNotification.Name( "speedChanged"), object: nil)
         
         self.navigationController?.presentationController?.delegate = self
-    }
-    
-    func setRecognizedText() {
-        recognizedText.adjustsFontForContentSizeCategory = true
-        title = "Recognized Text"
-        recognizedText.font = UIFont.preferredFont(forTextStyle: .title1)
-        recognizedText.isScrollEnabled = true
-        recognizedText.showsVerticalScrollIndicator = true
-        recognizedText.textContainerInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-        recognizedText.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
-        recognizedText.showsHorizontalScrollIndicator = true
-        
-        recognizedText.frame = CGRect(x: 3.0, y: 10.0, width: view.bounds.width, height: view.bounds.height)
-        
-        view.addSubview(recognizedText)
-        recognizedText.translatesAutoresizingMaskIntoConstraints = true
-        recognizedText.isUserInteractionEnabled = true
-        
-        NSLayoutConstraint.activate([
-            recognizedText.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            recognizedText.heightAnchor.constraint(greaterThanOrEqualToConstant: 900)
-           ])
-        
-        recognizedText.isEditable = false
-        recognizeText(newImage: newImage!)
-        
     }
     
     func viewDidAppear() {
