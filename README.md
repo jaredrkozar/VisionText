@@ -5,7 +5,7 @@ VisionText is an easy to use, lightweight app that lets you extract the text fro
 
 VisionText is an app that allows your to import images from anywhere on your iPhone, iPad or Mac, and have the device read the text in the image out to you.
 
-#Features
+# Features
 
 - Designed specifically for those who are visually impaired, with full Dynamic Text and VoiceOver support.
 
