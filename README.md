@@ -19,6 +19,6 @@ VisionText is an app that allows your to import images from anywhere on your iPh
   
   (note: the document scanner and Files app are only available when the app is running on an iPhone or iPad)
   
-  -  can change the speed and pitch of the text being read out loud, and can copy the text to your device's clipboard
+- can change the speed and pitch of the text being read out loud, and can copy the text to your device's clipboard
   
-  - full Mac support, including keyboard shortcuts, toolbar, menu bar, and context menus.
+- full Mac support, including keyboard shortcuts, toolbar, menu bar, and context menus.
