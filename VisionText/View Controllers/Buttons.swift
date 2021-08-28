@@ -8,20 +8,7 @@
 import UIKit
 
 class Buttons: UIView {
-    func gearButton() -> UIBarButtonItem {
-        
-        return UIBarButtonItem(image: UIImage(systemName: "gearshape"),  style: .plain, target: self, action: #selector(recognizedTextViewController.soundSettings))
-    }
 
-    func setsoundButton() -> UIBarButtonItem {
-        let soundButton = UIBarButtonItem()
-        soundButton.action = #selector(recognizedTextViewController.speakText(_:))
-        soundButton.image = UIImage(systemName: "speaker.wave.3")
-        soundButton.accessibilityLabel = "Ta"
-        return soundButton
-        
-    }
-    
     func setRecognizedText() -> UITextView {
         let recognizedText = UITextView()
         recognizedText.adjustsFontForContentSizeCategory = true
@@ -89,31 +76,15 @@ class Buttons: UIView {
     
     func sortButton() -> UIBarButtonItem {
         
-        var sortMethods: [UIAction] {
-            return [
-                UIAction(title: "A-Z", image:nil, handler: { (_) in
-                    sortMethod = "A-Z"
-                    NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
-                }),
-                
-                UIAction(title: "Z-A", image:nil, handler: { (_) in
-                    sortMethod = "Z-A"
-                    NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
-
-                }),
-                
-                UIAction(title: "Date (Ascending)", image:nil, handler: { (_) in
-                    sortMethod = "DateAscending"
-                    NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
-                }),
-                
-                UIAction(title: "Date (Descending)", image: nil, handler: { (_) in
-                    sortMethod = "DateDescending"
-                    NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
-                }),
-            ]
+        var sortMethods = [UIAction]()
         
+        for sort in listofsortmethods.allCases {
+           sortMethods.append( UIAction(title: "\(sort.rawValue)", image: nil, identifier: nil, attributes: []) { _ in
+               sortMethod = "\(sort.rawValue)"
+               NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
+           })
         }
+
         
         var sortMenu: UIMenu {
             return UIMenu(title: "Sort documents by...", image: nil, identifier: nil, options: [.singleSelection], children: sortMethods)

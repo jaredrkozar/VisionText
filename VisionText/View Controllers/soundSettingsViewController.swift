@@ -9,15 +9,37 @@ import UIKit
 
 class SoundSettingsViewController: UIViewController {
     
-    var speedText = UILabel()
+    var speedText: UILabel {
+        var speedlabel = UILabel()
+        speedlabel.text = "Speed"
+        speedlabel.frame = CGRect(x: 20, y: 80, width: 85, height: 27)
+        speedlabel.font = UIFont.preferredFont(forTextStyle: .title3)
+        speedlabel.adjustsFontForContentSizeCategory = true
+        return speedlabel
+    }
     var speedValButton = UIButton(type: .system)
-    var speed: Double = 0
+
     
-    var pitchText = UILabel()
+    var pitchText: UILabel {
+        var pitchlabel = UILabel()
+        pitchlabel.text = "Pitch"
+        pitchlabel.frame = CGRect(x: 20, y: 145, width: 80, height: 27)
+        pitchlabel.font = UIFont.preferredFont(forTextStyle: .title3)
+        pitchlabel.adjustsFontForContentSizeCategory = true
+        return pitchlabel
+    }
+    
     var pitchValButton = UIButton(type: .system)
-    var pitch: Double = 0
     
-    var volumeText = UILabel()
+    var volumeText: UILabel {
+        let volumelabel = UILabel()
+        volumelabel.text = "Volume"
+        volumelabel.frame = CGRect(x: 20, y: 220, width: 80, height: 27)
+        volumelabel.font = UIFont.preferredFont(forTextStyle: .title3)
+        volumelabel.adjustsFontForContentSizeCategory = true
+        return volumelabel
+    }
+    
     let volumeSlider = UISlider()
     
     let nc = NotificationCenter.default
@@ -27,21 +49,24 @@ class SoundSettingsViewController: UIViewController {
         view.backgroundColor = UIColor.systemBackground
         // Do any additional setup after loading the view.
         title = "Sound Settings"
+        
+        view.addSubview(speedText)
+        view.addSubview(pitchText)
+        view.addSubview(volumeText)
+        
         addSpeedMenu()
-        addSpeedLabel()
+
         addPitchButton()
-        addPitchLabel()
-        addVolumeLabel()
+        
         addVolumeSlider()
         
         let speed = UserDefaults.standard.double(forKey: "speed")
         
-        speedValButton.setTitle(String(speed), for: .normal)
+        speedValButton.setTitle(String("\(speed)x"), for: .normal)
         
         let pitch = UserDefaults.standard.double(forKey: "pitch")
         
         pitchValButton.setTitle(String(pitch), for: .normal)
-        
         
         var volumeSliderValue = UserDefaults.standard.double(forKey: "volumeSlider")
         
@@ -49,14 +74,6 @@ class SoundSettingsViewController: UIViewController {
             volumeSliderValue = 1.0
         }
         volumeSlider.value = Float(volumeSliderValue)
-    }
-    
-    func addSpeedLabel() {
-        speedText.text = "Speed"
-        speedText.frame = CGRect(x: 20, y: 80, width: 85, height: 27)
-        speedText.font = UIFont.preferredFont(forTextStyle: .title3)
-        speedText.adjustsFontForContentSizeCategory = true
-        view.addSubview(speedText)
     }
     
     func addSpeedMenu() {
@@ -71,39 +88,14 @@ class SoundSettingsViewController: UIViewController {
                     break
         }
         
-        speedValButton.frame = CGRect(x: 160, y: 80, width: 100, height: 32)
+        speedValButton.frame = CGRect(x: 250, y: 80, width: 100, height: 32)
 
-        var speeds: [UIAction] {
-            return [
-                UIAction(title: "0.5x", image:nil, handler: { (_) in
-                self.setSpeed(speed: 0.5)
-                }),
-                
-                UIAction(title: "0.75x", image:nil, handler: { (_) in
-                self.setSpeed(speed: 0.75)
-
-                }),
-                
-                UIAction(title: "1x", image:nil, handler: { (_) in
-                self.setSpeed(speed: 1.0)
-                }),
-                
-                UIAction(title: "1.25x", image: nil, handler: { (_) in
-                self.setSpeed(speed: 1.25)
-                }),
-                
-                UIAction(title: "1.50x", image: nil, handler: { (_) in
-                self.setSpeed(speed: 1.5)
-                }),
-                
-                UIAction(title: "1.75x", image: nil, handler: { (_) in
-                self.setSpeed(speed: 1.75)
-                }),
-                
-                UIAction(title: "2x", image: nil, handler: { (_) in
-                self.setSpeed(speed: 2.0)
-                }),
-            ]
+        var speeds = [UIAction]()
+        
+        for speed in listofeffects.allCases {
+           speeds.append( UIAction(title: "\(speed.rawValue)x", image: nil, identifier: nil, attributes: []) { _ in
+               self.setSpeed(speed: speed.rawValue)
+           })
         }
 
         speedValButton.menu = UIMenu(title: NSLocalizedString("Select Speed", comment: ""), children: speeds)
@@ -113,7 +105,6 @@ class SoundSettingsViewController: UIViewController {
         
     }
 
-
     func setSpeed(speed: Double) {
         
         UserDefaults.standard.set(speed, forKey: "speed")
@@ -121,14 +112,6 @@ class SoundSettingsViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
     }
     
-    func addPitchLabel() {
-        pitchText.text = "Pitch"
-        pitchText.frame = CGRect(x: 20, y: 145, width: 80, height: 27)
-        pitchText.font = UIFont.preferredFont(forTextStyle: .title3)
-        pitchText.adjustsFontForContentSizeCategory = true
-        view.addSubview(pitchText)
-    }
-
     func addPitchButton() {
         view.addSubview(pitchValButton)
         
@@ -140,38 +123,14 @@ class SoundSettingsViewController: UIViewController {
                     break
         }
         
-        pitchValButton.frame = CGRect(x: 160, y: 220, width: 100, height: 32)
-
-        var pitches: [UIAction] {
-            return [
-                UIAction(title: "0.5x", image:nil, handler: { (_) in
-                self.setPitch(pitch: 0.5)
-                }),
-                
-                UIAction(title: "0.75x", image:nil, handler: { (_) in
-                self.setPitch(pitch: 0.75)
-                }),
-                
-                UIAction(title: "1x", image:nil, handler: { (_) in
-                self.setPitch(pitch: 1.0)
-                }),
-                
-                UIAction(title: "1.25x", image: nil, handler: { (_) in
-                self.setPitch(pitch: 1.25)
-                }),
-                
-                UIAction(title: "1.50x", image: nil, handler: { (_) in
-                self.setPitch(pitch: 1.5)
-                }),
-                
-                UIAction(title: "1.75x", image: nil, handler: { (_) in
-                self.setPitch(pitch: 1.75)
-                }),
-                
-                UIAction(title: "2x", image: nil, handler: { (_) in
-                self.setPitch(pitch: 2.0)
-                }),
-            ]
+        pitchValButton.frame = CGRect(x: 250, y: 145, width: 100, height: 32)
+        
+        var pitches = [UIAction]()
+        
+        for speed in listofeffects.allCases {
+           pitches.append( UIAction(title: "\(speed.rawValue)", image: nil, identifier: nil, attributes: []) { _ in
+               self.setPitch(pitch: speed.rawValue)
+           })
         }
 
         pitchValButton.menu = UIMenu(title: NSLocalizedString("Select Pitch", comment: ""), children: pitches)
@@ -188,19 +147,11 @@ class SoundSettingsViewController: UIViewController {
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
     }
     
-    func addVolumeLabel() {
-        volumeText.text = "Volume"
-        volumeText.frame = CGRect(x: 20, y: 220, width: 80, height: 27)
-        volumeText.font = UIFont.preferredFont(forTextStyle: .title3)
-        volumeText.adjustsFontForContentSizeCategory = true
-        view.addSubview(volumeText)
-    }
-    
     func addVolumeSlider() {
         volumeSlider.minimumValue = 0
         volumeSlider.maximumValue = 1
         volumeSlider.isContinuous = true
-        volumeSlider.frame = CGRect(x: 102, y: 220, width: 250, height: 31)
+        volumeSlider.frame = CGRect(x: 150, y: 220, width: 180, height: 31)
         view.addSubview(volumeSlider)
         volumeSlider.addTarget(self, action: #selector(self.didChangeVolumeSlider(_:)), for: .valueChanged)
     }

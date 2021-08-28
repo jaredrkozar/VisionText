@@ -15,8 +15,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
     let synth = AVSpeechSynthesizer()
     var recognizedText = Buttons().setRecognizedText()
     var textWidth: Int = 0
-    let soundButton = Buttons().setsoundButton()
-    let gearButton = Buttons().gearButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +26,18 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         recognizeText(newImage: newImage!)
         
         title = "Recognized text"
-        let sound = UIImage(systemName: "speaker.wave.3")!
-        let gear = UIImage(systemName: "gearshape")!
+
+        let soundButton = UIBarButtonItem(image: UIImage(systemName: "speaker.wave.3"),  style: .plain, target: self, action: #selector(speakText))
+        soundButton.accessibilityLabel = "Speak Text"
+        
+        let gearButton = UIBarButtonItem(image: UIImage(systemName: "gearshape"),  style: .plain, target: self, action: #selector(soundSettings))
+        gearButton.accessibilityLabel = "Sound Settings"
         
         let doneButton = UIBarButtonItem(title: "Done",  style: .done, target: self, action: #selector(doneButtonTapped))
+        doneButton.accessibilityLabel = "Done"
         
         let copyButton = UIBarButtonItem(title: "Copy",  style: .plain, target: self, action: #selector(copyButtonTapped))
+        copyButton.accessibilityLabel = "Copy Text"
         
         navigationItem.leftBarButtonItems = [soundButton, gearButton]
         navigationItem.rightBarButtonItems = [doneButton, copyButton]
@@ -110,7 +114,7 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
             case .pad, .mac:
 
                 navigationController.modalPresentationStyle = UIModalPresentationStyle.popover
-                navigationController.preferredContentSize = CGSize(width: 275, height: 225)
+                navigationController.preferredContentSize = CGSize(width: 350, height: 225)
             default:
                     break
             }

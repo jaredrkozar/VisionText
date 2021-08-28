@@ -39,8 +39,8 @@ class ScannedImageViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         
-        let share = UIImage(systemName: "square.and.arrow.up")!
-        let shareButton = UIBarButtonItem(image: share,  style: .plain, target: self, action: #selector(shareButtonTapped))
+        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),  style: .plain, target: self, action: #selector(shareButtonTapped))
+        shareButton.accessibilityLabel = "Share Document"
         navigationItem.rightBarButtonItem = shareButton
        
         NSLayoutConstraint.activate([

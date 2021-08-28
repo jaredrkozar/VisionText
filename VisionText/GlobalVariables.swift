@@ -8,6 +8,23 @@
 import UIKit
 private(set) var vc = AllDocsViewController()
 
+enum listofeffects: Double, CaseIterable {
+    case half = 0.5
+    case threequarters = 0.75
+    case one = 1.0
+    case oneandonequarter = 1.25
+    case oneandonehalf = 1.5
+    case oneandthreequarters = 1.75
+    case two = 2.0
+}
+
+enum listofsortmethods: String, CaseIterable {
+    case AZ = "A-Z"
+    case ZA = "Z-A"
+    case dateascending = "Date (Ascending)"
+    case datedescending = "Date (Descending)"
+}
+
 public var sourceTyper: String {
     get{
        return vc.sourceType

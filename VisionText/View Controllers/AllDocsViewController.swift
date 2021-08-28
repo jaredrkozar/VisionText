@@ -35,8 +35,10 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
 
         let addDocButton = Buttons().addDoc()
+        addDocButton.accessibilityLabel = "Add Document"
         
         let sortButton = Buttons().sortButton()
+        sortButton.accessibilityLabel = "Sort Documents"
         
         navigationItem.rightBarButtonItems = [addDocButton, sortButton]
         
@@ -331,6 +333,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         cell.documentThumbnail.image = document.thumbnail.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
 
         cell.documentDate.text = document.date
+        cell.accessibilityLabel = "\(document.name) Created on \(document.date)"
         
         cell.layoutIfNeeded()
         return cell
