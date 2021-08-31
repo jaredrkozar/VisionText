@@ -16,14 +16,13 @@ class Buttons: UIView {
         recognizedText.font = UIFont.preferredFont(forTextStyle: .title1)
         recognizedText.isScrollEnabled = true
         recognizedText.showsVerticalScrollIndicator = true
-        recognizedText.textContainerInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         recognizedText.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         recognizedText.showsHorizontalScrollIndicator = true
         
-        recognizedText.frame = CGRect(x: 3.0, y: 10.0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        
+        recognizedText.frame = CGRect(x: 0, y: 5.0, width: UIScreen.main.bounds.width - 200, height: UIScreen.main.bounds.height)
         
         recognizedText.translatesAutoresizingMaskIntoConstraints = true
+
         recognizedText.isUserInteractionEnabled = true
         
         recognizedText.isEditable = false

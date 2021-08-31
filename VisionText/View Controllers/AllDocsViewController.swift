@@ -333,6 +333,13 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         cell.documentThumbnail.image = document.thumbnail.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
 
         cell.documentDate.text = document.date
+        
+        if document.isStarred == true {
+            cell.documentStatusImage.image = UIImage(systemName: "star.fill")
+        } else {
+            cell.documentStatusImage.image = nil
+        }
+       
         cell.accessibilityLabel = "\(document.name) Created on \(document.date)"
         
         cell.layoutIfNeeded()
@@ -387,13 +394,14 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             
-            let starAction = UIAction(title: "Star", image: UIImage(systemName: "star")) { [self] _ in
-    
-                starDocument(indexPath: indexPath)
-            }
+            let title = document.isStarred ?
+            "Unstar" :
+                "Star"
+            let image = document.isStarred ? "star" : "star.fill"
             
-            let unstarAction = UIAction(title: "Unstar", image: UIImage(systemName: "star.fill")) { [self] _ in
-                unstarDocument(indexPath: indexPath)
+            let toggleStarAction = UIAction(title: title, image: UIImage(systemName: "\(image)")) { [self] _ in
+    
+                toggleStar(indexPath: indexPath)
             }
             
             let deleteAction = UIAction(
@@ -403,51 +411,38 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
                 attributes: .destructive) { [self] _ in
                 
                 deleteDocument(tableView, indexPath: indexPath)
+
             }
                 
             let renameAction = UIAction(
-                //deletes the current cell
+                //renames the document in the current cell
               title: "Rename",
               image: UIImage(systemName: "rectangle.and.pencil.and.ellipsis")) { [self] _ in
                 
                 renameDocument(tableView, indexPath: indexPath)
             }
             
-            if document.isStarred == true {
-                           return UIMenu(title: "", children: [renameAction, unstarAction, deleteAction])
-                       } else {
-                           return UIMenu(title: "", children: [renameAction, starAction, deleteAction])
-                       }
+            return UIMenu(title: "", children: [renameAction, toggleStarAction, deleteAction])
         }
     }
     
     func deleteDocument(_ tableView: UITableView, indexPath: IndexPath) {
-        
         documentDetails.remove(at: indexPath.row)
+       
         tableView.reloadData()
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
         }
     }
     
-    func starDocument(indexPath: IndexPath) {
+    func toggleStar(indexPath: IndexPath) {
         let document = documentDetails[indexPath.row]
-        document.isStarred = true
+        document.isStarred.toggle()
         
         DispatchQueue.global(qos: .userInitiated).async {
             self.documentDetails.save()
         }
     }
-    
-    func unstarDocument(indexPath: IndexPath) {
-        let documents = documentDetails[indexPath.row]
-        documents.isStarred = false
-        
-        DispatchQueue.global(qos: .userInteractive).async {
-            self.documentDetails.save()
-        }
-    }
-    
     
     func renameDocument(_ tableView: UITableView, indexPath: IndexPath) {
 

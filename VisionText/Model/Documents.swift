@@ -12,6 +12,7 @@ class Documents: NSObject, NSCoding {
     var name: String = ""
     var date: String = ""
     var isStarred: Bool
+    
     var uuid:String
     
     init(thumbnail: String, name: String, date: String, isStarred: Bool, uuid: String) {

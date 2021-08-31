@@ -22,11 +22,18 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         // Do any additional setup after loading the view.
         synth.stopSpeaking(at: .immediate)
         view.addSubview(recognizedText)
-        
+       
+        let guide = view.readableContentGuide
+        recognizedText.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
+        recognizedText.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
+        recognizedText.heightAnchor.constraint(equalToConstant: recognizedText.contentSize.height).isActive = true
+       
         recognizeText(newImage: newImage!)
         
-        title = "Recognized text"
-
+        title = "Recognized Text"
+        
+        print(view.readableContentGuide)
+        print("FFFFFFFFF<F<")
         let soundButton = UIBarButtonItem(image: UIImage(systemName: "speaker.wave.3"),  style: .plain, target: self, action: #selector(speakText))
         soundButton.accessibilityLabel = "Speak Text"
         

@@ -15,6 +15,8 @@ class DocumentTableViewCell: UITableViewCell {
     
     @IBOutlet var documentDate: UILabel!
     
+    @IBOutlet var documentStatusImage: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

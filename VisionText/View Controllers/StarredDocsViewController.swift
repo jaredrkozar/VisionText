@@ -17,13 +17,9 @@ class StarredDocsViewController: UITableViewController {
         setUpTableView()
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
-
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
+        
         documentDetails = documentDetails.load().filter({$0.isStarred == true})
 
-        tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,7 +92,7 @@ class StarredDocsViewController: UITableViewController {
     func unstarDocument(indexPath: IndexPath) {
         let starred = documentDetails[indexPath.row]
         
-        starred.isStarred = false
+        starred.isStarred.toggle()
         documentDetails.remove(at: indexPath.row)
         tableView.reloadData()
         
