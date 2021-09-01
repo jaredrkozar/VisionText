@@ -24,10 +24,13 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         view.addSubview(recognizedText)
        
         let guide = view.readableContentGuide
-        recognizedText.leadingAnchor.constraint(equalTo: guide.leadingAnchor).isActive = true
-        recognizedText.trailingAnchor.constraint(equalTo: guide.trailingAnchor).isActive = true
-        recognizedText.heightAnchor.constraint(equalToConstant: recognizedText.contentSize.height).isActive = true
-       
+        
+        NSLayoutConstraint.activate([
+            recognizedText.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            recognizedText.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            recognizedText.heightAnchor.constraint(equalToConstant: recognizedText.contentSize.height),
+        ])
+        
         recognizeText(newImage: newImage!)
         
         title = "Recognized Text"
