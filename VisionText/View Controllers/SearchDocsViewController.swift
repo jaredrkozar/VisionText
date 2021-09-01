@@ -79,7 +79,6 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
                 if document.name.lowercased().contains(searchText.lowercased()) {
                     searchedDocuments.removeAll()
                     searchedDocuments.append(document)
-                    print(searchedDocuments.count)
                     tableView.reloadData()
                 }
                 

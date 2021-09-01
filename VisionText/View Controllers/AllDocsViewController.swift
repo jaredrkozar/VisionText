@@ -50,7 +50,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     @objc func addImage(_ notification: Notification) {
 
         if sourceTyper == "Scan Document" {
-            print("FFF")
             presentDocumentScanner()
         } else if sourceTyper == "Camera" {
             presentCamera()
@@ -290,7 +289,6 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         }
         
         controller.dismiss(animated: true)
-        print("Finished scanning document \(kCGPDFContextTitle)")
         presentAlert(sourcesArray: sourcesArray)
     }
 

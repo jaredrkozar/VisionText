@@ -35,8 +35,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         
         title = "Recognized Text"
         
-        print(view.readableContentGuide)
-        print("FFFFFFFFF<F<")
         let soundButton = UIBarButtonItem(image: UIImage(systemName: "speaker.wave.3"),  style: .plain, target: self, action: #selector(speakText))
         soundButton.accessibilityLabel = "Speak Text"
         
