@@ -54,6 +54,13 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         self.navigationController?.presentationController?.delegate = self
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        #if targetEnvironment(macCatalyst)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        #endif
+        
+    }
+    
     func viewDidAppear() {
         self.recognizedText.scrollRangeToVisible(NSMakeRange(0, 0))
     }
@@ -113,20 +120,25 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
           
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
-            if let picker = navigationController.presentationController as? UISheetPresentationController {
+                if let picker = navigationController.presentationController as? UISheetPresentationController {
                 picker.detents = [.medium()]
                 picker.prefersGrabberVisible = true
                 picker.preferredCornerRadius = 5.0
                 }
-            case .pad, .mac:
-
+            self.present(navigationController, animated: true, completion: nil)
+            case .pad:
+                
                 navigationController.modalPresentationStyle = UIModalPresentationStyle.popover
                 navigationController.preferredContentSize = CGSize(width: 350, height: 225)
+            self.present(navigationController, animated: true, completion: nil)
+            case .mac:
+                let activity = NSUserActivity(activityType: "soundSettings")
+                UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
+                    print(error)
+                }
             default:
                     break
             }
-           
-        self.present(navigationController, animated: true, completion: nil)
                
         let popoverPresentationController = vc.popoverPresentationController
         popoverPresentationController?.barButtonItem = sender

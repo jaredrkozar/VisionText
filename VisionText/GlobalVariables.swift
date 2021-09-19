@@ -14,7 +14,7 @@ public var image: UIImage {
         if scanimage.newimage == nil {
             let config = UIImage.SymbolConfiguration(pointSize: 80)
             let nilimage = UIImage(systemName: "photo", withConfiguration: config)
-            nilimage?.withTintColor(UIColor(named: "AccentColor"))
+            nilimage?.withTintColor(UIColor(named: "AccentColor")!)
             return nilimage!
         } else {
             return scanimage.newimage!

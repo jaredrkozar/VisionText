@@ -78,12 +78,19 @@ class ScannedImageViewController: UIViewController {
     
     @objc func didTapRecognizeTextButton() {
         
-        let vc = recognizedTextViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
-        
-        navigationController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone, .pad:
+                navigationController?.pushViewController(vc, animated: true)
+        case .mac:
+            
+            let activity = NSUserActivity(activityType: "recognizedText")
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
+                print(error)
+            }
 
-        present(navigationController, animated: true, completion: nil)
+            default:
+                break
+        }
     }
     
     @objc func shareButtonTapped() {

@@ -23,6 +23,21 @@
             </objects>
             <point key="canvasLocation" x="-225" y="309"/>
         </scene>
+        <!--Sound Settings View Controller-->
+        <scene sceneID="Zft-gg-djv">
+            <objects>
+                <viewController storyboardIdentifier="soundSettings" id="yiJ-CG-cSj" customClass="SoundSettingsViewController" customModule="VisionText" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jsy-QW-ykw">
+                        <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="wH9-2P-AY0"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Oqj-7Q-rJh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-172" y="1053"/>
+        </scene>
         <!--Root View Controller-->
         <scene sceneID="I3u-ka-nKW">
             <objects>
@@ -55,7 +70,7 @@
         <!--Recognized Text View Controller-->
         <scene sceneID="d3s-1h-8zS">
             <objects>
-                <viewController id="eXE-L9-eUm" customClass="recognizedTextViewController" customModule="VisionText" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="scannedText" id="eXE-L9-eUm" customClass="recognizedTextViewController" customModule="VisionText" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="vMp-aF-aHa">
                         <rect key="frame" x="0.0" y="0.0" width="1366" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -116,7 +131,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ze3-jH-u6Y">
             <objects>
-                <navigationController storyboardIdentifier="scannedText" automaticallyAdjustsScrollViewInsets="NO" id="a7G-4P-fKb" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="a7G-4P-fKb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Oj-73-adh">
                         <rect key="frame" x="0.0" y="24" width="1366" height="50"/>
