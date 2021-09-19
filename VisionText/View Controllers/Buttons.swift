@@ -19,7 +19,7 @@ class Buttons: UIView {
         recognizedText.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         recognizedText.showsHorizontalScrollIndicator = true
         
-        recognizedText.frame = CGRect(x: 0, y: 5.0, width: ScannedImageViewController().view.bounds.width, height: UIScreen.main.bounds.height)
+        recognizedText.frame = CGRect(x: 0, y: 30, width: ScannedImageViewController().view.bounds.width, height: UIScreen.main.bounds.height)
         
         recognizedText.translatesAutoresizingMaskIntoConstraints = true
 

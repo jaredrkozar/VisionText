@@ -80,7 +80,10 @@ class ScannedImageViewController: UIViewController {
         
         switch UIDevice.current.userInterfaceIdiom {
         case .phone, .pad:
-                navigationController?.pushViewController(vc, animated: true)
+                let vc = recognizedTextViewController()
+                         let navigationController = UINavigationController(rootViewController: vc)
+
+               present(navigationController, animated: true, completion: nil)
         case .mac:
             
             let activity = NSUserActivity(activityType: "recognizedText")
