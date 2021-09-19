@@ -10,10 +10,9 @@ import LinkPresentation
 
 class ScannedImageViewController: UIViewController {
     var documentDetails = [Documents]()
-    var scannedImage: String = ""
     var titleDoc: String = ""
     let recognizeTextButton = UIButton(type: .roundedRect)
-    var image: UIImage!
+    var newimage: UIImage? = nil 
     var imageView = UIImageView()
     
     override func viewDidLoad() {
@@ -31,9 +30,7 @@ class ScannedImageViewController: UIViewController {
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        if scannedImage != "" {
-            imageView = UIImageView(image: scannedImage.toImage()!.downsizeImage(compression: 0.75, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
-        }
+        imageView = UIImageView(image: image.downsizeImage(compression: 0.9, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
         
         imageView.center = view.center
         imageView.contentMode = .scaleAspectFit
@@ -50,7 +47,7 @@ class ScannedImageViewController: UIViewController {
             imageView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
            ])
         
-        if scannedImage.toImage() != nil {
+        if image != nil {
             recognizeTextButton.isEnabled = true
         }
         
@@ -61,11 +58,6 @@ class ScannedImageViewController: UIViewController {
         
         title = "\(titleDoc)"
         setupRecognizeTextButton()
-    }
-    
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        guard !scannedImage.isEmpty else { return false }
-      return super.canPerformAction(action, withSender: sender)
     }
     
     func setupRecognizeTextButton() {
@@ -88,7 +80,6 @@ class ScannedImageViewController: UIViewController {
         
         let vc = recognizedTextViewController()
         let navigationController = UINavigationController(rootViewController: vc)
-        vc.newImage = scannedImage.toImage()
         
         navigationController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
 
@@ -97,7 +88,7 @@ class ScannedImageViewController: UIViewController {
     
     @objc func shareButtonTapped() {
         
-        let vc = UIActivityViewController(activityItems: [scannedImage], applicationActivities: nil)
+        let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }

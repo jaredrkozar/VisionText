@@ -363,7 +363,9 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         documentCell.documentDate.textColor = UIColor.tertiaryLabel
         
         vc.titleDoc = document.name
-        vc.scannedImage = document.thumbnail
+        
+        image = document.thumbnail.toImage()!
+        
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         
         switch UIDevice.current.userInterfaceIdiom {

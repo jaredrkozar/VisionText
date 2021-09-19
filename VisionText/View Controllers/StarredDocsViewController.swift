@@ -63,7 +63,7 @@ class StarredDocsViewController: UITableViewController {
         let vc = ScannedImageViewController()
         
         vc.titleDoc = document.name
-        vc.scannedImage = document.thumbnail
+        image = document.thumbnail.toImage()!
         
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         

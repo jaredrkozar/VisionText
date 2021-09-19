@@ -11,7 +11,6 @@ import AVFoundation
 
 class recognizedTextViewController: UIViewController, UIAdaptivePresentationControllerDelegate {
     
-    var newImage: UIImage?
     let synth = AVSpeechSynthesizer()
     var recognizedText = Buttons().setRecognizedText()
     var textWidth: Int = 0
@@ -31,7 +30,7 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
             recognizedText.heightAnchor.constraint(equalToConstant: recognizedText.contentSize.height),
         ])
         
-        recognizeText(newImage: newImage!)
+        recognizeText()
         
         title = "Recognized Text"
         
@@ -134,8 +133,8 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         
     }
     
-    func recognizeText(newImage: UIImage) {
-        guard let cgimage = newImage.cgImage else {
+    func recognizeText() {
+        guard let cgimage = image.cgImage else {
             print("Could not get the image. Please try again")
             return
         }

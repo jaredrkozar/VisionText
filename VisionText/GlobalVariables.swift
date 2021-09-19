@@ -7,6 +7,24 @@
 
 import UIKit
 private(set) var vc = AllDocsViewController()
+private(set) var scanimage = ScannedImageViewController()
+
+public var image: UIImage {
+    get {
+        if scanimage.newimage == nil {
+            let config = UIImage.SymbolConfiguration(pointSize: 80)
+            let nilimage = UIImage(systemName: "photo", withConfiguration: config)
+            nilimage?.withTintColor(UIColor(named: "AccentColor"))
+            return nilimage!
+        } else {
+            return scanimage.newimage!
+        }
+    }
+    
+    set {
+        scanimage.newimage = newValue
+    }
+}
 
 enum listofeffects: Double, CaseIterable {
     case half = 0.5
@@ -90,6 +108,10 @@ extension UIImage {
             
     }
     
+    public var hasContent: Bool {
+      return cgImage != nil || ciImage != nil
+    }
+
 }
 
 extension String {

@@ -130,7 +130,7 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         let document = searchedDocuments[indexPath.row]
         let vc = ScannedImageViewController()
         vc.titleDoc = document.name
-        vc.scannedImage = document.thumbnail
+        image = document.thumbnail.toImage()!
         showDetailViewController(vc, sender: self)
         
     }
