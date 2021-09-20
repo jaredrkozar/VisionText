@@ -19,15 +19,16 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
         super.viewDidLoad()
         view.backgroundColor = UIColor.systemBackground
         // Do any additional setup after loading the view.
+        
+        
+        recognizedText.translatesAutoresizingMaskIntoConstraints = false
         synth.stopSpeaking(at: .immediate)
         view.addSubview(recognizedText)
-       
-        let guide = view.readableContentGuide
-        
+
         NSLayoutConstraint.activate([
-            recognizedText.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-            recognizedText.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            recognizedText.heightAnchor.constraint(equalToConstant: recognizedText.contentSize.height),
+            recognizedText.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor),
+            recognizedText.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            recognizedText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor)
         ])
         
         recognizeText()

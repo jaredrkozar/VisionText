@@ -28,7 +28,6 @@ var toolbarDelegate: NSToolbarDelegate?
 
             splitViewController.setViewController(SidebarViewController(), for: .primary)
             splitViewController.setViewController(TabBarController(), for: .compact)
-            splitViewController.setViewController(ScannedImageViewController(), for: .secondary)
             
             splitViewController.primaryBackgroundStyle = .sidebar
             window.rootViewController = splitViewController
@@ -87,17 +86,16 @@ var toolbarDelegate: NSToolbarDelegate?
 
 }
 
-
-class mainToolbar: NSObject {
-
-}
-
 #if targetEnvironment(macCatalyst)
 extension NSToolbarItem.Identifier {
     static let sortDocs = NSToolbarItem.Identifier("com.jkozar.VisionText.VisionText.sortDocs")
     static let addDoc = NSToolbarItem.Identifier("com.jkozar.VisionText.VisionText.addDoc")
     static let shareDoc = NSToolbarItem.Identifier("com.jkozar.VisionText.VisionText.shareDoc")
     static let getText = NSToolbarItem.Identifier("com.jkozar.VisionText.VisionText.getText")
+}
+
+class mainToolbar: NSObject {
+
 }
 
 extension mainToolbar: NSToolbarDelegate {
@@ -123,7 +121,7 @@ extension mainToolbar: NSToolbarDelegate {
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         
         var toolbarItem: NSToolbarItem?
-        
+      
         switch itemIdentifier {
         case .sortDocs:
             let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
@@ -149,6 +147,7 @@ extension mainToolbar: NSToolbarDelegate {
             item.image = UIImage(systemName: "square.and.arrow.up")
             item.label = "Share Documents"
             item.action = #selector(ScannedImageViewController.shareButtonTapped)
+            item.isBordered = true
             toolbarItem = item
             
         case .getText:
@@ -156,6 +155,7 @@ extension mainToolbar: NSToolbarDelegate {
             item.image = UIImage(systemName: "doc.text.magnifyingglass")
             item.label = "Recognize Text"
             item.action = #selector(ScannedImageViewController.didTapRecognizeTextButton)
+            item.isBordered = true
             toolbarItem = item
             
         

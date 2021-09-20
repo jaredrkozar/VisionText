@@ -372,6 +372,8 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
             case .phone:
                 navigationController?.pushViewController(vc, animated: true)
         case .pad, .mac:
+            splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
+            
                 showDetailViewController(vc, sender: true)
 
             default:

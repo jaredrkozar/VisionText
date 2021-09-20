@@ -10,18 +10,14 @@ import UIKit
 class Buttons: UIView {
 
     func setRecognizedText() -> UITextView {
-        let recognizedText = UITextView()
+        let recognizedText = UITextView(frame: .zero, textContainer: nil)
         recognizedText.adjustsFontForContentSizeCategory = true
        
         recognizedText.font = UIFont.preferredFont(forTextStyle: .title1)
-        recognizedText.isScrollEnabled = true
+        recognizedText.isScrollEnabled = false
         recognizedText.showsVerticalScrollIndicator = true
         recognizedText.textContainer.lineBreakMode = NSLineBreakMode.byWordWrapping
         recognizedText.showsHorizontalScrollIndicator = true
-        
-        recognizedText.frame = CGRect(x: 0, y: 30, width: ScannedImageViewController().view.bounds.width, height: UIScreen.main.bounds.height)
-        
-        recognizedText.translatesAutoresizingMaskIntoConstraints = true
 
         recognizedText.isUserInteractionEnabled = true
         
