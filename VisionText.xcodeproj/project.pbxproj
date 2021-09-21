@@ -30,6 +30,7 @@
 		7F577B0226B51C24001CF53B /* ScannedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */; };
 		7F89443C26F62D16000AF308 /* recognizedTextSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */; };
 		7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */; };
+		7F89444E26F9B30D000AF308 /* Sources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89444D26F9B30D000AF308 /* Sources.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +59,7 @@
 		7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScannedImageViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/../../ScannedImageViewController.swift"; sourceTree = "<absolute>"; };
 		7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recognizedTextSceneDelegate.swift; sourceTree = "<group>"; };
 		7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSceneDelegate.swift; sourceTree = "<group>"; };
+		7F89444D26F9B30D000AF308 /* Sources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources.swift; sourceTree = "<group>"; };
 		7FD9361326B70AB7009123ED /* VisionText.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisionText.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +115,7 @@
 				7F577AE226B50C83001CF53B /* DocumentTableViewCell.swift */,
 				7F577AE326B50C83001CF53B /* DocumentTableViewCell.xib */,
 				7F577AE626B50D99001CF53B /* Documents.swift */,
+				7F89444D26F9B30D000AF308 /* Sources.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -240,6 +243,7 @@
 				7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */,
 				7F577AE726B50D99001CF53B /* Documents.swift in Sources */,
 				7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */,
+				7F89444E26F9B30D000AF308 /* Sources.swift in Sources */,
 				7F577AFE26B50FF8001CF53B /* soundSettingsViewController.swift in Sources */,
 				7F577AEC26B50E4F001CF53B /* StarredDocsViewController.swift in Sources */,
 				7F577B0226B51C24001CF53B /* ScannedImageViewController.swift in Sources */,

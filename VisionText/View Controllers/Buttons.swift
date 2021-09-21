@@ -29,38 +29,20 @@ class Buttons: UIView {
     
     func addDoc() -> UIBarButtonItem {
         
-        var sources: [UIAction] {
-            return [
-                UIAction(title: "Scan Document", image: UIImage(systemName: "doc.text.viewfinder"), handler: { (_) in
-                    sourceTyper = "Scan Document"
-                    NotificationCenter.default.post(name: Notification.Name("addImage"), object: nil)
-                }),
-                
-                UIAction(title: "Camera", image: UIImage(systemName: "camera"), handler: { (_) in
-                    sourceTyper = "Camera"
-                    NotificationCenter.default.post(name: Notification.Name( "addImage"), object: nil)
-                }),
-                
-                UIAction(title: "Photo Library", image: UIImage(systemName: "photo"), handler: { (_) in
-                    sourceTyper = "Photo Library"
-                    NotificationCenter.default.post(name: Notification.Name( "addImage"), object: nil)
-                }),
-                
-                UIAction(title: "Files", image: UIImage(systemName: "folder"), handler: { (_) in
-                    sourceTyper = "Files"
-                    NotificationCenter.default.post(name: Notification.Name( "addImage"), object: nil)
-                }),
-                
-                UIAction(title: "URL", image: UIImage(systemName: "link"), handler: { (_) in
-                    sourceTyper = "URL"
-                    NotificationCenter.default.post(name: Notification.Name( "addImage"), object: nil)
-                }),
-            ]
+        var listofsources = [UIAction]()
+        
+        for sort in Sources.allCases {
            
+            listofsources.append( UIAction(title: "\(sort.title)", image: sort.icon, identifier: nil, attributes: []) { _ in
+                
+                sourceTyper = "\(sort.title)"
+                NotificationCenter.default.post(name: Notification.Name("addImage"), object: nil)
+           })
         }
         
+        
         var sourcesMenu: UIMenu {
-            return UIMenu(title: "Import image from...", image: nil, identifier: nil, options: [], children: sources)
+            return UIMenu(title: "Import image from...", image: nil, identifier: nil, options: [], children: listofsources)
         }
     
         let addDocButton = UIBarButtonItem(title: nil, image: UIImage(systemName: "plus"), primaryAction: nil, menu: sourcesMenu)
@@ -79,7 +61,6 @@ class Buttons: UIView {
                NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
            })
         }
-
         
         var sortMenu: UIMenu {
             return UIMenu(title: "Sort documents by...", image: nil, identifier: nil, options: [.singleSelection], children: sortMethods)
