@@ -6,19 +6,11 @@
 //
 
 import UIKit
-import VisionKit
-import Vision
-import PhotosUI
-import MobileCoreServices
-import UniformTypeIdentifiers
 
-class AllDocsViewController: UITableViewController, VNDocumentCameraViewControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate & UINavigationControllerDelegate, UIDocumentPickerDelegate, UITableViewDropDelegate {
+class AllDocsViewController: UITableViewController & UINavigationControllerDelegate, UITableViewDropDelegate {
     
-    var sourcesArray = [UIImage]()
     var documentDetails = [Documents]()
     var sortButton = UIButton()
-    var sortMethod: String = ""
-    var sourceType: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,15 +41,15 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
     
     @objc func addImage(_ notification: Notification) {
 
-        if sourceTyper == "Scan Document" {
+        if sourceType == "Scan Document" {
             presentDocumentScanner()
-        } else if sourceTyper == "Camera" {
+        } else if sourceType == "Camera" {
             presentCamera()
-        } else if sourceTyper == "Photo Library" {
+        } else if sourceType == "Photo Library" {
             presentPhotoPicker()
-        } else if sourceTyper == "Files" {
+        } else if sourceType == "Files" {
             presentFilesPicker()
-        } else if sourceTyper == "URL" {
+        } else if sourceType == "URL" {
             presentURLPicker()
         }
     }
@@ -108,8 +100,7 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
               // create an index path for this new row, moving it down depending on how many we've already inserted
               let indexPath = IndexPath(row: destinationIndexPath.row + index, section: destinationIndexPath.section)
 
-              self.sourcesArray.append(image)
-              self.presentAlert(sourcesArray: self.sourcesArray)
+              self.presentAlert(imageToPresent: image)
 
           }
       }
@@ -140,159 +131,8 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
         tableView.rowHeight = 167
         tableView.dropDelegate = self
     }
-    
-    @objc func presentURLPicker() {
-        self.sourcesArray.removeAll()
-        
-        let enterURL = UIAlertController(title: "Enter URL", message: "Enter the direct URL of the image you want to get the text from.", preferredStyle: .alert)
-    
-        enterURL.addTextField()
-        
-        enterURL.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-            
-        enterURL.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak enterURL] _ in
 
-            let textField = enterURL?.textFields![0]
-                    
-            let url = URL(string: (textField?.text)!)
-
-            if UIApplication.shared.canOpenURL(url! as URL) == true {
-                DispatchQueue.global().async { [weak self] in
-                    if let data = try? Data(contentsOf: url!) {
-                        if let image = UIImage(data: data) {
-                            DispatchQueue.main.async {
-                                self?.sourcesArray.append(image)
-                                
-                                self!.presentAlert(sourcesArray: self!.sourcesArray)
-                                
-                            }
-                        }
-                    }
-                }
-            } else {
-                let invalidURL = UIAlertController(title: "Invalid URL", message: "The direct image URL you entered is invalid. Please enter another URL.", preferredStyle: .alert)
-                
-                invalidURL.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-                
-                self!.present(invalidURL, animated: true)
-            }
-        })
-        present(enterURL, animated: true)
-    }
-    
-    @objc func presentFilesPicker() {
-        self.sourcesArray.removeAll()
-        let documentpicker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType.image])
-        documentpicker.delegate = self
-            self.present(documentpicker, animated: true, completion: nil)
-    }
-    
-    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        
-        guard let myURL = urls.first else {
-            return
-        }
-        
-        myURL.startAccessingSecurityScopedResource()
-        do {
-            let imageData = try Data(contentsOf: myURL)
-            let image = UIImage(data: imageData)!
-            sourcesArray.append(image)
-        } catch {
-            print("There was an error loading the image: \(error). Please try again.")
-        }
-        
-        myURL.startAccessingSecurityScopedResource()
-        presentAlert(sourcesArray: sourcesArray)
-        
-    }
-    
-    @objc func presentCamera() {
-        self.sourcesArray.removeAll()
-
-        let vc = UIImagePickerController()
-        vc.sourceType = .camera
-        vc.allowsEditing = true
-        vc.delegate = self
-        self.present(vc, animated: true)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            picker.dismiss(animated: true)
-
-            guard let image = info[.editedImage] as? UIImage else {
-                print("No image was found at this location. Please try again.")
-                return
-            }
-
-            sourcesArray.append(image)
-            dismiss(animated: true, completion: nil)
-            presentAlert(sourcesArray: sourcesArray)
-    }
-    
-    @objc func presentPhotoPicker() {
-        self.sourcesArray.removeAll()
-        var configuration = PHPickerConfiguration()
-        configuration.filter = .images
-        let picker = PHPickerViewController(configuration: configuration)
-        picker.delegate = self
-        self.present(picker, animated: true)
-    }
-    
-    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        if let itemProvider = results.first?.itemProvider, itemProvider.canLoadObject(ofClass: UIImage.self) {
-            
-            itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                DispatchQueue.main.async {
-                    guard let self = self, let image = image as? UIImage else { return }
-                    
-                    self.sourcesArray.append(image)
-                    self.presentAlert(sourcesArray: self.sourcesArray)
-                }
-            }
-        }
-        picker.dismiss(animated: true, completion: nil)
-    }
-
-    
-    @objc func presentDocumentScanner() {
-        let vc = VNDocumentCameraViewController()
-        vc.delegate = self
-        self.present(vc, animated: true)
-    }
-    
-    func documentCameraViewController(_ controller: VNDocumentCameraViewController, didFailWithError error: Error) {
-        let errorAlert = UIAlertController(title: "Failed to scan document", message: "The document couldn't be scanned right now. Please try again.", preferredStyle: .alert)
-        
-        errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        
-        present(errorAlert, animated: true)
-        
-        controller.dismiss(animated: true)
-    }
-    
-    func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func documentCameraViewControllerDidCancel(_ controller: VNDocumentCameraViewController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func documentCameraViewController(_ controller:            VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
-        // Process the scanned pages
-        
-        for pageNumber in 0..<scan.pageCount {
-            let image = scan.imageOfPage(at: pageNumber)
-            
-            sourcesArray.append(image)
-        }
-        
-        controller.dismiss(animated: true)
-        presentAlert(sourcesArray: sourcesArray)
-    }
-
-    func presentAlert(sourcesArray: [UIImage]) {
+    func presentAlert(imageToPresent: UIImage) {
         let ac = UIAlertController(title: "Name Document", message: nil, preferredStyle: .alert)
         ac.addTextField()
         
@@ -304,8 +144,8 @@ class AllDocsViewController: UITableViewController, VNDocumentCameraViewControll
             let currentDate = self!.getCurrentShortDate()
             let uuid = UUID().uuidString
                         
-            let thumbnailasString = self?.sourcesArray[0].converttoString()
-            let document = Documents(thumbnail:  thumbnailasString!, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
+            let thumbnailasString = imageToPresent.converttoString()
+            let document = Documents(thumbnail:  thumbnailasString, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
             self!.documentDetails.append(document)
         
             self!.documentDetails.save()

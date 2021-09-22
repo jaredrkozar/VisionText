@@ -35,7 +35,7 @@ class Buttons: UIView {
            
             listofsources.append( UIAction(title: "\(sort.title)", image: sort.icon, identifier: nil, attributes: []) { _ in
                 
-                sourceTyper = "\(sort.title)"
+                sourceType = "\(sort.title)"
                 NotificationCenter.default.post(name: Notification.Name("addImage"), object: nil)
            })
         }

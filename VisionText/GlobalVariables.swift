@@ -43,23 +43,9 @@ enum listofsortmethods: String, CaseIterable {
     case datedescending = "Date (Descending)"
 }
 
-public var sourceTyper: String {
-    get{
-       return vc.sourceType
-    }
-    set{
-       vc.sourceType = newValue
-    }
-}
+public var sourceType: String = ""
 
-public var sortMethod: String {
-    get{
-       return vc.sortMethod
-    }
-    set{
-       vc.sortMethod = newValue
-    }
-}
+public var sortMethod: String = ""
 
 
 enum UIUserInterfaceIdiom: Int {
