@@ -1,5 +1,5 @@
 # VisionText
-VisionText is an easy to use, lightweight app that lets you extract the text from scanned documents, photos in your photo library, images on the internet, and more.
+VisionText is an easy to use, lightweight app that lets you extract and read aloud the text from scanned documents, photos in your photo library, images on the internet, and more.
 
 # About this app
 
