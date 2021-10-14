@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LinkPresentation
 
 class ScannedImageViewController: UIViewController {
     var documentDetails = [Documents]()
