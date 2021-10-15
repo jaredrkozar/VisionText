@@ -25,7 +25,7 @@
       "size" : "29x29"
     },
     {
-      "filename" : "AppIcon40x40@2x-2.png",
+      "filename" : "AppIcon40x40@2x.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
@@ -73,7 +73,7 @@
       "size" : "29x29"
     },
     {
-      "filename" : "AppIcon40x40@2x.png",
+      "filename" : "AppIcon40x40.png",
       "idiom" : "ipad",
       "scale" : "1x",
       "size" : "40x40"
@@ -103,7 +103,7 @@
       "size" : "83.5x83.5"
     },
     {
-      "filename" : "Image 173.png",
+      "filename" : "VisionText OG.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"
