@@ -2,24 +2,27 @@
 //  ScannedImageViewController.swift
 //  VisionText
 //
-//  Created by Jared Kozar on 7/10/21.
+//  Created by Jared Kozar on 7/31/21.
 //
 
 import UIKit
-import LinkPresentation
 
 class ScannedImageViewController: UIViewController {
     var documentDetails = [Documents]()
-    var scannedImage: UIImage!
     var titleDoc: String = ""
     let recognizeTextButton = UIButton(type: .roundedRect)
+    var newimage: UIImage? = nil
+    var imageView = UIImageView()
     
     override func viewDidLoad() {
+        
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
                 self.navigationItem.setHidesBackButton(false, animated: true)
             case .pad:
                 self.navigationItem.setHidesBackButton(true, animated: true)
+            case .mac:
+                recognizeTextButton.isHidden = true
             default:
                 break
         }
@@ -27,27 +30,15 @@ class ScannedImageViewController: UIViewController {
         view.backgroundColor = UIColor.systemBackground
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
-    
-        let thumbnail = makeThumbnail(thumbnail: scannedImage, dimensions: CGSize(width: 700, height: 900))
-        
-        let imageView = UIImageView(image: thumbnail)
-        
-        switch UIDevice.current.userInterfaceIdiom {
-            case .phone:
-                imageView.frame = CGRect(x: 50, y: 150, width: 700, height: 900)
-            case .pad:
-                imageView.frame = CGRect(x: 130, y: 50, width: 700, height: 900)
-            case .mac:
-                imageView.frame = CGRect(x: 600, y: 200, width: 700, height: 900)
-            default:
-                break
-        }
 
+        imageView = UIImageView(image: image.downsizeImage(compression: 0.9, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
+        
+        imageView.center = view.center
         imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
         
-        let share = UIImage(systemName: "square.and.arrow.up")!
-        let shareButton = UIBarButtonItem(image: share,  style: .plain, target: self, action: #selector(shareButtonTapped))
+        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),  style: .plain, target: self, action: #selector(shareButtonTapped))
+        shareButton.accessibilityLabel = "Share Document"
         navigationItem.rightBarButtonItem = shareButton
        
         NSLayoutConstraint.activate([
@@ -55,16 +46,7 @@ class ScannedImageViewController: UIViewController {
             imageView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 194),
             imageView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 210),
             imageView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
-           ])
-        
-        if scannedImage != nil {
-            recognizeTextButton.isEnabled = true
-        }
-        
-        #if targetEnvironment(macCatalyst)
-        recognizeTextButton.isHidden = true
-
-        #endif
+       ])
         
         title = "\(titleDoc)"
         setupRecognizeTextButton()
@@ -88,25 +70,40 @@ class ScannedImageViewController: UIViewController {
     
     @objc func didTapRecognizeTextButton() {
         
-        let vc = recognizedTextViewController()
-        let navigationController = UINavigationController(rootViewController: vc)
-        vc.newImage = scannedImage
-        
-        navigationController.modalPresentationStyle = UIModalPresentationStyle.pageSheet
+        switch UIDevice.current.userInterfaceIdiom {
+        case .phone, .pad:
+            let vc = recognizedTextViewController()
+            let navigationController = UINavigationController(rootViewController: vc)
 
-        present(navigationController, animated: true, completion: nil)
+            present(navigationController, animated: true, completion: nil)
+        case .mac:
+            
+            let activity = NSUserActivity(activityType: "recognizedText")
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
+                print(error)
+            }
+
+        default:
+            break
+        }
     }
     
     @objc func shareButtonTapped() {
         
-        let vc = UIActivityViewController(activityItems: [scannedImage], applicationActivities: nil)
+        let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
         vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
         present(vc, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        #if targetEnvironment(macCatalyst)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        #endif
+        
+      switch UIDevice.current.userInterfaceIdiom {
+
+          case .mac:
+            navigationController?.setNavigationBarHidden(true, animated: animated)
+          default:
+                  break
+          }
+        
     }
 }
