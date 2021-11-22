@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F3CD0D7274B69FE0076E659 /* ScannedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */; };
 		7F428D2626D747B500A776FB /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F428D2526D747B500A776FB /* Buttons.swift */; };
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
@@ -27,7 +28,6 @@
 		7F577AF826B50F94001CF53B /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AF726B50F94001CF53B /* GlobalVariables.swift */; };
 		7F577AFC26B50FE1001CF53B /* recognizedTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */; };
 		7F577AFE26B50FF8001CF53B /* soundSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */; };
-		7F577B0226B51C24001CF53B /* ScannedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */; };
 		7F89443C26F62D16000AF308 /* recognizedTextSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */; };
 		7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */; };
 		7F89444E26F9B30D000AF308 /* Sources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89444D26F9B30D000AF308 /* Sources.swift */; };
@@ -39,6 +39,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedImageViewController.swift; sourceTree = "<group>"; };
 		7F428D2526D747B500A776FB /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		7F577AC826B50C11001CF53B /* VisionText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F577ACB26B50C11001CF53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		7F577AF726B50F94001CF53B /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
 		7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = recognizedTextViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/recognizedTextViewController.swift"; sourceTree = "<absolute>"; };
 		7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = soundSettingsViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/soundSettingsViewController.swift"; sourceTree = "<absolute>"; };
-		7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ScannedImageViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/../../ScannedImageViewController.swift"; sourceTree = "<absolute>"; };
 		7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recognizedTextSceneDelegate.swift; sourceTree = "<group>"; };
 		7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSceneDelegate.swift; sourceTree = "<group>"; };
 		7F89444D26F9B30D000AF308 /* Sources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sources.swift; sourceTree = "<group>"; };
@@ -134,11 +134,11 @@
 		7F577AFF26B5191F001CF53B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7F577B0126B51C24001CF53B /* ScannedImageViewController.swift */,
 				7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */,
 				7F428D2526D747B500A776FB /* Buttons.swift */,
 				7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */,
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
+				7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */,
 				7F577AF126B50F17001CF53B /* TabBarController.swift */,
 				7F577AEB26B50E4F001CF53B /* StarredDocsViewController.swift */,
 				7F577AED26B50EA4001CF53B /* SearchDocsViewController.swift */,
@@ -274,7 +274,7 @@
 				7F577AFE26B50FF8001CF53B /* soundSettingsViewController.swift in Sources */,
 				7F577AEC26B50E4F001CF53B /* StarredDocsViewController.swift in Sources */,
 				7F89447C26FAE294000AF308 /* FilesViewController.swift in Sources */,
-				7F577B0226B51C24001CF53B /* ScannedImageViewController.swift in Sources */,
+				7F3CD0D7274B69FE0076E659 /* ScannedImageViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
