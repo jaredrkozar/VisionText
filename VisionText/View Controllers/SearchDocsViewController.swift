@@ -10,8 +10,7 @@ import UIKit
 class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISearchDisplayDelegate {
     
     var searchBar: UISearchBar = UISearchBar()
-    var searchedDocuments = [Documents]()
-    var documentDetails = [Documents]()
+    var dataSource = ReusableDocumentsTableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,16 +28,6 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         constraints()
         
         // Do any additional setup after loading the view.
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        let defaults = UserDefaults.standard
-
-        if let savedDocs = defaults.object(forKey: "documentDetails") as? Data {
-            if let decodedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedDocs) as? [Documents] {
-                documentDetails = decodedDocs
-            }
-        }
     }
     
     func setupSearchBar() {
@@ -60,6 +49,7 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         tableView.rowHeight = 167
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 75))
         self.tableView.tableHeaderView = headerView
+        tableView.dataSource = dataSource
     }
     
     func constraints() {
@@ -69,22 +59,15 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
             searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
            ])
     }
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.showsCancelButton = true
         
-        if searchText == "" {
-            tableView.reloadData()
-        } else {
-            for document in documentDetails {
-                if document.name.lowercased().contains(searchText.lowercased()) {
-                    searchedDocuments.removeAll()
-                    searchedDocuments.append(document)
-                    tableView.reloadData()
-                }
-                
-                
-            }
+        dataSource.documentDetails = docs.filter { (doc: Documents) -> Bool in
+          return doc.name.lowercased().contains(searchText.lowercased())
         }
+        
+        tableView.reloadData()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -93,46 +76,14 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         searchBar.text = ""
         tableView.reloadData()
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return searchedDocuments.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the document cell.")
-        }
-        
-        let document = searchedDocuments[indexPath.row]
-        
-        cell.documentName.text = document.name
-
-        cell.documentThumbnail.image = document.thumbnail.toImage()
-
-        cell.documentDate.text = document.date
-        
-        cell.layoutIfNeeded()
-        return cell
-    }
-    
-    func getCurrentShortDate() -> String {
-        let todaysDate = NSDate()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M/d/yy, h:mm a"
-        let DateInFormat = dateFormatter.string(from: todaysDate as Date)
-
-        return DateInFormat
-    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let document = searchedDocuments[indexPath.row]
+        let document = dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
         vc.titleDoc = document.name
         image = document.thumbnail.toImage()!
         showDetailViewController(vc, sender: self)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

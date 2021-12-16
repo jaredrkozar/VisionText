@@ -9,15 +9,15 @@ import UIKit
 
 class AllDocsViewController: UITableViewController & UINavigationControllerDelegate, UITableViewDropDelegate {
     
-    var documentDetails = [Documents]()
     var sortButton = UIButton()
+    var dataSource = ReusableDocumentsTableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        documentDetails = documentDetails.load()
+        dataSource.documentDetails = docs.load()
         
         setUpTableView()
         
@@ -107,22 +107,22 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     @objc func sortDocsbyAZ() {
-        self.documentDetails = self.documentDetails.sorted(by: { $0.name < $1.name })
+        dataSource.documentDetails = docs.sorted(by: { $0.name < $1.name })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsByZA() {
-        self.documentDetails = self.documentDetails.sorted(by: { $0.name > $1.name })
+        dataSource.documentDetails = docs.sorted(by: { $0.name > $1.name })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateAscending() {
-        self.documentDetails = self.documentDetails.sorted(by: { $0.date < $1.date })
+        dataSource.documentDetails = docs.sorted(by: { $0.date < $1.date })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateDescending() {
-        self.documentDetails = self.documentDetails.sorted(by: { $0.date > $1.date })
+        dataSource.documentDetails = docs.sorted(by: { $0.date > $1.date })
             self.tableView.reloadData()
     }
     
@@ -130,6 +130,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         tableView.estimatedRowHeight = 500
         tableView.rowHeight = 167
         tableView.dropDelegate = self
+        tableView.dataSource = dataSource
     }
 
     func presentAlert(imageToPresent: UIImage) {
@@ -146,44 +147,14 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
                         
             let thumbnailasString = imageToPresent.converttoString()
             let document = Documents(thumbnail:  thumbnailasString, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
-            self!.documentDetails.append(document)
-        
-            self!.documentDetails.save()
+            self?.dataSource.documentDetails.append(document)
+         
             self!.tableView.reloadData()
             
         })
         present(ac, animated: true)
     }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return documentDetails.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the image cell.")
-        }
-        
-        let document = documentDetails[indexPath.row]
 
-        cell.documentName.text = document.name
-
-        cell.documentThumbnail.image = document.thumbnail.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
-
-        cell.documentDate.text = document.date
-        
-        if document.isStarred == true {
-            cell.documentStatusImage.image = UIImage(systemName: "star.fill")
-        } else {
-            cell.documentStatusImage.image = nil
-        }
-       
-        cell.accessibilityLabel = "\(document.name) Created on \(document.date)"
-        
-        cell.layoutIfNeeded()
-        return cell
-    }
-    
     func getCurrentShortDate() -> String {
         let todaysDate = NSDate()
         let dateFormatter = DateFormatter()
@@ -195,7 +166,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UserDefaults.standard.set(indexPath.row, forKey: "row")
-        let document = documentDetails[indexPath.row]
+        let document = dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
 
         let documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
@@ -227,8 +198,9 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         documentCell.documentDate.textColor = UIColor.secondaryLabel
 
     }
+    
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let document = documentDetails[indexPath.row]
+        let document = docs[indexPath.row]
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
         
@@ -269,21 +241,16 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     func deleteDocument(_ tableView: UITableView, indexPath: IndexPath) {
-        documentDetails.remove(at: indexPath.row)
+        docs.remove(at: indexPath.row)
        
         tableView.reloadData()
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.documentDetails.save()
-        }
     }
     
     func toggleStar(indexPath: IndexPath) {
-        let document = documentDetails[indexPath.row]
+        let document = docs[indexPath.row]
         document.isStarred.toggle()
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.documentDetails.save()
-        }
+        docs.save()
+
     }
     
     func renameDocument(_ tableView: UITableView, indexPath: IndexPath) {
@@ -295,8 +262,8 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             let textField = ac?.textFields![0]
-            self!.documentDetails[indexPath.row].name = (textField?.text)!
-            self!.documentDetails.save()
+            docs[indexPath.row].name = (textField?.text)!
+            docs.save()
             self!.tableView.reloadData()
             
         })

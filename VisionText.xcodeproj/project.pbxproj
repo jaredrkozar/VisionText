@@ -36,6 +36,7 @@
 		7F89447A26FAE24E000AF308 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89447926FAE24E000AF308 /* CameraViewController.swift */; };
 		7F89447C26FAE294000AF308 /* FilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89447B26FAE294000AF308 /* FilesViewController.swift */; };
 		7F89447E26FAE2E0000AF308 /* URLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89447D26FAE2E0000AF308 /* URLViewController.swift */; };
+		7F8BBDEB276B04D0005B07C1 /* ReusableDocumentsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8BBDEA276B04D0005B07C1 /* ReusableDocumentsTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		7F89447926FAE24E000AF308 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		7F89447B26FAE294000AF308 /* FilesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilesViewController.swift; sourceTree = "<group>"; };
 		7F89447D26FAE2E0000AF308 /* URLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLViewController.swift; sourceTree = "<group>"; };
+		7F8BBDEA276B04D0005B07C1 /* ReusableDocumentsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableDocumentsTableView.swift; sourceTree = "<group>"; };
 		7FD9361326B70AB7009123ED /* VisionText.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisionText.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -126,6 +128,7 @@
 				7F577AE226B50C83001CF53B /* DocumentTableViewCell.swift */,
 				7F577AE326B50C83001CF53B /* DocumentTableViewCell.xib */,
 				7F577AE626B50D99001CF53B /* Documents.swift */,
+				7F8BBDEA276B04D0005B07C1 /* ReusableDocumentsTableView.swift */,
 				7F89444D26F9B30D000AF308 /* Sources.swift */,
 			);
 			path = Model;
@@ -260,6 +263,7 @@
 				7F577AF826B50F94001CF53B /* GlobalVariables.swift in Sources */,
 				7F577AE426B50C83001CF53B /* DocumentTableViewCell.swift in Sources */,
 				7F89447626FAE190000AF308 /* DocumentScanViewController.swift in Sources */,
+				7F8BBDEB276B04D0005B07C1 /* ReusableDocumentsTableView.swift in Sources */,
 				7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */,
 				7F577AFC26B50FE1001CF53B /* recognizedTextViewController.swift in Sources */,
 				7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */,

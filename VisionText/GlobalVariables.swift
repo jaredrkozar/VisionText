@@ -6,6 +6,8 @@
 //
 
 import UIKit
+
+var docs = [Documents]()
 private(set) var vc = AllDocsViewController()
 private(set) var scanimage = ScannedImageViewController()
 

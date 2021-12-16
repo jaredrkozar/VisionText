@@ -7,7 +7,8 @@
 import UIKit
 
 class StarredDocsViewController: UITableViewController {
-    var documentDetails = [Documents]()
+    
+    var dataSource = ReusableDocumentsTableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,49 +18,28 @@ class StarredDocsViewController: UITableViewController {
         setUpTableView()
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
-        
-        documentDetails = documentDetails.load().filter({$0.isStarred == true})
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         #endif
+        
+        dataSource.documentDetails = docs.filter({$0.isStarred == true})
     }
     
     func setUpTableView() {
         tableView.estimatedRowHeight = 200
         tableView.rowHeight = 167
+        tableView.dataSource = dataSource
         NSLayoutConstraint.activate([
             tableView.heightAnchor.constraint(equalToConstant: 500),
            ])
     }
-    
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return documentDetails.count
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DocumentTableViewCell", for: indexPath) as? DocumentTableViewCell else {
-            fatalError("Unable to dequeue the image cell.")
-        }
-        
-        let document = documentDetails[indexPath.row]
-
-        cell.documentName.text = document.name
-
-        cell.documentThumbnail.image = document.thumbnail.toImage()
-
-        cell.documentDate.text = document.date
-        
-        cell.layoutIfNeeded()
-        return cell
-    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let document = documentDetails[indexPath.row]
+        let document = dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
         
         vc.titleDoc = document.name
@@ -90,14 +70,9 @@ class StarredDocsViewController: UITableViewController {
     }
     
     func unstarDocument(indexPath: IndexPath) {
-        let starred = documentDetails[indexPath.row]
+        let starred = dataSource.documentDetails[indexPath.row]
         
         starred.isStarred.toggle()
-        documentDetails.remove(at: indexPath.row)
         tableView.reloadData()
-        
-        DispatchQueue.global(qos: .userInteractive).async {
-            self.documentDetails.save()
-        }
     }
 }
