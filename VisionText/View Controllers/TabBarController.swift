@@ -31,7 +31,7 @@ private extension TabBarController {
     private func makeViewController() -> UINavigationController {
         let vc = AllDocsViewController()
         vc.tabBarItem = UITabBarItem(title: "All Documents",
-                                     image: UIImage(systemName: "square.grid.2x2"),
+                                     image: UIImage(systemName: "square.grid.2x2.fill"),
                                      tag: 0)
         return UINavigationController(rootViewController: vc)
     }
@@ -39,7 +39,7 @@ private extension TabBarController {
     private func makeStarredViewController() -> UINavigationController {
         let vc = StarredDocsViewController()
         vc.tabBarItem = UITabBarItem(title: "Starred Documents",
-                                     image: UIImage(systemName: "star"),
+                                     image: UIImage(systemName: "star.fill"),
                                      tag: 1)
         return UINavigationController(rootViewController: vc)
     }

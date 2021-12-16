@@ -183,8 +183,8 @@ struct Item: Hashable {
     private let identifier = UUID()
 }
 
-var tabsItems = [Item(title: "All Documents", image: UIImage(systemName: "square.grid.2x2")),
-                 Item(title: "Starred Documents", image: UIImage(systemName: "star")),
+var tabsItems = [Item(title: "All Documents", image: UIImage(systemName: "square.grid.2x2.fill")),
+                 Item(title: "Starred Documents", image: UIImage(systemName: "star.fill")),
                  Item(title: "Search Documents", image: UIImage(systemName: "magnifyingglass"))
                 ]
 
