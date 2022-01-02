@@ -59,6 +59,7 @@ class Buttons: UIView {
         for sort in listofsortmethods.allCases {
            sortMethods.append( UIAction(title: "\(sort.rawValue)", image: nil, identifier: nil, attributes: []) { _ in
                sortMethod = "\(sort.rawValue)"
+               print(sort.rawValue)
                NotificationCenter.default.post(name: Notification.Name( "changedsortType"), object: nil)
            })
         }

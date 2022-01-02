@@ -50,7 +50,7 @@ public var sourceType: String = ""
 public var sortMethod: String = ""
 
 
-enum UIUserInterfaceIdiom: Int {
+enum UIUserInterfaceIdiom {
     case unspecified
     
     case phone

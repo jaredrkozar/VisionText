@@ -68,9 +68,9 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             sortDocsbyAZ()
         } else if sortMethod == "Z-A" {
             sortDocsByZA()
-        } else if sortMethod == "DateAscending" {
+        } else if sortMethod == "Date (Ascending)" {
             sortDocsbyDateAscending()
-        } else if sortMethod == "DateDescending" {
+        } else if sortMethod == "Date (Descending)" {
             sortDocsbyDateDescending()
         }
     }
@@ -109,22 +109,26 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     
     @objc func sortDocsbyAZ() {
         fetchDocuments(sortType: "title", isAscending: true)
+        dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsByZA() {
         fetchDocuments(sortType: "title", isAscending: false)
+        dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateAscending() {
         fetchDocuments(sortType: "date", isAscending: true)
+        dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateDescending() {
         fetchDocuments(sortType: "date", isAscending: false)
-        tableView.reloadData()
+        dataSource.documentDetails = documents
+        self.tableView.reloadData()
     }
     
     func setUpTableView() {
