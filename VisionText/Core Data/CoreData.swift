@@ -26,9 +26,9 @@ func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool 
     }
 }
 
-func fetchDocuments() {
-    let request = Document.createFetchRequest()
-    let sort = NSSortDescriptor(key: "title", ascending: false)
+func fetchDocuments(sortType: String, isAscending: Bool) {
+    let request = Document.createFetchRequest() as NSFetchRequest<Document>
+    let sort = NSSortDescriptor(key: sortType, ascending: isAscending)
     request.sortDescriptors = [sort]
 
     do {

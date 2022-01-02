@@ -24,7 +24,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
-        
+        fetchDocuments(sortType: "date", isAscending: false)
         setUpTableView()
         
         dataSource.documentDetails = documents
@@ -108,23 +108,23 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     @objc func sortDocsbyAZ() {
-        dataSource.documentDetails = documents.sorted(by: { $0.title! < $1.title! })
-            self.tableView.reloadData()
+        fetchDocuments(sortType: "title", isAscending: true)
+        self.tableView.reloadData()
     }
     
     @objc func sortDocsByZA() {
-        dataSource.documentDetails = documents.sorted(by: { $0.title! > $1.title! })
-            self.tableView.reloadData()
+        fetchDocuments(sortType: "title", isAscending: false)
+        self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateAscending() {
-        dataSource.documentDetails = documents.sorted(by: { $0.date! < $1.date! })
-            self.tableView.reloadData()
+        fetchDocuments(sortType: "date", isAscending: true)
+        self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateDescending() {
-        dataSource.documentDetails = documents.sorted(by: { $0.date! > $1.date! })
-            self.tableView.reloadData()
+        fetchDocuments(sortType: "date", isAscending: false)
+        tableView.reloadData()
     }
     
     func setUpTableView() {
