@@ -4,8 +4,8 @@ class SidebarViewController: UIViewController {
     var folders = [String]()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>! = nil
     private var collectionView: UICollectionView! = nil
-    private var supplementaryViewControllers = [UINavigationController(rootViewController: AllDocsViewController()),
-                                                UINavigationController(rootViewController: StarredDocsViewController()), UINavigationController(rootViewController: SearchDocsViewController())
+    private var supplementaryViewControllers = [UINavigationController(rootViewController: AllDocsViewController()), UINavigationController(rootViewController: AllDocsViewController()),
+                                                UINavigationController(rootViewController: SearchDocsViewController())
     
     ]
 
@@ -44,37 +44,6 @@ extension SidebarViewController {
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { section, layoutEnvironment in
             var config = UICollectionLayoutListConfiguration(appearance: .sidebar)
-            
-            config.trailingSwipeActionsConfigurationProvider = { [unowned self] (indexPath) in
-                    
-                guard dataSource.itemIdentifier(for: indexPath) != nil else {
-                        return nil
-                    }
-                    
-                let deletecollection = UIContextualAction(style: .normal, title: "Delete") { (action, view, completion) in
- 
-                    self.delete(at: indexPath)
-                    completion(true)
-                }
-                deletecollection.backgroundColor = .systemRed
-                
-                // Use all the actions to create a swipe action configuration
-                // Return it to the swipe action configuration provider
-                
-                let sections: [Section] = [.tabs]
-
-                switch indexPath.section {
-                    case 0:
-                        return nil
-                    default:
-                        switch indexPath.row {
-                            case 0:
-                                return nil
-                            default:
-                                return UISwipeActionsConfiguration(actions: [deletecollection])
-                        }
-                }
-            }
             
 
             config.headerMode = section == 0 ? .none : .firstItemInSection
@@ -168,6 +137,11 @@ extension SidebarViewController: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard indexPath.section == 0 else { return }
+        
+        var info = [String: Int]()
+        info["rowNum"] = indexPath.row
+        NotificationCenter.default.post(name: Notification.Name("filteringByStarred"), object: nil, userInfo: info)
+        
         splitViewController?.setViewController(supplementaryViewControllers[indexPath.row], for: .supplementary)
         
         view.window?.windowScene?.title = tabsItems[indexPath.row].title

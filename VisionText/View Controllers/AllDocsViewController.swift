@@ -10,14 +10,24 @@ import UIKit
 class AllDocsViewController: UITableViewController & UINavigationControllerDelegate, UITableViewDropDelegate {
     
     var sortButton = UIButton()
+    public var filterByStarred: Bool = false
     var dataSource = ReusableDocumentsTableView()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        #if targetEnvironment(macCatalyst)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        #endif
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        dataSource.documentDetails = docs.load()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
-
-        dataSource.documentDetails = docs.load()
         
         setUpTableView()
         
@@ -37,6 +47,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         NotificationCenter.default.addObserver(self, selector: #selector(addImage(_:)), name: NSNotification.Name( "addImage"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(changedsortType(_:)), name: NSNotification.Name( "changedsortType"), object: nil)
+        
     }
     
     @objc func addImage(_ notification: Notification) {
@@ -65,13 +76,6 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         } else if sortMethod == "DateDescending" {
             sortDocsbyDateDescending()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        #if targetEnvironment(macCatalyst)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        #endif
-        
     }
     
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
@@ -143,12 +147,11 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             let textField = ac?.textFields![0]
                     
             let currentDate = self!.getCurrentShortDate()
-            let uuid = UUID().uuidString
                         
             let thumbnailasString = imageToPresent.converttoString()
-            let document = Documents(thumbnail:  thumbnailasString, name: (textField?.text)!, date: currentDate, isStarred: false, uuid: uuid)
+            let document = Documents(thumbnail:  thumbnailasString, name: (textField?.text)!, date: currentDate, isStarred: false)
             self?.dataSource.documentDetails.append(document)
-         
+            docs.save()
             self!.tableView.reloadData()
             
         })
@@ -166,7 +169,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UserDefaults.standard.set(indexPath.row, forKey: "row")
-        let document = dataSource.documentDetails[indexPath.row]
+        let document = self.dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
 
         let documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
@@ -200,7 +203,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     override func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let document = docs[indexPath.row]
+        let document = self.dataSource.documentDetails[indexPath.row]
         //saves the row the user bought the context menu appear on in row
         let row = indexPath.row
         
@@ -247,9 +250,10 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     func toggleStar(indexPath: IndexPath) {
-        let document = docs[indexPath.row]
+        let document = dataSource.documentDetails[indexPath.row]
         document.isStarred.toggle()
         docs.save()
+        tableView.reloadData()
 
     }
     
@@ -262,9 +266,9 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             let textField = ac?.textFields![0]
-            docs[indexPath.row].name = (textField?.text)!
-            docs.save()
+            self!.dataSource.documentDetails[indexPath.row].name = (textField?.text)!
             self!.tableView.reloadData()
+            docs.save()
             
         })
         present(ac, animated: true)

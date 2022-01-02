@@ -20,7 +20,6 @@
 		7F577AE526B50C83001CF53B /* DocumentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F577AE326B50C83001CF53B /* DocumentTableViewCell.xib */; };
 		7F577AE726B50D99001CF53B /* Documents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AE626B50D99001CF53B /* Documents.swift */; };
 		7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */; };
-		7F577AEC26B50E4F001CF53B /* StarredDocsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AEB26B50E4F001CF53B /* StarredDocsViewController.swift */; };
 		7F577AEE26B50EA4001CF53B /* SearchDocsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AED26B50EA4001CF53B /* SearchDocsViewController.swift */; };
 		7F577AF026B50EE4001CF53B /* SidebarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AEF26B50EE4001CF53B /* SidebarViewController.swift */; };
 		7F577AF226B50F17001CF53B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AF126B50F17001CF53B /* TabBarController.swift */; };
@@ -55,7 +54,6 @@
 		7F577AE326B50C83001CF53B /* DocumentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DocumentTableViewCell.xib; sourceTree = "<group>"; };
 		7F577AE626B50D99001CF53B /* Documents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents.swift; sourceTree = "<group>"; };
 		7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDocsViewController.swift; sourceTree = "<group>"; };
-		7F577AEB26B50E4F001CF53B /* StarredDocsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarredDocsViewController.swift; sourceTree = "<group>"; };
 		7F577AED26B50EA4001CF53B /* SearchDocsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDocsViewController.swift; sourceTree = "<group>"; };
 		7F577AEF26B50EE4001CF53B /* SidebarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SidebarViewController.swift; sourceTree = "<group>"; };
 		7F577AF126B50F17001CF53B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
 				7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */,
 				7F577AF126B50F17001CF53B /* TabBarController.swift */,
-				7F577AEB26B50E4F001CF53B /* StarredDocsViewController.swift */,
 				7F577AED26B50EA4001CF53B /* SearchDocsViewController.swift */,
 				7F577AEF26B50EE4001CF53B /* SidebarViewController.swift */,
 			);
@@ -276,7 +273,6 @@
 				7F89444E26F9B30D000AF308 /* Sources.swift in Sources */,
 				7F89447826FAE1F9000AF308 /* PhotoLibraryViewController.swift in Sources */,
 				7F577AFE26B50FF8001CF53B /* soundSettingsViewController.swift in Sources */,
-				7F577AEC26B50E4F001CF53B /* StarredDocsViewController.swift in Sources */,
 				7F89447C26FAE294000AF308 /* FilesViewController.swift in Sources */,
 				7F3CD0D7274B69FE0076E659 /* ScannedImageViewController.swift in Sources */,
 			);

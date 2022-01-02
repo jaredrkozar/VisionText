@@ -13,14 +13,11 @@ class Documents: NSObject, NSCoding {
     var date: String = ""
     var isStarred: Bool
     
-    var uuid:String
-    
-    init(thumbnail: String, name: String, date: String, isStarred: Bool, uuid: String) {
+    init(thumbnail: String, name: String, date: String, isStarred: Bool) {
         self.thumbnail = thumbnail
         self.name = name
         self.date = date
         self.isStarred = isStarred
-        self.uuid = uuid
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -28,7 +25,6 @@ class Documents: NSObject, NSCoding {
         name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
         date = aDecoder.decodeObject(forKey: "date") as? String ?? ""
         isStarred = ((aDecoder.decodeBool(forKey: "isStarred") as? Bool)!)
-        uuid = aDecoder.decodeObject(forKey: "uuid") as? String ?? ""
     }
 
     func encode(with aCoder: NSCoder) {
@@ -36,7 +32,6 @@ class Documents: NSObject, NSCoding {
         aCoder.encode(name, forKey: "name")
         aCoder.encode(date, forKey: "date")
         aCoder.encode(isStarred, forKey: "isStarred")
-        aCoder.encode(uuid, forKey: "uuid")
     }
     
 }

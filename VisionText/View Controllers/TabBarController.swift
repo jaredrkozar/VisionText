@@ -10,13 +10,12 @@ import UIKit
 class TabBarController: UITabBarController {
 
     private lazy var allDocumentsViewController = makeViewController()
-    private lazy var StarredDocumentsViewController = makeStarredViewController()
     private lazy var searchDocumentsViewController = makeSearchDocumentsTableViewController()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         viewControllers = [allDocumentsViewController,
-                           StarredDocumentsViewController, searchDocumentsViewController]
+                           allDocumentsViewController, searchDocumentsViewController]
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -37,7 +36,7 @@ private extension TabBarController {
     }
 
     private func makeStarredViewController() -> UINavigationController {
-        let vc = StarredDocsViewController()
+        let vc = AllDocsViewController()
         vc.tabBarItem = UITabBarItem(title: "Starred Documents",
                                      image: UIImage(systemName: "star.fill"),
                                      tag: 1)
