@@ -9,7 +9,7 @@ import UIKit
 
 class ReusableDocumentsTableView: NSObject, UITableViewDataSource {
 
-    var documentDetails = [Documents]()
+    var documentDetails = [Document]()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return documentDetails.count
@@ -22,11 +22,11 @@ class ReusableDocumentsTableView: NSObject, UITableViewDataSource {
         
         let document = documentDetails[indexPath.row]
 
-        cell.documentName.text = document.name
+        cell.documentName.text = document.title
 
-        cell.documentThumbnail.image = document.thumbnail.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
+        cell.documentThumbnail.image = document.thumbnail!.toImage()?.downsizeImage(compression: 0.25, dimensions: CGSize(width: 109, height: 142))
 
-        cell.documentDate.text = document.date
+        cell.documentDate.text = document.date?.formatted()
         
         if document.isStarred == true {
             cell.documentStatusImage.image = UIImage(systemName: "star.fill")
@@ -34,7 +34,7 @@ class ReusableDocumentsTableView: NSObject, UITableViewDataSource {
             cell.documentStatusImage.image = nil
         }
        
-        cell.accessibilityLabel = "\(document.name) Created on \(document.date)"
+        cell.accessibilityLabel = "\(document.title) Created on \(document.date?.formatted())"
         
         cell.layoutIfNeeded()
         return cell

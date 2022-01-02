@@ -20,16 +20,14 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        dataSource.documentDetails = docs.load()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
         
         setUpTableView()
+        
+        dataSource.documentDetails = documents
         
         title = "All Documents"
         
@@ -47,7 +45,6 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         NotificationCenter.default.addObserver(self, selector: #selector(addImage(_:)), name: NSNotification.Name( "addImage"), object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(changedsortType(_:)), name: NSNotification.Name( "changedsortType"), object: nil)
-        
     }
     
     @objc func addImage(_ notification: Notification) {
@@ -111,22 +108,22 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     @objc func sortDocsbyAZ() {
-        dataSource.documentDetails = docs.sorted(by: { $0.name < $1.name })
+        dataSource.documentDetails = documents.sorted(by: { $0.title! < $1.title! })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsByZA() {
-        dataSource.documentDetails = docs.sorted(by: { $0.name > $1.name })
+        dataSource.documentDetails = documents.sorted(by: { $0.title! > $1.title! })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateAscending() {
-        dataSource.documentDetails = docs.sorted(by: { $0.date < $1.date })
+        dataSource.documentDetails = documents.sorted(by: { $0.date! < $1.date! })
             self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateDescending() {
-        dataSource.documentDetails = docs.sorted(by: { $0.date > $1.date })
+        dataSource.documentDetails = documents.sorted(by: { $0.date! > $1.date! })
             self.tableView.reloadData()
     }
     
@@ -135,6 +132,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         tableView.rowHeight = 167
         tableView.dropDelegate = self
         tableView.dataSource = dataSource
+        tableView.delegate = self
     }
 
     func presentAlert(imageToPresent: UIImage) {
@@ -145,26 +143,35 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             let textField = ac?.textFields![0]
-                    
-            let currentDate = self!.getCurrentShortDate()
                         
             let thumbnailasString = imageToPresent.converttoString()
-            let document = Documents(thumbnail:  thumbnailasString, name: (textField?.text)!, date: currentDate, isStarred: false)
-            self?.dataSource.documentDetails.append(document)
-            docs.save()
+            
+            let uuid = UUID().uuidString
+           let newDocument = Document(context: context)
+            newDocument.title = (textField?.text)!
+            newDocument.date = self!.getCurrentShortDate()
+            newDocument.isStarred = false
+            newDocument.documentID = uuid
+            newDocument.thumbnail = thumbnailasString
+            
+            saveDocument(thumbnail: newDocument.thumbnail!, title: newDocument.title!, date: newDocument.date!, isStarred: newDocument.isStarred, documentID: newDocument.documentID!)
+            
+           
+            self?.dataSource.documentDetails.append(newDocument)
+            
             self!.tableView.reloadData()
+           
             
         })
         present(ac, animated: true)
     }
 
-    func getCurrentShortDate() -> String {
-        let todaysDate = NSDate()
+    func getCurrentShortDate() -> Date {
+        let todaysDate = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "M/d/yy, h:mm a"
-        let DateInFormat = dateFormatter.string(from: todaysDate as Date)
 
-        return DateInFormat
+        return todaysDate
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -176,9 +183,9 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         documentCell.documentName.textColor = UIColor.tertiaryLabel
         documentCell.documentDate.textColor = UIColor.tertiaryLabel
         
-        vc.titleDoc = document.name
+        vc.titleDoc = document.title!
         
-        image = document.thumbnail.toImage()!
+        image = document.thumbnail!.toImage()!
         
         splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
         
@@ -227,7 +234,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
               image: UIImage(systemName: "trash"),
                 attributes: .destructive) { [self] _ in
                 
-                deleteDocument(tableView, indexPath: indexPath)
+                    deleteSelectedDocument(tableView, indexPath: indexPath)
 
             }
                 
@@ -243,16 +250,18 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         }
     }
     
-    func deleteDocument(_ tableView: UITableView, indexPath: IndexPath) {
-        docs.remove(at: indexPath.row)
-       
+    func deleteSelectedDocument(_ tableView: UITableView, indexPath: IndexPath) {
+        
+        deleteDocument(document: dataSource.documentDetails[indexPath.row])
+        
+        self.dataSource.documentDetails.remove(at: indexPath.row)
+
         tableView.reloadData()
     }
     
     func toggleStar(indexPath: IndexPath) {
         let document = dataSource.documentDetails[indexPath.row]
         document.isStarred.toggle()
-        docs.save()
         tableView.reloadData()
 
     }
@@ -266,9 +275,8 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             
         ac.addAction(UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             let textField = ac?.textFields![0]
-            self!.dataSource.documentDetails[indexPath.row].name = (textField?.text)!
+            self!.dataSource.documentDetails[indexPath.row].title = (textField?.text)!
             self!.tableView.reloadData()
-            docs.save()
             
         })
         present(ac, animated: true)

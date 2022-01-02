@@ -63,10 +63,6 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchBar.showsCancelButton = true
         
-        dataSource.documentDetails = docs.filter { (doc: Documents) -> Bool in
-          return doc.name.lowercased().contains(searchText.lowercased())
-        }
-        
         tableView.reloadData()
     }
     
@@ -81,8 +77,8 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         
         let document = dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
-        vc.titleDoc = document.name
-        image = document.thumbnail.toImage()!
+        vc.titleDoc = document.title!
+        image = document.thumbnail!.toImage()!
         showDetailViewController(vc, sender: self)
     }
     

@@ -8,7 +8,7 @@
 import UIKit
 
 class ScannedImageViewController: UIViewController {
-    var documentDetails = [Documents]()
+
     var titleDoc: String = ""
     let recognizeTextButton = UIButton(type: .roundedRect)
     var newimage: UIImage? = nil

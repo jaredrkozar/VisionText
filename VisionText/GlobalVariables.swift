@@ -7,7 +7,7 @@
 
 import UIKit
 
-var docs = [Documents]()
+var documents = [Document]()
 private(set) var vc = AllDocsViewController()
 private(set) var scanimage = ScannedImageViewController()
 
@@ -108,23 +108,5 @@ extension String {
             return UIImage(data: data)
         }
         return nil
-    }
-}
-
-extension Array where Element == Documents {
-    func save() {
-        if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false) {
-            let defaults = UserDefaults.standard
-            defaults.set(savedData, forKey: "documentDetails")
-        }
-    }
-    
-    mutating func load() -> [Documents] {
-        if let saveddetailedDocs = UserDefaults.standard.object(forKey: "documentDetails") as? Data {
-            if let decodeddetailedDocs = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(saveddetailedDocs) as? [Documents] {
-                self = decodeddetailedDocs
-            }
-        }
-        return self
     }
 }
