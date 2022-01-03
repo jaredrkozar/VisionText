@@ -1,7 +1,6 @@
 import UIKit
 
 class SidebarViewController: UIViewController {
-    var folders = [String]()
     private var dataSource: UICollectionViewDiffableDataSource<Section, Item>! = nil
     private var collectionView: UICollectionView! = nil
     private var supplementaryViewControllers = [UINavigationController(rootViewController: AllDocsViewController()), UINavigationController(rootViewController: AllDocsViewController()),
@@ -39,7 +38,6 @@ class SidebarViewController: UIViewController {
 // MARK: - Layout
 
 extension SidebarViewController {
-
     
     private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { section, layoutEnvironment in
@@ -138,9 +136,11 @@ extension SidebarViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard indexPath.section == 0 else { return }
         
-        var info = [String: Int]()
-        info["rowNum"] = indexPath.row
-        NotificationCenter.default.post(name: Notification.Name("filteringByStarred"), object: nil, userInfo: info)
+        if indexPath.row == 1 {
+            filterByStarred = true
+        } else {
+            filterByStarred = false
+        }
         
         splitViewController?.setViewController(supplementaryViewControllers[indexPath.row], for: .supplementary)
         

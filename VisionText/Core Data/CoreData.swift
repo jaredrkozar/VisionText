@@ -26,11 +26,15 @@ func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool 
     }
 }
 
-func fetchDocuments(sortType: String, isAscending: Bool) {
+func fetchDocuments(sortType: String, isAscending: Bool, isStarred: Bool) {
     let request = Document.createFetchRequest() as NSFetchRequest<Document>
     let sort = NSSortDescriptor(key: sortType, ascending: isAscending)
     request.sortDescriptors = [sort]
 
+    if isStarred == true {
+        request.predicate = NSPredicate(format: "isStarred == YES")
+    }
+    
     do {
         documents = try context.fetch(request)
     } catch {

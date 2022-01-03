@@ -10,25 +10,25 @@ import UIKit
 class AllDocsViewController: UITableViewController & UINavigationControllerDelegate, UITableViewDropDelegate {
     
     var sortButton = UIButton()
-    public var filterByStarred: Bool = false
     var dataSource = ReusableDocumentsTableView()
     
     override func viewWillAppear(_ animated: Bool) {
         #if targetEnvironment(macCatalyst)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         #endif
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {        setUpTableView()
+        fetchDocuments(sortType: "date", isAscending: false, isStarred: filterByStarred)
+        dataSource.documentDetails = documents
+        tableView.reloadData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
-        fetchDocuments(sortType: "date", isAscending: false)
-        setUpTableView()
-        
-        dataSource.documentDetails = documents
-        
+
         title = "All Documents"
         
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
@@ -108,25 +108,25 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
     }
     
     @objc func sortDocsbyAZ() {
-        fetchDocuments(sortType: "title", isAscending: true)
+        fetchDocuments(sortType: "title", isAscending: true, isStarred: filterByStarred)
         dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsByZA() {
-        fetchDocuments(sortType: "title", isAscending: false)
+        fetchDocuments(sortType: "title", isAscending: false, isStarred: filterByStarred)
         dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateAscending() {
-        fetchDocuments(sortType: "date", isAscending: true)
+        fetchDocuments(sortType: "date", isAscending: true, isStarred: filterByStarred)
         dataSource.documentDetails = documents
         self.tableView.reloadData()
     }
     
     @objc func sortDocsbyDateDescending() {
-        fetchDocuments(sortType: "date", isAscending: false)
+        fetchDocuments(sortType: "date", isAscending: false, isStarred: filterByStarred)
         dataSource.documentDetails = documents
         self.tableView.reloadData()
     }

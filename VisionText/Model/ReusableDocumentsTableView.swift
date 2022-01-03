@@ -34,7 +34,7 @@ class ReusableDocumentsTableView: NSObject, UITableViewDataSource {
             cell.documentStatusImage.image = nil
         }
        
-        cell.accessibilityLabel = "\(document.title) Created on \(document.date?.formatted())"
+        cell.accessibilityLabel = "\(String(describing: document.title)) Created on \(String(describing: document.date?.formatted()))"
         
         cell.layoutIfNeeded()
         return cell

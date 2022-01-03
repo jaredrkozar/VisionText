@@ -8,6 +8,8 @@
 import UIKit
 
 var documents = [Document]()
+public var filterByStarred: Bool = false
+
 private(set) var vc = AllDocsViewController()
 private(set) var scanimage = ScannedImageViewController()
 
