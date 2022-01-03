@@ -29,7 +29,11 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         view.addSubview(navBar)
 
-        title = "All Documents"
+        if filterByStarred == false {
+            title = "All Documents"
+        } else {
+            title = "Starred Documents"
+        }
         
         let nib = UINib(nibName: "DocumentTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DocumentTableViewCell")
@@ -160,9 +164,10 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
             
             saveDocument(thumbnail: newDocument.thumbnail!, title: newDocument.title!, date: newDocument.date!, isStarred: newDocument.isStarred, documentID: newDocument.documentID!)
             
-           
-            self?.dataSource.documentDetails.append(newDocument)
-            
+            if filterByStarred == false {
+                self?.dataSource.documentDetails.append(newDocument)
+            }
+                        
             self!.tableView.reloadData()
            
             
