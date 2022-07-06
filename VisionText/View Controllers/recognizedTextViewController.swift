@@ -31,7 +31,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
             recognizedText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor)
         ])
         
-        recognizeText()
         
         title = "Recognized Text"
         
@@ -143,40 +142,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
                
         let popoverPresentationController = vc.popoverPresentationController
         popoverPresentationController?.barButtonItem = sender
-        
-    }
-    
-    func recognizeText() {
-        guard let cgimage = image.cgImage else {
-            print("Could not get the image. Please try again")
-            return
-        }
-        
-        let textHandler = VNImageRequestHandler(cgImage: cgimage, options: [:])
-
-        let request = VNRecognizeTextRequest { request, error in
-            
-            let observations = request.results as? [VNRecognizedTextObservation]
-
-            let text = observations?.compactMap({
-                $0.topCandidates(1).first?.string
-            }).joined(separator: ", ")
-
-            DispatchQueue.main.async {
-                if text == "" {
-                    self.recognizedText.text = "There was no text found in this document. Please check another document and try again."
-                } else {
-                    self.recognizedText.text = "\(text!)"
-                }
-            }
-
-        }
-        
-        do {
-            try textHandler.perform([request])
-        } catch {
-            recognizedText.text = "\(error)"
-        }
         
     }
     

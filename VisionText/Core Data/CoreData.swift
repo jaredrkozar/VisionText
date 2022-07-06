@@ -10,7 +10,7 @@ import CoreData
 
 let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool = false, documentID: String) {
+func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool = false, documentID: String, text: String?) {
   
     let newDocument = Document(context: context)
     newDocument.thumbnail = thumbnail
@@ -18,7 +18,7 @@ func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool 
     newDocument.date = date
     newDocument.isStarred = isStarred
     newDocument.documentID = documentID
-    
+    newDocument.text = "LLLSLSLSKS"
     do {
         try context.save()
     } catch {

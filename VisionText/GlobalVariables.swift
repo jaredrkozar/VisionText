@@ -6,29 +6,13 @@
 //
 
 import UIKit
+import Vision
 
 var documents = [Document]()
 public var filterByStarred: Bool = false
 
 private(set) var vc = AllDocsViewController()
 private(set) var scanimage = ScannedImageViewController()
-
-public var image: UIImage {
-    get {
-        if scanimage.newimage == nil {
-            let config = UIImage.SymbolConfiguration(pointSize: 80)
-            let nilimage = UIImage(systemName: "photo", withConfiguration: config)
-            nilimage?.withTintColor(UIColor(named: "AccentColor")!)
-            return nilimage!
-        } else {
-            return scanimage.newimage!
-        }
-    }
-    
-    set {
-        scanimage.newimage = newValue
-    }
-}
 
 enum listofeffects: Double, CaseIterable {
     case half = 0.5
@@ -100,6 +84,31 @@ extension UIImage {
     
     public var hasContent: Bool {
       return cgImage != nil || ciImage != nil
+    }
+    
+    func recognizeText(completion: @escaping(String?, String?)->()) {
+        guard let cgimage = self.cgImage else { return completion(nil, "Cannot load image") }
+        let textHandler = VNImageRequestHandler(cgImage: cgimage, options: [:])
+
+        let request = VNRecognizeTextRequest { request, error in
+            
+            let observations = request.results as? [VNRecognizedTextObservation]
+
+            let text = observations?.compactMap({
+                $0.topCandidates(1).first?.string
+            }).joined(separator: ", ")
+
+            DispatchQueue.main.async {
+                completion(text, nil)
+            }
+
+        }
+        
+        do {
+            try textHandler.perform([request])
+        } catch {
+            completion(nil, "Cannot load image")
+        }
     }
 
 }

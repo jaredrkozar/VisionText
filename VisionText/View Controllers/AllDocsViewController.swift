@@ -154,20 +154,23 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
                         
             let thumbnailasString = imageToPresent.converttoString()
             
-            let uuid = UUID().uuidString
-           let newDocument = Document(context: context)
-            newDocument.title = (textField?.text)!
-            newDocument.date = self!.getCurrentShortDate()
-            newDocument.isStarred = false
-            newDocument.documentID = uuid
-            newDocument.thumbnail = thumbnailasString
+            var text: String?
             
-            saveDocument(thumbnail: newDocument.thumbnail!, title: newDocument.title!, date: newDocument.date!, isStarred: newDocument.isStarred, documentID: newDocument.documentID!)
+            imageToPresent.recognizeText(completion: { (doctext, error) in
+                
+                if error != nil {
+                    let alertController = UIAlertController(title: "An error occured while saving the document", message: "\(error). Please try saving the document again.", preferredStyle: .alert)
+                    self?.present(alertController, animated: true)
+        
+                } else {
+                    text = doctext
+                    print(doctext)
+                }
+          })
             
-            if filterByStarred == false {
-                self?.dataSource.documentDetails.append(newDocument)
-            }
-                        
+            saveDocument(thumbnail: thumbnailasString, title: textField?.text ?? "Untitled", date: self!.getCurrentShortDate(), isStarred: false, documentID: UUID().uuidString, text: text
+            )
+                  
             self!.tableView.reloadData()
            
             
@@ -187,22 +190,19 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         UserDefaults.standard.set(indexPath.row, forKey: "row")
         let document = self.dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
-
+        let navController = UINavigationController(rootViewController: vc)
+        
         let documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
         documentCell.documentName.textColor = UIColor.tertiaryLabel
         documentCell.documentDate.textColor = UIColor.tertiaryLabel
         
-        vc.titleDoc = document.title!
-        
-        image = document.thumbnail!.toImage()!
-        
-        splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
-        
+        vc.document = document
+        print(document.text)
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
-                navigationController?.pushViewController(vc, animated: true)
+                navigationController?.pushViewController(navController, animated: true)
         case .pad, .mac:
-            splitViewController?.setViewController(ScannedImageViewController(), for: .secondary)
+            splitViewController?.setViewController(navController, for: .secondary)
             
                 showDetailViewController(vc, sender: true)
 

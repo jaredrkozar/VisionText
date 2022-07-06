@@ -2,7 +2,7 @@
 //  Document+CoreDataProperties.swift
 //  VisionText
 //
-//  Created by JaredKozar on 1/1/22.
+//  Created by JaredKozar on 7/5/22.
 //
 //
 
@@ -16,11 +16,12 @@ extension Document {
         return NSFetchRequest<Document>(entityName: "Document")
     }
 
-    @NSManaged public var thumbnail: String?
-    @NSManaged public var title: String?
-    @NSManaged public var isStarred: Bool
     @NSManaged public var date: Date?
     @NSManaged public var documentID: String?
+    @NSManaged public var isStarred: Bool
+    @NSManaged public var thumbnail: String?
+    @NSManaged public var title: String?
+    @NSManaged public var text: String?
 
 }
 

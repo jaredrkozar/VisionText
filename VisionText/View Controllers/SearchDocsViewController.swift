@@ -77,8 +77,7 @@ class SearchDocsViewController: UITableViewController, UISearchBarDelegate, UISe
         
         let document = dataSource.documentDetails[indexPath.row]
         let vc = ScannedImageViewController()
-        vc.titleDoc = document.title!
-        image = document.thumbnail!.toImage()!
+        vc.document = document
         showDetailViewController(vc, sender: self)
     }
     
