@@ -8,102 +8,63 @@
 import UIKit
 
 class ScannedImageViewController: UIViewController {
-
-    var titleDoc: String = ""
-    let recognizeTextButton = UIButton(type: .roundedRect)
-    var newimage: UIImage? = nil
-    var imageView = UIImageView()
+    
+    var document: Document?
+    
+    var isDocStarred: Bool?
     
     override func viewDidLoad() {
+        view.backgroundColor = .systemBackground
+        let documentText = UITextView(frame: .zero, textContainer: nil)
+        documentText.translatesAutoresizingMaskIntoConstraints = false
+        documentText.text = document?.text
+        documentText.font = UIFont.preferredFont(forTextStyle: .body)
+        documentText.isEditable = false
+        documentText.isSelectable = true
+        self.view.addSubview(documentText)
+
+        NSLayoutConstraint.activate([
+            documentText.heightAnchor.constraint(equalToConstant: view.bounds.height),
+            documentText.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            documentText.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor),
+            documentText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor)
+        ])
         
-        switch UIDevice.current.userInterfaceIdiom {
-            case .phone:
-                self.navigationItem.setHidesBackButton(false, animated: true)
-            case .pad:
-                self.navigationItem.setHidesBackButton(true, animated: true)
-            case .mac:
-                recognizeTextButton.isHidden = true
-            default:
-                break
+        
+        let copyText = UIBarButtonItem(image: UIImage(systemName: "doc.text"), style: .plain, target: self, action: #selector(copyDocumentText(_:)))
+        
+        let speakText = UIBarButtonItem(image: UIImage(systemName: "play.circle"), style: .plain, target: self, action: #selector(speakText(_:)))
+        
+        navigationItem.rightBarButtonItems = [copyText, speakText]
+        navigationItem.title = document?.title ?? "Untitled"
+        if #available(iOS 16.0, *) {
+            navigationItem.renameDelegate = self
         }
         
-        view.backgroundColor = UIColor.systemBackground
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
-        view.addSubview(navBar)
-
-        imageView = UIImageView(image: image.downsizeImage(compression: 0.9, dimensions: CGSize(width: view.bounds.width - 200, height: view.bounds.height - 400)))
-        
-        imageView.center = view.center
-        imageView.contentMode = .scaleAspectFit
-        view.addSubview(imageView)
-        
-        let shareButton = UIBarButtonItem(image: UIImage(systemName: "square.and.arrow.up"),  style: .plain, target: self, action: #selector(shareButtonTapped))
-        shareButton.accessibilityLabel = "Share Document"
-        navigationItem.rightBarButtonItem = shareButton
-       
-        NSLayoutConstraint.activate([
-            imageView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor, constant: 157.5),
-            imageView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor, constant: 194),
-            imageView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: 210),
-            imageView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 75),
-       ])
-        
-        title = "\(titleDoc)"
-        setupRecognizeTextButton()
-    }
-    
-    func setupRecognizeTextButton() {
-        recognizeTextButton.translatesAutoresizingMaskIntoConstraints = false
-        recognizeTextButton.setTitle("Recognize Text", for: .normal)
-        recognizeTextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
-        recognizeTextButton.frame = CGRect(x: 100, y: 100, width: 100, height: 50)
-        
-        view.addSubview(recognizeTextButton)
-        
-        NSLayoutConstraint.activate([
-            recognizeTextButton.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor, constant: -30),
-            recognizeTextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-           ])
-        
-        recognizeTextButton.addTarget(self, action: #selector(didTapRecognizeTextButton), for: .touchUpInside)
-    }
-    
-    @objc func didTapRecognizeTextButton() {
-        
         switch UIDevice.current.userInterfaceIdiom {
-        case .phone, .pad:
-            let vc = recognizedTextViewController()
-            let navigationController = UINavigationController(rootViewController: vc)
-
-            present(navigationController, animated: true, completion: nil)
-        case .mac:
-            
-            let activity = NSUserActivity(activityType: "recognizedText")
-            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
-                print(error)
-            }
-
+        case .phone:
+            self.navigationItem.setHidesBackButton(false, animated: true)
+        case .pad, .mac:
+            self.navigationItem.setHidesBackButton(true, animated: true)
         default:
             break
         }
     }
+                                       
+    @objc func copyDocumentText(_ sender: UIBarButtonItem) {
+        UIPasteboard.general.string = document?.text
+     }
     
-    @objc func shareButtonTapped() {
-        
-        let vc = UIActivityViewController(activityItems: [image], applicationActivities: nil)
-        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-        present(vc, animated: true)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-      switch UIDevice.current.userInterfaceIdiom {
+    @objc func speakText(_ sender: UIBarButtonItem) {
+        UIPasteboard.general.string = document?.text
+     }
+}
 
-          case .mac:
-            navigationController?.setNavigationBarHidden(true, animated: animated)
-          default:
-                  break
-          }
+extension ScannedImageViewController: UINavigationItemRenameDelegate {
+    func navigationItem(_: UINavigationItem, didEndRenamingWith title: String) {
+        navigationItem.title = title
+        updateDocument(document: document!, title: navigationItem.title ?? "Untitled", isStarred: isDocStarred ?? false)
+        NotificationCenter.default.post(name: Notification.Name("reloadNotesTable"), object: nil)
         
     }
 }
