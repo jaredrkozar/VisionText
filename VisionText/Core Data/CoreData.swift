@@ -18,7 +18,7 @@ func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool 
     newDocument.date = date
     newDocument.isStarred = isStarred
     newDocument.documentID = documentID
-    newDocument.text = "LLLSLSLSKS"
+    newDocument.text = text
     do {
         try context.save()
     } catch {
@@ -26,6 +26,16 @@ func saveDocument(thumbnail: String, title: String, date: Date, isStarred: Bool 
     }
 }
 
+func updateDocument(document: Document, title: String, isStarred: Bool) {
+    
+    document.isStarred = isStarred
+    document.title = title
+    do {
+        try context.save()
+    } catch {
+        print("An error occured while saving the preset. \(error)")
+    }
+}
 func fetchDocuments(sortType: String, isAscending: Bool, isStarred: Bool) {
     let request = Document.createFetchRequest() as NSFetchRequest<Document>
     let sort = NSSortDescriptor(key: sortType, ascending: isAscending)

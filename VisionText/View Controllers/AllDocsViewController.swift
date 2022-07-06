@@ -160,20 +160,19 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
                 
                 if error != nil {
                     let alertController = UIAlertController(title: "An error occured while saving the document", message: "\(error). Please try saving the document again.", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
                     self?.present(alertController, animated: true)
         
                 } else {
                     text = doctext
-                    print(doctext)
+                    saveDocument(thumbnail: thumbnailasString, title: textField?.text ?? "Untitled", date: self!.getCurrentShortDate(), isStarred: false, documentID: UUID().uuidString, text: text
+                    )
+                    
+              self!.tableView.reloadData()
+
                 }
           })
-            
-            saveDocument(thumbnail: thumbnailasString, title: textField?.text ?? "Untitled", date: self!.getCurrentShortDate(), isStarred: false, documentID: UUID().uuidString, text: text
-            )
-                  
-            self!.tableView.reloadData()
-           
-            
+
         })
         present(ac, animated: true)
     }
@@ -197,7 +196,7 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         documentCell.documentDate.textColor = UIColor.tertiaryLabel
         
         vc.document = document
-        print(document.text)
+
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
                 navigationController?.pushViewController(navController, animated: true)
