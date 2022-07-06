@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7F3CD0D7274B69FE0076E659 /* ScannedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */; };
 		7F428D2626D747B500A776FB /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F428D2526D747B500A776FB /* Buttons.swift */; };
+		7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5682D028755A00005CF431 /* AudioSettingsView.swift */; };
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
 		7F577AD026B50C11001CF53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACF26B50C11001CF53B /* ViewController.swift */; };
@@ -24,7 +25,6 @@
 		7F577AF226B50F17001CF53B /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AF126B50F17001CF53B /* TabBarController.swift */; };
 		7F577AF426B50F3E001CF53B /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AF326B50F3E001CF53B /* MenuBar.swift */; };
 		7F577AF826B50F94001CF53B /* GlobalVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AF726B50F94001CF53B /* GlobalVariables.swift */; };
-		7F577AFC26B50FE1001CF53B /* recognizedTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */; };
 		7F577AFE26B50FF8001CF53B /* soundSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */; };
 		7F89443C26F62D16000AF308 /* recognizedTextSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */; };
 		7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */; };
@@ -44,6 +44,7 @@
 /* Begin PBXFileReference section */
 		7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedImageViewController.swift; sourceTree = "<group>"; };
 		7F428D2526D747B500A776FB /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
+		7F5682D028755A00005CF431 /* AudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioSettingsView.swift; path = VisionText/Model/AudioSettingsView.swift; sourceTree = SOURCE_ROOT; };
 		7F577AC826B50C11001CF53B /* VisionText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F577ACB26B50C11001CF53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F577ACD26B50C11001CF53B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,7 +62,6 @@
 		7F577AF126B50F17001CF53B /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		7F577AF326B50F3E001CF53B /* MenuBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		7F577AF726B50F94001CF53B /* GlobalVariables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalVariables.swift; sourceTree = "<group>"; };
-		7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = recognizedTextViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/recognizedTextViewController.swift"; sourceTree = "<absolute>"; };
 		7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = soundSettingsViewController.swift; path = "/Users/jared/Desktop/XcodeProjects/VisionText/VisionText/View Controllers/soundSettingsViewController.swift"; sourceTree = "<absolute>"; };
 		7F89443B26F62D16000AF308 /* recognizedTextSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recognizedTextSceneDelegate.swift; sourceTree = "<group>"; };
 		7F89443F26F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSettingsSceneDelegate.swift; sourceTree = "<group>"; };
@@ -141,7 +141,7 @@
 		7F577AFF26B5191F001CF53B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7F577AFB26B50FE1001CF53B /* recognizedTextViewController.swift */,
+				7F5682D028755A00005CF431 /* AudioSettingsView.swift */,
 				7F428D2526D747B500A776FB /* Buttons.swift */,
 				7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */,
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
@@ -281,8 +281,8 @@
 				7F89447626FAE190000AF308 /* DocumentScanViewController.swift in Sources */,
 				7FCBD1A32781532500E02CCF /* VisionTextDataModel.xcdatamodeld in Sources */,
 				7F8BBDEB276B04D0005B07C1 /* ReusableDocumentsTableView.swift in Sources */,
+				7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */,
 				7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */,
-				7F577AFC26B50FE1001CF53B /* recognizedTextViewController.swift in Sources */,
 				7FCBD1B1278154F500E02CCF /* Document+CoreDataClass.swift in Sources */,
 				7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */,
 				7F428D2626D747B500A776FB /* Buttons.swift in Sources */,

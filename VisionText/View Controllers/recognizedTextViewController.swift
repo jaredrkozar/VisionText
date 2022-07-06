@@ -31,7 +31,6 @@ class recognizedTextViewController: UIViewController, UIAdaptivePresentationCont
             recognizedText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor)
         ])
         
-        
         title = "Recognized Text"
         
         let soundButton = UIBarButtonItem(image: UIImage(systemName: "speaker.wave.3"),  style: .plain, target: self, action: #selector(speakText))

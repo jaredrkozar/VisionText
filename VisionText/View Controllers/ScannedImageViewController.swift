@@ -56,7 +56,9 @@ class ScannedImageViewController: UIViewController {
      }
     
     @objc func speakText(_ sender: UIBarButtonItem) {
-        UIPasteboard.general.string = document?.text
+        print(self.view?.frame.size.width )
+        let settingsView = AudioSettingsView(frame: CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.maxY)! ?? 40, width: self.view?.frame.size.width ?? 30, height: (self.navigationController?.navigationBar.frame.height)! ?? 40))
+        view.addSubview(settingsView)
      }
 }
 

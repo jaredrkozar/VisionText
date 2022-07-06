@@ -194,12 +194,13 @@ class AllDocsViewController: UITableViewController & UINavigationControllerDeleg
         let documentCell = tableView.cellForRow(at: indexPath) as! DocumentTableViewCell
         documentCell.documentName.textColor = UIColor.tertiaryLabel
         documentCell.documentDate.textColor = UIColor.tertiaryLabel
+        documentCell.documentThumbnail.layer.cornerRadius = 7.0
         
         vc.document = document
 
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
-                navigationController?.pushViewController(navController, animated: true)
+            self.show(navController, sender: self)
         case .pad, .mac:
             splitViewController?.setViewController(navController, for: .secondary)
             
