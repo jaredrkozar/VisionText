@@ -62,18 +62,12 @@ class SoundSettingsViewController: UIViewController {
         
         let speed = UserDefaults.standard.double(forKey: "speed")
         
-        speedValButton.setTitle(String("\(speed)x"), for: .normal)
+        speedValButton.setTitle(String("\(speed * 2)x"), for: .normal)
         
         let pitch = UserDefaults.standard.double(forKey: "pitch")
         
         pitchValButton.setTitle(String(pitch), for: .normal)
-        
-        var volumeSliderValue = UserDefaults.standard.double(forKey: "volumeSlider")
-        
-        if volumeSliderValue == 0.0 {
-            volumeSliderValue = 1.0
-        }
-        volumeSlider.value = Float(volumeSliderValue)
+        volumeSlider.value = UserDefaults.standard.float(forKey: "volume")
     }
     
     func addSpeedMenu() {
@@ -107,7 +101,7 @@ class SoundSettingsViewController: UIViewController {
 
     func setSpeed(speed: Double) {
         
-        UserDefaults.standard.set(speed, forKey: "speed")
+        UserDefaults.standard.set(speed / 2, forKey: "speed")
         
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
     }
@@ -160,9 +154,7 @@ class SoundSettingsViewController: UIViewController {
         
         let selectedVolume = Int(volumeSlider.value)
         
-        UserDefaults.standard.set(selectedVolume, forKey: "selectedVolume")
-        
-        UserDefaults.standard.set(volumeSlider.value, forKey: "volumeSlider")
+        UserDefaults.standard.set(volumeSlider.value, forKey: "volume")
         
         NotificationCenter.default.post(name: Notification.Name( "speedChanged"), object: nil)
     }

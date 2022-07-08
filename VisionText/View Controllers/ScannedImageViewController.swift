@@ -6,15 +6,23 @@
 //
 
 import UIKit
-
-class ScannedImageViewController: UIViewController {
+import AVFoundation
+class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate {
     
     var document: Document?
     
     var isDocStarred: Bool?
     
+    var synthesizer = AVSpeechSynthesizer()
+    
+    var currentRange = NSRange(location: 0, length: 0)
+    
+    var speakingString:String?
+    
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
+        synthesizer.delegate = self
+        
         let documentText = UITextView(frame: .zero, textContainer: nil)
         documentText.translatesAutoresizingMaskIntoConstraints = false
         documentText.text = document?.text
@@ -35,7 +43,15 @@ class ScannedImageViewController: UIViewController {
         
         let speakText = UIBarButtonItem(image: UIImage(systemName: "play.circle"), style: .plain, target: self, action: #selector(speakText(_:)))
         
-        navigationItem.rightBarButtonItems = [copyText, speakText]
+        if document?.text == nil {
+            speakText.isEnabled = false
+        } else {
+            speakingString = document?.text
+        }
+        
+        let translateText = UIBarButtonItem(image: UIImage(systemName: "character.bubble"), style: .plain, target: self, action: #selector(translateText(_:)))
+        
+        navigationItem.rightBarButtonItems = [copyText, speakText, translateText]
         navigationItem.title = document?.title ?? "Untitled"
         if #available(iOS 16.0, *) {
             navigationItem.renameDelegate = self
@@ -49,17 +65,79 @@ class ScannedImageViewController: UIViewController {
         default:
             break
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(speedChanged(_:)), name: NSNotification.Name( "speedChanged"), object: nil)
     }
-                                       
+      
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+        currentRange = characterRange
+    }
+    
+    @objc func translateText(_ sender: UIBarButtonItem) {
+        let vc = TranslateTextViewController()
+                let navigationController = UINavigationController(rootViewController: vc)
+                  
+                switch UIDevice.current.userInterfaceIdiom {
+                    case .phone:
+                        if let picker = navigationController.presentationController as? UISheetPresentationController {
+                        picker.detents = [.medium()]
+                        picker.prefersGrabberVisible = true
+                        picker.preferredCornerRadius = 5.0
+                        }
+                    self.present(navigationController, animated: true, completion: nil)
+                    case .pad:
+                    self.present(navigationController, animated: true)
+                    case .mac:
+                        let activity = NSUserActivity(activityType: "soundSettings")
+                        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
+                            print(error)
+                        }
+                    default:
+                            break
+                    }
+    }
     @objc func copyDocumentText(_ sender: UIBarButtonItem) {
         UIPasteboard.general.string = document?.text
      }
     
     @objc func speakText(_ sender: UIBarButtonItem) {
-        print(self.view?.frame.size.width )
+    
         let settingsView = AudioSettingsView(frame: CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.maxY)! ?? 40, width: self.view?.frame.size.width ?? 30, height: (self.navigationController?.navigationBar.frame.height)! ?? 40))
-        view.addSubview(settingsView)
+        
+        if synthesizer.isPaused {
+            print("CONTINUE")
+            sender.image = UIImage(systemName: "pause.circle")
+            synthesizer.continueSpeaking()
+        } else if synthesizer.isSpeaking {
+            print("PAAUSED")
+            sender.image = UIImage(systemName: "play.circle")
+            synthesizer.pauseSpeaking(at: .word)
+        } else {
+            sender.image = UIImage(systemName: "pause.circle")
+            speakUtterance(text: speakingString!, pitch: 1.0, rate: UserDefaults.standard.float(forKey: "speed") ?? 1.0, volume: UserDefaults.standard.float(forKey: "volume"))
+            view.addSubview(settingsView)
+        }
      }
+    
+    func speakUtterance(text: String, pitch: Float, rate: Float, volume: Float) {
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.rate = rate
+        utterance.pitchMultiplier = pitch
+        utterance.volume = volume
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        synthesizer.speak(utterance)
+    }
+    @objc func speedChanged(_ notification: Notification) {
+        synthesizer.stopSpeaking(at: .word)
+        if currentRange.length > 0 {
+            let startIndex = speakingString!.index(speakingString!.startIndex, offsetBy: NSMaxRange(currentRange))
+            let newString = String(speakingString![startIndex...])
+            print(newString)
+            speakingString = newString
+            
+            speakUtterance(text: speakingString!, pitch: 1.0, rate: UserDefaults.standard.float(forKey: "speed") ?? 1.0, volume: UserDefaults.standard.float(forKey: "volume"))
+      }
+    }
 }
 
 extension ScannedImageViewController: UINavigationItemRenameDelegate {
@@ -70,3 +148,4 @@ extension ScannedImageViewController: UINavigationItemRenameDelegate {
         
     }
 }
+

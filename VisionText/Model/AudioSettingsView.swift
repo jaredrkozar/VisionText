@@ -24,7 +24,7 @@ class AudioSettingsView: UIView {
         self.addSubview(settingsButton)
         
         NSLayoutConstraint.activate([
-            settingsButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            settingsButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
             settingsButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10)
         ])
         
@@ -33,7 +33,7 @@ class AudioSettingsView: UIView {
         self.addSubview(progressBar)
         
         NSLayoutConstraint.activate([
-            progressBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 15),
+            progressBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
             progressBar.trailingAnchor.constraint(equalTo: settingsButton.leadingAnchor, constant: -15),
             progressBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15),
         ])
