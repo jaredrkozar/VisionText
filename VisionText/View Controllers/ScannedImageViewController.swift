@@ -19,14 +19,20 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     
     var speakingString:String?
     
+    let documentText = UITextView(frame: .zero, textContainer: nil)
+    
+    var highlightWords: Bool? = false
+    
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
         synthesizer.delegate = self
         
-        let documentText = UITextView(frame: .zero, textContainer: nil)
         documentText.translatesAutoresizingMaskIntoConstraints = false
-        documentText.text = document?.text
-        documentText.font = UIFont.preferredFont(forTextStyle: .body)
+        let mutableAttributedString = NSMutableAttributedString(string: (document?.text)!)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.label, range:  NSMakeRange(0, (document?.text!.count)!))
+        mutableAttributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range: NSMakeRange(0, (document?.text!.count)!))
+        documentText.attributedText = mutableAttributedString
+        
         documentText.isEditable = false
         documentText.isSelectable = true
         self.view.addSubview(documentText)
@@ -67,10 +73,24 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(speedChanged(_:)), name: NSNotification.Name( "speedChanged"), object: nil)
+    
     }
       
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         currentRange = characterRange
+        
+        let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
+        mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.label, range:  NSMakeRange(0, (utterance.speechString as NSString).length))
+        if highlightWords == true {
+            mutableAttributedString.addAttribute(.foregroundColor, value: UIColor.systemBlue, range: characterRange)
+        }
+        
+        mutableAttributedString.addAttribute(.font, value: UIFont.preferredFont(forTextStyle: .body), range:  NSMakeRange(0, (utterance.speechString as NSString).length))
+        documentText.attributedText = mutableAttributedString
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        documentText.attributedText = NSAttributedString(string: utterance.speechString)
     }
     
     @objc func translateText(_ sender: UIBarButtonItem) {
@@ -127,6 +147,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         synthesizer.speak(utterance)
     }
+    
     @objc func speedChanged(_ notification: Notification) {
         synthesizer.stopSpeaking(at: .word)
         if currentRange.length > 0 {
