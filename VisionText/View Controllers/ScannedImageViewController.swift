@@ -11,8 +11,6 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     
     var document: Document?
     
-    var isDocStarred: Bool?
-    
     var synthesizer = AVSpeechSynthesizer()
     
     var currentRange = NSRange(location: 0, length: 0)
@@ -22,11 +20,13 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     let documentText = UITextView(frame: .zero, textContainer: nil)
     
     var highlightWords: Bool? = false
+    
     private var textBoxTopContraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
         synthesizer.delegate = self
+        
         
         documentText.translatesAutoresizingMaskIntoConstraints = false
         let mutableAttributedString = NSMutableAttributedString(string: (document?.text)!)
@@ -76,10 +76,34 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(speedChanged(_:)), name: NSNotification.Name( "speedChanged"), object: nil)
+        
+        if #available(iOS 16.0, *) {
+            navigationItem.titleMenuProvider = { suggestedActions in
+                
+                var children = suggestedActions
+                children += [
+                    
+                    UIAction(title: self.document!.isStarred ? "Un-Star Document" : "Star Document", subtitle: nil, image: self.document!.isStarred ? UIImage(systemName: "star.slash") : UIImage(systemName: "star"), identifier: .none, discoverabilityTitle: "String? = nil",  attributes: [], state: .off) { _ in
+                        
+                        self.document?.isStarred.toggle()
+                        updateDocument(document: self.document!, title: self.navigationItem.title ?? "Untitled", isStarred: self.document?.isStarred ?? false)
+                    },
+                ]
+                
+                return UIMenu(children: children)
+            }
+        } else {
+            // Fallback on earlier versions
+        }
     
     }
       
+    override func viewDidDisappear(_ animated: Bool) {
+        synthesizer.stopSpeaking(at: .immediate)
+    }
+    
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
+   
         currentRange = characterRange
         
         let mutableAttributedString = NSMutableAttributedString(string: utterance.speechString)
@@ -93,6 +117,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     }
     
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        
         documentText.attributedText = NSAttributedString(string: utterance.speechString)
     }
     
@@ -141,7 +166,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         if currentRange.length > 0 {
             let startIndex = speakingString!.index(speakingString!.startIndex, offsetBy: NSMaxRange(currentRange))
             let newString = String(speakingString![startIndex...])
-            print(newString)
+          
             speakingString = newString
             
             speakUtterance(text: speakingString!, pitch: 1.0, rate: UserDefaults.standard.float(forKey: "speed") ?? 1.0, volume: UserDefaults.standard.float(forKey: "volume"))
@@ -152,7 +177,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
 extension ScannedImageViewController: UINavigationItemRenameDelegate {
     func navigationItem(_: UINavigationItem, didEndRenamingWith title: String) {
         navigationItem.title = title
-        updateDocument(document: document!, title: navigationItem.title ?? "Untitled", isStarred: isDocStarred ?? false)
+        updateDocument(document: document!, title: navigationItem.title ?? "Untitled", isStarred: self.document?.isStarred ?? false)
         NotificationCenter.default.post(name: Notification.Name("reloadNotesTable"), object: nil)
         
     }
