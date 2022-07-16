@@ -10,7 +10,6 @@
 		7F3CD0D7274B69FE0076E659 /* ScannedImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */; };
 		7F428D2626D747B500A776FB /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F428D2526D747B500A776FB /* Buttons.swift */; };
 		7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5682D028755A00005CF431 /* AudioSettingsView.swift */; };
-		7F5682D3287634CC005CF431 /* TranslateTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5682D2287634CC005CF431 /* TranslateTextViewController.swift */; };
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
 		7F577AD026B50C11001CF53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACF26B50C11001CF53B /* ViewController.swift */; };
@@ -46,7 +45,6 @@
 		7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannedImageViewController.swift; sourceTree = "<group>"; };
 		7F428D2526D747B500A776FB /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		7F5682D028755A00005CF431 /* AudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioSettingsView.swift; path = VisionText/Model/AudioSettingsView.swift; sourceTree = SOURCE_ROOT; };
-		7F5682D2287634CC005CF431 /* TranslateTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateTextViewController.swift; sourceTree = "<group>"; };
 		7F577AC826B50C11001CF53B /* VisionText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F577ACB26B50C11001CF53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F577ACD26B50C11001CF53B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				7F577AFD26B50FF8001CF53B /* soundSettingsViewController.swift */,
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
 				7F3CD0D6274B69FE0076E659 /* ScannedImageViewController.swift */,
-				7F5682D2287634CC005CF431 /* TranslateTextViewController.swift */,
 				7F577AF126B50F17001CF53B /* TabBarController.swift */,
 				7F577AED26B50EA4001CF53B /* SearchDocsViewController.swift */,
 				7F577AEF26B50EE4001CF53B /* SidebarViewController.swift */,
@@ -279,7 +276,6 @@
 				7F577AF226B50F17001CF53B /* TabBarController.swift in Sources */,
 				7F89443C26F62D16000AF308 /* recognizedTextSceneDelegate.swift in Sources */,
 				7F89447E26FAE2E0000AF308 /* URLViewController.swift in Sources */,
-				7F5682D3287634CC005CF431 /* TranslateTextViewController.swift in Sources */,
 				7F577AF826B50F94001CF53B /* GlobalVariables.swift in Sources */,
 				7F577AE426B50C83001CF53B /* DocumentTableViewCell.swift in Sources */,
 				7F89447626FAE190000AF308 /* DocumentScanViewController.swift in Sources */,
@@ -446,12 +442,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VisionText/VisionText.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UHNX49SSD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VisionText/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This is used to scan documents and access the camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This is used to access the photos library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -463,6 +461,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jkozar.VisionText;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jkozar.VisionTextApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -477,12 +476,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VisionText/VisionText.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7UHNX49SSD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VisionText/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "This is used to scan documents and access the camera.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This is used to access the photos library";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -494,6 +495,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jkozar.VisionText;
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = com.jkozar.VisionTextApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

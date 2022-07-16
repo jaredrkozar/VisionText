@@ -22,6 +22,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     let documentText = UITextView(frame: .zero, textContainer: nil)
     
     var highlightWords: Bool? = false
+    private var textBoxTopContraint: NSLayoutConstraint?
     
     override func viewDidLoad() {
         view.backgroundColor = .systemBackground
@@ -37,10 +38,14 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         documentText.isSelectable = true
         self.view.addSubview(documentText)
 
+        textBoxTopContraint = documentText.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor)
+        textBoxTopContraint?.isActive = true
+        
         NSLayoutConstraint.activate([
+            
             documentText.heightAnchor.constraint(equalToConstant: view.bounds.height),
             documentText.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
-            documentText.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor),
+           
             documentText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor)
         ])
         
@@ -55,9 +60,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
             speakingString = document?.text
         }
         
-        let translateText = UIBarButtonItem(image: UIImage(systemName: "character.bubble"), style: .plain, target: self, action: #selector(translateText(_:)))
-        
-        navigationItem.rightBarButtonItems = [copyText, speakText, translateText]
+        navigationItem.rightBarButtonItems = [copyText, speakText]
         navigationItem.title = document?.title ?? "Untitled"
         if #available(iOS 16.0, *) {
             navigationItem.renameDelegate = self
@@ -93,29 +96,6 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
         documentText.attributedText = NSAttributedString(string: utterance.speechString)
     }
     
-    @objc func translateText(_ sender: UIBarButtonItem) {
-        let vc = TranslateTextViewController()
-                let navigationController = UINavigationController(rootViewController: vc)
-                  
-                switch UIDevice.current.userInterfaceIdiom {
-                    case .phone:
-                        if let picker = navigationController.presentationController as? UISheetPresentationController {
-                        picker.detents = [.medium()]
-                        picker.prefersGrabberVisible = true
-                        picker.preferredCornerRadius = 5.0
-                        }
-                    self.present(navigationController, animated: true, completion: nil)
-                    case .pad:
-                    self.present(navigationController, animated: true)
-                    case .mac:
-                        let activity = NSUserActivity(activityType: "soundSettings")
-                        UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
-                            print(error)
-                        }
-                    default:
-                            break
-                    }
-    }
     @objc func copyDocumentText(_ sender: UIBarButtonItem) {
         UIPasteboard.general.string = document?.text
      }
@@ -123,7 +103,7 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
     @objc func speakText(_ sender: UIBarButtonItem) {
     
         let settingsView = AudioSettingsView(frame: CGRect(x: 0, y: (self.navigationController?.navigationBar.frame.maxY)! ?? 40, width: self.view?.frame.size.width ?? 30, height: (self.navigationController?.navigationBar.frame.height)! ?? 40))
-        
+
         if synthesizer.isPaused {
             print("CONTINUE")
             sender.image = UIImage(systemName: "pause.circle")
@@ -134,8 +114,16 @@ class ScannedImageViewController: UIViewController, AVSpeechSynthesizerDelegate 
             synthesizer.pauseSpeaking(at: .word)
         } else {
             sender.image = UIImage(systemName: "pause.circle")
-            speakUtterance(text: speakingString!, pitch: 1.0, rate: UserDefaults.standard.float(forKey: "speed") ?? 1.0, volume: UserDefaults.standard.float(forKey: "volume"))
+            speakUtterance(text: speakingString!, pitch: 1.0, rate: 1.0, volume: 1.0)
+            
             view.addSubview(settingsView)
+            
+            textBoxTopContraint?.isActive = false
+            NSLayoutConstraint.activate([
+                documentText.topAnchor.constraint(equalTo: settingsView.bottomAnchor, constant: 5)
+            ])
+            
+            self.view.setNeedsLayout()
         }
      }
     
