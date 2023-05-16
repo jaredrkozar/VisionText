@@ -127,13 +127,15 @@ extension mainToolbar: NSToolbarDelegate {
                  willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
         
         var toolbarItem: NSToolbarItem?
-      
+        let allDocs: AllDocsViewController!
+        
         switch itemIdentifier {
         case .sortDocs:
             let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
-            item.itemMenu = UIMenu(title: "JJJ", image: UIImage(systemName: "ellipsis.circle"), identifier: .window, options: .singleSelection, children: [])
-                    item.image = UIImage(systemName: "plus")
-                    return item
+//            item.itemMenu = allDocs.createSortDocMenu()
+            item.image = UIImage(systemName: "plus")
+            
+            return item
             
         case .shareDoc:
             let item = NSToolbarItem(itemIdentifier: itemIdentifier)
@@ -157,6 +159,7 @@ extension mainToolbar: NSToolbarDelegate {
             item.action = #selector(RecognizedTextViewController().playAudio)
             item.isBordered = true
             toolbarItem = item
+            
         case .soundSettings:
             let item = NSToolbarItem(itemIdentifier: itemIdentifier)
             item.image = UIImage(systemName: "gear")

@@ -40,13 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentCloudKitContainer = {
+//        CoreDataContext.deleteAndRebuild()
         /*
          The persistent container for the application. This implementation
          creates and returns a container, having loaded the store for the
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-//        clearDatabase()
         let container = NSPersistentCloudKitContainer(name: "VisionTextDataModel")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -87,3 +87,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+class CoreDataContext {
+    static let datamodelName = "VisionTextDataModel"
+    static let storeType = "sqlite"
+
+    static let persistentContainer = NSPersistentContainer(name: datamodelName)
+    private static let url: URL = {
+        let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("\(datamodelName).\(storeType)")
+
+        print(url.path)
+
+        return url
+    }()
+
+    static func loadStores() {
+        persistentContainer.loadPersistentStores(completionHandler: { (nsPersistentStoreDescription, error) in
+            guard let error = error else {
+                return
+            }
+            fatalError(error.localizedDescription)
+        })
+    }
+
+    static func deleteAndRebuild() {
+        try! persistentContainer.persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: storeType, options: nil)
+
+        loadStores()
+    }
+}

@@ -82,7 +82,7 @@ class AudioSettingsCell: UITableViewCell {
             slider.leadingAnchor.constraint(equalTo: icon.leadingAnchor),
             slider.topAnchor.constraint(equalTo: icon.bottomAnchor, constant: 25),
             slider.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
-            slider.heightAnchor.constraint(equalToConstant: 10),
+            slider.heightAnchor.constraint(equalToConstant: 17),
             
             pickerButton.topAnchor.constraint(equalTo: icon.topAnchor),
             pickerButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),

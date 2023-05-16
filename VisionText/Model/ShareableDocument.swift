@@ -32,7 +32,7 @@ final class ShareableImage: NSObject, UIActivityItemSource {
     func activityViewControllerLinkMetadata(_ activityViewController: UIActivityViewController) -> LPLinkMetadata? {
         let metadata = LPLinkMetadata()
 
-        metadata.iconProvider = NSItemProvider(object: UIImage(named: "Logo")!)
+        metadata.iconProvider = NSItemProvider(object: image)
         metadata.title = title
         if let subtitle = subtitle {
             metadata.originalURL = URL(fileURLWithPath: subtitle)

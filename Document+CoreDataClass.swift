@@ -2,7 +2,7 @@
 //  Document+CoreDataClass.swift
 //  VisionText
 //
-//  Created by Jared Kozar on 4/5/23.
+//  Created by Jared Kozar on 5/15/23.
 //
 //
 

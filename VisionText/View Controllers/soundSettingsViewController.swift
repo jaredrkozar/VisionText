@@ -63,16 +63,14 @@ class SoundSettingsViewController: UITableViewController {
             switch indexPath.section {
             case 0:
                 UserDefaults.standard.set(value, forKey: "speed")
-                self.audioManager?.changeSpeed(newSpeed: value)
             case 1:
                 UserDefaults.standard.set(value, forKey: "pitch")
-                self.audioManager?.changePitch(newPitch: value)
             case 2:
                 UserDefaults.standard.set(value, forKey: "volume")
-                self.audioManager?.changeVolume(newVolume: value)
             default:
                 return
             }
+            NotificationCenter.default.post(name: Notification.Name( "changedAudioSettings"), object: nil)
         }
         return cell!
         

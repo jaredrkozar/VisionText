@@ -35,6 +35,9 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
              print(error)
          }
         
+        reusabletableView.isUserInteractionEnabled = true
+        reusabletableView.addInteraction(UIDropInteraction(delegate: self))
+        
         reusabletableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(reusabletableView)
         NSLayoutConstraint.activate([
@@ -49,13 +52,13 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
         self.navigationItem.rightBarButtonItems = [addDoc, sortDocs]
     }
     
-    private func createSortDocMenu() -> UIMenu {
+    public func createSortDocMenu() -> UIMenu {
         var sortActions = [UIAction]()
         
         for sort in SortMethods.allCases {
             sortActions.append(UIAction(title: sort.buttonText, image: nil, identifier: nil, discoverabilityTitle: sort.buttonText, attributes: [], state: .off, handler: { _ in
-                
-                self.sortDocs(sort: sort.buttonText)
+                print(self.documents)
+                print(self.reusabletableView)
             }))
         }
         
@@ -125,5 +128,37 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
         let docs = controller.fetchedObjects as? [Document]
         
         reusabletableView.applySnapshot(documents: docs ?? [])
+    }
+    
+}
+
+extension AllDocsViewController: UIDropInteractionDelegate {
+    func dropInteraction(_ interaction: UIDropInteraction, sessionDidUpdate session: UIDropSession) -> UIDropProposal {
+            // Propose to the system to copy the item from the source app
+            return UIDropProposal(operation: .copy)
+    }
+
+    func dropInteraction(_ interaction: UIDropInteraction, canHandle session: UIDropSession) -> Bool {
+        // Ensure the drop session has an object of the appropriate type
+        return session.canLoadObjects(ofClass: UIImage.self)
+    }
+    
+    func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
+        for dragItem in session.items {
+            dragItem.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (obj, err) in
+                
+                if let err = err {
+                    print("Failed to load our dragged item:", err)
+                    return
+                }
+                
+                guard let draggedImage = obj as? UIImage else { return }
+                
+                DispatchQueue.main.async {
+                    self.imageSelected(image: draggedImage)
+                }
+                
+            })
+        }
     }
 }

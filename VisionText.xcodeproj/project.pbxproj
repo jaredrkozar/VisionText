@@ -11,9 +11,9 @@
 		0247ADB929E31B2500995894 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0247ADB829E31B2500995894 /* AudioManager.swift */; };
 		0247ADBB29E5F6CC00995894 /* AudioSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0247ADBA29E5F6CC00995894 /* AudioSettingsCell.swift */; };
 		028F5EB62A12F2B9009CBF44 /* ShareableDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F5EB52A12F2B9009CBF44 /* ShareableDocument.swift */; };
+		028F5EBE2A132899009CBF44 /* Document+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F5EBC2A132899009CBF44 /* Document+CoreDataClass.swift */; };
+		028F5EBF2A132899009CBF44 /* Document+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F5EBD2A132899009CBF44 /* Document+CoreDataProperties.swift */; };
 		029519B329DDF5F9002D5C5B /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029519B229DDF5F9002D5C5B /* Alerts.swift */; };
-		029519B629DE689D002D5C5B /* Document+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029519B429DE689D002D5C5B /* Document+CoreDataClass.swift */; };
-		029519B729DE689D002D5C5B /* Document+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029519B529DE689D002D5C5B /* Document+CoreDataProperties.swift */; };
 		02FEA4E229C6ACB100DFFEAA /* RecognizedTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FEA4E129C6ACB100DFFEAA /* RecognizedTextViewController.swift */; };
 		02FEA4E429CE31C100DFFEAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FEA4E329CE31C100DFFEAA /* Main.storyboard */; };
 		02FEA4E629CE38A500DFFEAA /* SourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FEA4E529CE38A500DFFEAA /* SourceType.swift */; };
@@ -22,7 +22,6 @@
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
 		7F577AD026B50C11001CF53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACF26B50C11001CF53B /* ViewController.swift */; };
-		7F577AD626B50C11001CF53B /* VisionText.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AD426B50C11001CF53B /* VisionText.xcdatamodeld */; };
 		7F577AD826B50C12001CF53B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F577AD726B50C12001CF53B /* Assets.xcassets */; };
 		7F577ADB26B50C12001CF53B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F577AD926B50C12001CF53B /* LaunchScreen.storyboard */; };
 		7F577AE426B50C83001CF53B /* DocumentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577AE226B50C83001CF53B /* DocumentTableViewCell.swift */; };
@@ -48,9 +47,9 @@
 		0247ADB829E31B2500995894 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		0247ADBA29E5F6CC00995894 /* AudioSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioSettingsCell.swift; sourceTree = "<group>"; };
 		028F5EB52A12F2B9009CBF44 /* ShareableDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableDocument.swift; sourceTree = "<group>"; };
+		028F5EBC2A132899009CBF44 /* Document+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		028F5EBD2A132899009CBF44 /* Document+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		029519B229DDF5F9002D5C5B /* Alerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
-		029519B429DE689D002D5C5B /* Document+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
-		029519B529DE689D002D5C5B /* Document+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Document+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		02FEA4E129C6ACB100DFFEAA /* RecognizedTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecognizedTextViewController.swift; sourceTree = "<group>"; };
 		02FEA4E329CE31C100DFFEAA /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		02FEA4E529CE38A500DFFEAA /* SourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceType.swift; sourceTree = "<group>"; };
@@ -193,8 +192,8 @@
 		7FCBD1A42781532D00E02CCF /* Core Data */ = {
 			isa = PBXGroup;
 			children = (
-				029519B429DE689D002D5C5B /* Document+CoreDataClass.swift */,
-				029519B529DE689D002D5C5B /* Document+CoreDataProperties.swift */,
+				028F5EBC2A132899009CBF44 /* Document+CoreDataClass.swift */,
+				028F5EBD2A132899009CBF44 /* Document+CoreDataProperties.swift */,
 				7FCBD1A9278153C800E02CCF /* CoreData.swift */,
 				7FCBD1A12781532500E02CCF /* VisionTextDataModel.xcdatamodeld */,
 			);
@@ -272,14 +271,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F577AD626B50C11001CF53B /* VisionText.xcdatamodeld in Sources */,
 				0247ADBB29E5F6CC00995894 /* AudioSettingsCell.swift in Sources */,
 				7F577AEE26B50EA4001CF53B /* SearchDocsViewController.swift in Sources */,
-				029519B729DE689D002D5C5B /* Document+CoreDataProperties.swift in Sources */,
 				7F577AF426B50F3E001CF53B /* MenuBar.swift in Sources */,
 				7F89447A26FAE24E000AF308 /* CameraViewController.swift in Sources */,
 				02FEA4E629CE38A500DFFEAA /* SourceType.swift in Sources */,
 				7FCBD1AA278153C800E02CCF /* CoreData.swift in Sources */,
+				028F5EBF2A132899009CBF44 /* Document+CoreDataProperties.swift in Sources */,
 				02FEA52829D29E7000DFFEAA /* ReusableTableViewController.swift in Sources */,
 				7F577AF226B50F17001CF53B /* TabBarController.swift in Sources */,
 				7F89447E26FAE2E0000AF308 /* URLViewController.swift in Sources */,
@@ -291,12 +289,12 @@
 				028F5EB62A12F2B9009CBF44 /* ShareableDocument.swift in Sources */,
 				7FCBD1A32781532500E02CCF /* VisionTextDataModel.xcdatamodeld in Sources */,
 				7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */,
-				029519B629DE689D002D5C5B /* Document+CoreDataClass.swift in Sources */,
 				7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */,
 				7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */,
 				7F577AD026B50C11001CF53B /* ViewController.swift in Sources */,
 				7F577AF026B50EE4001CF53B /* SidebarViewController.swift in Sources */,
 				7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */,
+				028F5EBE2A132899009CBF44 /* Document+CoreDataClass.swift in Sources */,
 				02FEA4E229C6ACB100DFFEAA /* RecognizedTextViewController.swift in Sources */,
 				7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */,
 				7F89444E26F9B30D000AF308 /* Sources.swift in Sources */,

@@ -37,9 +37,9 @@ var toolbarDelegate: NSToolbarDelegate?
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             let soundSettings = SoundSettingsViewController()
-            soundSettings.preferredContentSize = CGSize(width: 350, height: 225)
+            soundSettings.preferredContentSize = CGSize(width: 350, height: 480)
             window.rootViewController = soundSettings
-            windowScene.sizeRestrictions?.maximumSize = CGSize(width: 350, height: 225)
+            windowScene.sizeRestrictions?.maximumSize = CGSize(width: 350, height: 480)
             self.window = window
             window.makeKeyAndVisible()
         }

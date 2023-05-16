@@ -2,7 +2,7 @@
 //  Document+CoreDataProperties.swift
 //  VisionText
 //
-//  Created by Jared Kozar on 4/5/23.
+//  Created by Jared Kozar on 5/15/23.
 //
 //
 
@@ -10,19 +10,22 @@ import Foundation
 import CoreData
 
 
-extension Document: Identifiable {
+extension Document {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<Document> {
         return NSFetchRequest<Document>(entityName: "Document")
     }
 
     @NSManaged public var date: Date?
-    @NSManaged public var documentID: String?
-    @NSManaged public var isStarred: Bool
-    @NSManaged public var text: String?
-    @NSManaged public var thumbnail: Data?
     @NSManaged public var title: String?
+    @NSManaged public var isStarred: Bool
+    @NSManaged public var documentID: String?
+    @NSManaged public var thumbnail: Data?
+    @NSManaged public var text: String?
 
+}
+
+extension Document : Identifiable {
     func deleteDocument() {
         context.delete(self)
         

@@ -7,10 +7,5 @@
         <attribute name="text" optional="YES" attributeType="String"/>
         <attribute name="thumbnail" optional="YES" attributeType="Binary"/>
         <attribute name="title" optional="YES" attributeType="String"/>
-        <uniquenessConstraints>
-            <uniquenessConstraint>
-                <constraint value="documentID"/>
-            </uniquenessConstraint>
-        </uniquenessConstraints>
     </entity>
 </model>

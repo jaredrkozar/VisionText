@@ -97,6 +97,11 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
                     let newStatus: Bool = !self.document!.isStarred
                     self.document?.updateDocumentStarredStatus(isStarred: newStatus)
                 },
+                
+                UIAction(title: "Share Document", subtitle: nil, image: UIImage(systemName: "square.and.arrow.up"), identifier: .none, discoverabilityTitle: "Share this document",  attributes: [], state: .off) { _ in
+                    
+                    self.shareText()
+                },
             ]
 
             return UIMenu(children: children)
@@ -111,7 +116,10 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
         )
         
         navigationItem.rightBarButtonItems = [copyTextButton, audioMenu]
-        navigationItem.hidesBackButton = true
+        
+        if UIDevice.current.userInterfaceIdiom == .mac {
+            navigationItem.hidesBackButton = true
+        }
         
         audioManager?.returnRange = { range in
 
@@ -127,6 +135,17 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
                 self.documentText.attributedText = self.documentAttributedText
             }
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(changedAudioSettings(_:)), name: NSNotification.Name("changedAudioSettings"), object: nil)
+    }
+    
+    @objc func changedAudioSettings(_ notification: Notification) {
+        self.audioState = .playing
+        audioManager?.stopSpeakingText()
+        self.audioManager?.speed = UserDefaults.standard.float(forKey: "speed")
+        self.audioManager?.volume = UserDefaults.standard.float(forKey: "volume")
+        self.audioManager?.pitch = UserDefaults.standard.float(forKey: "pitch")
+        audioManager?.startSpeakingText()
     }
     
     @objc func copyText() {
@@ -157,7 +176,6 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
         let navController = UINavigationController(rootViewController: vc)
         switch UIDevice.current.userInterfaceIdiom {
             case .phone:
-                vc.audioManager = self.audioManager
                 if let sheet = navController.sheetPresentationController {
                     sheet.detents = [.medium()]
                     sheet.largestUndimmedDetentIdentifier = .medium
@@ -172,7 +190,11 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
             navController.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItems?[1]
                  self.present(navController, animated: true, completion: nil)
         case .mac:
-            print("not supported yet")
+            let activity = NSUserActivity(activityType: "soundSettings")
+            UIApplication.shared.requestSceneSessionActivation(nil, userActivity: activity, options: nil) { (error) in
+                print(error)
+            }
+        
         default:
             print("error")
         }
@@ -211,7 +233,7 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
     }
     
     @objc func shareText() {
-        let shareImage = ShareableImage(image: UIImage(data: (document?.thumbnail)!)!, title: (document?.title)!, subtitle: "Game screenshot")
+        let shareImage = ShareableImage(image: UIImage(data: (document?.thumbnail)!)!, title: (document?.title)!, subtitle: document?.text)
         let shareVC = UIActivityViewController(activityItems: [shareImage], applicationActivities: nil)
         present(shareVC, animated: true)
     }
