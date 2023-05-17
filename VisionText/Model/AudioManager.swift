@@ -76,24 +76,6 @@ class AudioManager: AVSpeechSynthesizer, AVSpeechSynthesizerDelegate {
         synthesizer.stopSpeaking(at: .immediate)
     }
     
-    func changeSpeed(newSpeed: Float) {
-        speed = newSpeed
-        synthesizer.stopSpeaking(at: .immediate)
-        startSpeakingText()
-    }
-    
-    func changePitch(newPitch: Float) {
-        pitch = newPitch
-        synthesizer.stopSpeaking(at: .immediate)
-        startSpeakingText()
-    }
-    
-    func changeVolume(newVolume: Float) {
-        volume = newVolume
-        synthesizer.stopSpeaking(at: .immediate)
-        startSpeakingText()
-    }
-    
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, willSpeakRangeOfSpeechString characterRange: NSRange, utterance: AVSpeechUtterance) {
         returnRange!(characterRange)
     }

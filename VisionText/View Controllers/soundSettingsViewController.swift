@@ -41,7 +41,7 @@ class SoundSettingsViewController: UITableViewController {
             cell?.sliderMinValue = 0.25
             cell?.sliderMaxValue = 2.0
         case 1:
-            cell?.image = UIImage(systemName: "speedometer", withConfiguration: config)
+            cell?.image = UIImage(systemName: "waveform.path.ecg", withConfiguration: config)
             cell?.text = "Pitch"
             cell?.pickerOptions = [0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1.0]
             cell?.currentValue = UserDefaults.standard.float(forKey: "pitch")

@@ -18,7 +18,6 @@
 		02FEA4E429CE31C100DFFEAA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02FEA4E329CE31C100DFFEAA /* Main.storyboard */; };
 		02FEA4E629CE38A500DFFEAA /* SourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FEA4E529CE38A500DFFEAA /* SourceType.swift */; };
 		02FEA52829D29E7000DFFEAA /* ReusableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FEA52729D29E6F00DFFEAA /* ReusableTableViewController.swift */; };
-		7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5682D028755A00005CF431 /* AudioSettingsView.swift */; };
 		7F577ACC26B50C11001CF53B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACB26B50C11001CF53B /* AppDelegate.swift */; };
 		7F577ACE26B50C11001CF53B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACD26B50C11001CF53B /* SceneDelegate.swift */; };
 		7F577AD026B50C11001CF53B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F577ACF26B50C11001CF53B /* ViewController.swift */; };
@@ -54,7 +53,6 @@
 		02FEA4E329CE31C100DFFEAA /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		02FEA4E529CE38A500DFFEAA /* SourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceType.swift; sourceTree = "<group>"; };
 		02FEA52729D29E6F00DFFEAA /* ReusableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableTableViewController.swift; sourceTree = "<group>"; };
-		7F5682D028755A00005CF431 /* AudioSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AudioSettingsView.swift; path = VisionText/Model/AudioSettingsView.swift; sourceTree = SOURCE_ROOT; };
 		7F577AC826B50C11001CF53B /* VisionText.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionText.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F577ACB26B50C11001CF53B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F577ACD26B50C11001CF53B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -147,7 +145,6 @@
 		7F577AFF26B5191F001CF53B /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				7F5682D028755A00005CF431 /* AudioSettingsView.swift */,
 				02FEA4E129C6ACB100DFFEAA /* RecognizedTextViewController.swift */,
 				7F577AE926B50E0C001CF53B /* AllDocsViewController.swift */,
 				022F9B4228C479600061D1FB /* SoundSettingsViewController.swift */,
@@ -288,7 +285,6 @@
 				0247ADB929E31B2500995894 /* AudioManager.swift in Sources */,
 				028F5EB62A12F2B9009CBF44 /* ShareableDocument.swift in Sources */,
 				7FCBD1A32781532500E02CCF /* VisionTextDataModel.xcdatamodeld in Sources */,
-				7F5682D128755A00005CF431 /* AudioSettingsView.swift in Sources */,
 				7F89444026F6EDC2000AF308 /* SoundSettingsSceneDelegate.swift in Sources */,
 				7F577AEA26B50E0C001CF53B /* AllDocsViewController.swift in Sources */,
 				7F577AD026B50C11001CF53B /* ViewController.swift in Sources */,
