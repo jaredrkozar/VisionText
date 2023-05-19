@@ -21,6 +21,9 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
     
     internal var audioMenu: UIBarButtonItem!
     
+    @objc func printVal() {
+        print("DLDLD")
+    }
     lazy var noDocumentLabel: UILabel = {
         let noDocLabel = UILabel()
         noDocLabel.textAlignment = .center
@@ -140,7 +143,11 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
     }
     
     @objc func changedAudioSettings(_ notification: Notification) {
-        self.audioState = .playing
+        if audioState != .playing {
+            self.audioState = .playing
+            self.audioMenu.menu = self.returnAudioMenu()
+        }
+    
         audioManager?.stopSpeakingText()
         self.audioManager?.speed = UserDefaults.standard.float(forKey: "speed")
         self.audioManager?.volume = UserDefaults.standard.float(forKey: "volume")

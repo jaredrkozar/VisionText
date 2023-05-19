@@ -52,32 +52,36 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
         self.navigationItem.rightBarButtonItems = [addDoc, sortDocs]
     }
     
+    @objc func selectedMenuItem(_ sender: AnyObject) {
+        if let command = sender as? UICommand {
+            if let identifier = command.propertyList as? [String: String] {
+                if identifier.keys.first == "sortType" {
+                    self.sortDocs(sort: identifier["sortType"]!)
+                } else if identifier.keys.first == "addDoc" {
+                    self.addDoc(type: identifier["addDoc"]!)
+                } else {
+                    print("Error with UICommand")
+                }
+            }
+        }
+        
+    }
+    
     public func createSortDocMenu() -> UIMenu {
         var sortActions = [UIAction]()
         
         for sort in SortMethods.allCases {
             sortActions.append(UIAction(title: sort.buttonText, image: nil, identifier: nil, discoverabilityTitle: sort.buttonText, attributes: [], state: .off, handler: { _ in
-                print(self.documents)
-                print(self.reusabletableView)
+                
+                self.sortDocs(sort: sort.buttonText)
             }))
         }
         
         return UIMenu(title: "Sort Documents", image: nil, identifier: nil, options: .singleSelection, children: sortActions)
     }
     
-    private func sortDocs(sort: String) {
-        switch sort {
-            case SortMethods.AZ.buttonText:
-            documents = returnFetchController(sortType: SortMethods.AZ, isStarred: filterByStarred)
-            case SortMethods.ZA.buttonText:
-            documents = returnFetchController(sortType: SortMethods.ZA, isStarred: filterByStarred)
-            case SortMethods.datedescending.buttonText:
-            documents = returnFetchController(sortType: SortMethods.datedescending, isStarred: filterByStarred)
-            case SortMethods.dateascending.buttonText:
-            documents = returnFetchController(sortType: SortMethods.dateascending, isStarred: filterByStarred)
-        default:
-            return
-        }
+    @objc func sortDocs(sort: String) {
+        documents = returnFetchController(sortType: SortMethods.getSortMethod(name: sort)!, isStarred: filterByStarred)
         
         do {
              try documents?.performFetch()
@@ -86,16 +90,20 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
          }
     }
     
+    private func addDoc(type: String) {
+        self.selectedSource = Sources.getSource(name: type)?.returnPresentView()
+
+        self.selectedSource?.imageDelegate = self
+        self.selectedSource?.viewController = self
+        self.selectedSource?.presentView()
+    }
+
     private func createAddDocMenu() -> UIMenu {
         var addActions = [UIAction]()
         
         for type in Sources.allCases {
             addActions.append(UIAction(title: type.title, image: type.icon, identifier: nil, discoverabilityTitle: type.title, attributes: [], state: .off, handler: { _ in
-                self.selectedSource = type.returnPresentView()
-        
-                self.selectedSource?.imageDelegate = self
-                self.selectedSource?.viewController = self
-                self.selectedSource?.presentView()
+                self.addDoc(type: type.title)
             }))
         }
         

@@ -48,10 +48,11 @@ func fetchDocumentsByTitle(title: String) -> [Document] {
 extension NSFetchedResultsControllerDelegate where Self: UIViewController{
     func returnFetchController(sortType: SortMethods, isStarred: Bool, searchTerm: String? = nil) -> NSFetchedResultsController<Document> {
         
-        let sortDescriptor = NSSortDescriptor(key: sortType.coreDataTitle, ascending: sortType.ascending)
+        let sortDescriptor = NSSortDescriptor(key: sortType.coreDataTitle, ascending: sortType.ascending, selector: #selector(NSString.caseInsensitiveCompare))
             let request = NSFetchRequest<Document>(entityName: "Document")
             request.sortDescriptors = [sortDescriptor]
             
+        
         if isStarred == true {
             request.predicate = NSPredicate(format: "isStarred == YES")
         }

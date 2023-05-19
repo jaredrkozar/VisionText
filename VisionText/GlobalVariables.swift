@@ -11,6 +11,31 @@ import AVFoundation
 
 var documents = [Document]()
 
+func returnAddDocCommands() -> UIMenu {
+    var addDocCommands = [UIKeyCommand]()
+    
+    for sort in Sources.allCases {
+        if sort.availableOnMac {
+            addDocCommands.append(UIKeyCommand(title: sort.title,
+                                               action: #selector(AllDocsViewController.selectedMenuItem),
+                                               input: sort.keyCommand,
+                                               modifierFlags: .command, propertyList: ["addDoc": sort.title]))
+        }
+    }
+    
+    return UIMenu(title: "Add Document", image: nil, identifier: nil, options: [], children: addDocCommands)
+}
+
+func returnSortCommands() -> UIMenu {
+    var sortCommands = [UICommand]()
+    
+    for sort in SortMethods.allCases {
+        sortCommands.append(UICommand(title: sort.buttonText, action: #selector(AllDocsViewController.selectedMenuItem), propertyList: ["sortType": sort.buttonText]))
+    }
+    
+    return UIMenu(title: "Sort Documents", image: nil, identifier: nil, options: [], children: sortCommands)
+}
+
 enum SortMethods: CaseIterable {
     case AZ
     case ZA
@@ -45,6 +70,21 @@ enum SortMethods: CaseIterable {
             return "title"
         case .datedescending, .dateascending:
             return "date"
+        }
+    }
+    
+    static func getSortMethod(name: String) -> SortMethods? {
+        switch name {
+            case "A-Z":
+                return .AZ
+            case "Z-A":
+                return .ZA
+            case "Date (Ascending)":
+                return .dateascending
+            case "Date (Descending)":
+                return .datedescending
+            default:
+                return nil
         }
     }
 }

@@ -23,7 +23,6 @@ class TabBarController: UITabBarController {
         super.viewWillAppear(animated)
         selectedIndex = 0
     }
-
 }
 
 private extension TabBarController {

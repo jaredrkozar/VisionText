@@ -132,7 +132,14 @@ extension mainToolbar: NSToolbarDelegate {
         switch itemIdentifier {
         case .sortDocs:
             let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
-//            item.itemMenu = allDocs.createSortDocMenu()
+            item.itemMenu = returnSortCommands()
+            item.image = UIImage(systemName: "arrow.up.and.down.text.horizontal")
+            
+            return item
+            
+        case .addDoc:
+            let item = NSMenuToolbarItem(itemIdentifier: itemIdentifier)
+            item.itemMenu = returnAddDocCommands()
             item.image = UIImage(systemName: "plus")
             
             return item
@@ -173,15 +180,6 @@ extension mainToolbar: NSToolbarDelegate {
         }
         
         return toolbarItem
-    }
-
-    private func returnSortCommands() -> [UICommand] {
-        var sortCommands = [UICommand]()
-        
-//        for sort in SortMethods.allCases {
-//            sortCommands.append(UICommand(title: "Photo Library", action: #selector(AllDocsViewController().sortDocs(sort:))))
-//        }
-        return sortCommands
     }
 }
 #endif

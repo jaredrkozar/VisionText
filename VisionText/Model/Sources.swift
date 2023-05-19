@@ -47,10 +47,50 @@ enum Sources: CaseIterable {
                 return "URL"
         }
     }
+    
+    static func getSource(name: String) -> Sources? {
+        switch name {
+            case "Scan Document":
+                return .scandoc
+            case "Camera":
+                return .camera
+            case "Photo Library":
+                return .photolibrary
+            case "Files":
+                return .files
+            case "URL":
+                return .url
+            default:
+                return nil
+        }
+    }
+    
+    var availableOnMac: Bool {
+        switch self {
+        case .files, .scandoc:
+            return false
+        default:
+            return true
+        }
+    }
+    
+    var keyCommand: String {
+        switch self {
+        case .url:
+            return "U"
+        case .files:
+            return "F"
+        case .photolibrary:
+            return "P"
+        case .camera:
+            return "C"
+        case .scandoc:
+            return "S"
+        }
+    }
 }
 
 extension Sources {
-    
     func returnPresentView() -> SourceType {
         switch self {
         case .scandoc:
