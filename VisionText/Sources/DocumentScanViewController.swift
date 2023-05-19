@@ -42,10 +42,14 @@ class DocumentScan: NSObject, SourceType, VNDocumentCameraViewControllerDelegate
     func documentCameraViewController(_ controller:            VNDocumentCameraViewController, didFinishWith scan: VNDocumentCameraScan) {
         // Process the scanned pages
         
-        let imageFromDocumentScan = scan.imageOfPage(at: 0)
-        
         controller.dismiss(animated: true)
-        imageDelegate?.imageSelected(image: imageFromDocumentScan)
+        var selectedImages: [UIImage] = []
+        
+        for i in 0..<scan.pageCount {
+            selectedImages.append(scan.imageOfPage(at: i))
+          }
+        
+        imageDelegate?.imageSelected(image: selectedImages)
     }
     
 }

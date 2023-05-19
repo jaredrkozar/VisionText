@@ -118,29 +118,46 @@ extension UIImage {
         print(resized.size)
         return resized.pngData()!
     }
-    
-    func recognizeText(completion: @escaping(String?, String?)->()) {
-        guard let cgimage = self.cgImage else { return completion(nil, "Cannot load image") }
-        let textHandler = VNImageRequestHandler(cgImage: cgimage, options: [:])
+}
 
-        let request = VNRecognizeTextRequest { request, error in
-            
-            let observations = request.results as? [VNRecognizedTextObservation]
-
-            let text = observations?.compactMap({
-                $0.topCandidates(1).first?.string
-            }).joined(separator: ", ")
-
-            DispatchQueue.main.async {
-                completion(text == "" ? "There is no text in this document. Please try scanning this document again or selecting a document form the list on the left" : text, nil)
+extension Array where Self == [UIImage] {
+    func recognizeText(images: [UIImage], completion: @escaping(String?, String?)->()) {
+        var recognizedText = ""
+        
+        let recognizeTextRequest = VNRecognizeTextRequest { (request, error) in
+            guard error == nil else {
+                print(String(describing: error))
+                return
             }
-
+            
+            guard let observations = request.results as? [VNRecognizedTextObservation] else {
+                print("Could not retrieve text observations")
+                return
+            }
+            
+            let maximumRecognitionCandidates = 1
+            
+            for observation in observations {
+                guard let candidate = observation.topCandidates(maximumRecognitionCandidates).first else {
+                    print("No recognition candidates")
+                    continue
+                }
+                
+                recognizedText += "\(candidate.string)\n"
+            }
         }
         
-        do {
-            try textHandler.perform([request])
-        } catch {
-            completion(nil, "Cannot load image")
+        recognizeTextRequest.recognitionLevel = .accurate
+        
+        for image in images {
+            let requestHandler = VNImageRequestHandler(cgImage: image.cgImage!, options: [:])
+            
+            try? requestHandler.perform([recognizeTextRequest])
+        }
+        
+        DispatchQueue.main.async {
+            
+            completion(recognizedText == "" ? "There is no text in this document. Please try scanning this document again or selecting a document form the list on the left" : recognizedText, nil)
         }
     }
 }

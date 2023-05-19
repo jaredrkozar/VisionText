@@ -30,6 +30,6 @@ class FilesViewer: NSObject, SourceType, UIDocumentPickerDelegate {
                 url.stopAccessingSecurityScopedResource()
             }
              }
-        self.imageDelegate?.imageSelected(image: UIImage(contentsOfFile: url.relativePath)!)
+        self.imageDelegate?.imageSelected(image: [UIImage(contentsOfFile: url.relativePath)!])
     }
 }

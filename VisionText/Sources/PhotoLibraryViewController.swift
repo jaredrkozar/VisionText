@@ -33,13 +33,18 @@ extension PhotoLibraryViewer: PHPickerViewControllerDelegate, UINavigationContro
     
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
  
-        picker.dismiss(animated: true)
-          for result in results {
-             result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (object, error) in
-                if let image = object as? UIImage {
-                     self.imageDelegate?.imageSelected(image: image)
-                }
-             })
-          }
+        var selectedImages: [UIImage] = []
+        DispatchQueue.main.async {
+            for result in results {
+                result.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (object, error) in
+                    let resultingImage = object as? UIImage
+                    selectedImages.append(resultingImage!)
+                })
+             }
+        }
+        picker.dismiss(animated: true, completion: {
+            
+            self.imageDelegate?.imageSelected(image: selectedImages)
+        })
     }
 }

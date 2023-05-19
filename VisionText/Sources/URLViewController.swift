@@ -22,7 +22,7 @@ class URLViewer: NSObject, SourceType {
                     if let data = try? Data(contentsOf: url!) {
                         if let imageFromURL = UIImage(data: data) {
                             DispatchQueue.main.async {
-                                self?.imageDelegate?.imageSelected(image: imageFromURL)
+                                self?.imageDelegate?.imageSelected(image: [imageFromURL])
                             }
                         }
                     }

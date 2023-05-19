@@ -110,7 +110,7 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
         return UIMenu(title: "Add Document", image: nil, identifier: nil, options: [], children: addActions)
     }
     
-    func imageSelected(image: UIImage) {
+    func imageSelected(image: [UIImage]) {
         DispatchQueue.main.async {
             
             let nameAlert = Alerts().presentNameAlert(alertTitle: "Name Document", completionHandler: { title in
@@ -120,10 +120,10 @@ class AllDocsViewController: UIViewController, ImageSelectedDelegate, NSFetchedR
                 self.present(alert, animated: true)
                 
                 DispatchQueue(label: "TextRecognitionQueue", qos: .userInitiated, attributes: [], autoreleaseFrequency: .workItem).async {
-                    image.recognizeText(completion: { recozniedText,error  in
+                    image.recognizeText(images: image, completion: { recozniedText,error  in
                         
                         alert.dismiss(animated: true)
-                        saveDocument(thumbnail: image.downsizeImage(), title: title!, text: recozniedText)
+                        saveDocument(thumbnail: image.first!.downsizeImage(), title: title!, text: recozniedText)
                     })
                 }
             })
@@ -152,21 +152,18 @@ extension AllDocsViewController: UIDropInteractionDelegate {
     }
     
     func dropInteraction(_ interaction: UIDropInteraction, performDrop session: UIDropSession) {
-        for dragItem in session.items {
-            dragItem.itemProvider.loadObject(ofClass: UIImage.self, completionHandler: { (obj, err) in
-                
-                if let err = err {
-                    print("Failed to load our dragged item:", err)
-                    return
-                }
-                
-                guard let draggedImage = obj as? UIImage else { return }
-                
-                DispatchQueue.main.async {
-                    self.imageSelected(image: draggedImage)
-                }
-                
-            })
-        }
+        session.loadObjects(ofClass: UIImage.self) { imageItems in
+              let images = imageItems as! [UIImage]
+
+              /*
+                   If you do not employ the loadObjects(ofClass:completion:) convenience
+                   method of the UIDropSession class, which automatically employs
+                   the main thread, explicitly dispatch UI work to the main thread.
+                   For example, you can use `DispatchQueue.main.async` method.
+              */
+            DispatchQueue.main.async {
+                self.imageSelected(image: images)
+            }
+          }
     }
 }

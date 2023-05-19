@@ -14,7 +14,7 @@ protocol SourceType {
 }
 
 protocol ImageSelectedDelegate:class {
-    func imageSelected(image: UIImage)
+    func imageSelected(image: [UIImage])
 }
 
 protocol FetchedResultsDelegate:class {

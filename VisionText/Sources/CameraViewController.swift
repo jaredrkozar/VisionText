@@ -30,7 +30,7 @@ class CameraViewer: NSObject, SourceType, UIImagePickerControllerDelegate, UINav
                 return
             }
 
-        self.imageDelegate?.imageSelected(image: imageFromCamera)
+        self.imageDelegate?.imageSelected(image: [imageFromCamera])
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

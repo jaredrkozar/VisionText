@@ -236,6 +236,7 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
             audioManager?.stopSpeakingText()
             audioManager = nil
             document = nil
+            print("NAVISIL")
         }
     }
     
