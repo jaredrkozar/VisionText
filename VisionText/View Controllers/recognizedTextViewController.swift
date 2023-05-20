@@ -21,9 +21,6 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
     
     internal var audioMenu: UIBarButtonItem!
     
-    @objc func printVal() {
-        print("DLDLD")
-    }
     lazy var noDocumentLabel: UILabel = {
         let noDocLabel = UILabel()
         noDocLabel.textAlignment = .center

@@ -94,9 +94,6 @@ class CoreDataContext {
     static let persistentContainer = NSPersistentContainer(name: datamodelName)
     private static let url: URL = {
         let url = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0].appendingPathComponent("\(datamodelName).\(storeType)")
-
-        print(url.path)
-
         return url
     }()
 

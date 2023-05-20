@@ -67,7 +67,7 @@ enum Sources: CaseIterable {
     
     var availableOnMac: Bool {
         switch self {
-        case .files, .scandoc:
+        case .scandoc:
             return false
         default:
             return true
