@@ -45,16 +45,12 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
         view.backgroundColor = .systemBackground
         
         guard document != nil else {
-            
             view.addSubview(noDocumentLabel)
             
             NSLayoutConstraint.activate([
                 noDocumentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                
                 noDocumentLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                
                 noDocumentLabel.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.70),
-                
                 noDocumentLabel.heightAnchor.constraint(equalToConstant: 100)
             ])
             
@@ -72,9 +68,7 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
         
         NSLayoutConstraint.activate([
             documentText.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
-            
             documentText.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            
             documentText.topAnchor.constraint(equalTo: view.readableContentGuide.topAnchor),
             documentText.bottomAnchor.constraint(equalTo: view.readableContentGuide.bottomAnchor)
         ])
@@ -121,16 +115,14 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
             navigationItem.hidesBackButton = true
         }
         
-        audioManager?.returnRange = { range in
+        audioManager?.returnRange = { [self] range in
 
             if self.shouldHighlightCurrentWord == true {
                 let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.systemBlue, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.documentText.font!.pointSize, weight:.semibold)]
                 
                 self.documentAttributedText?.setAttributes(attributes, range: range)
                 
-                let newattributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.label, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.documentText.font!.pointSize, weight:.regular)]
-                
-                self.documentAttributedText?.setAttributes(newattributes, range: NSRange(location: 0, length: range.lowerBound))
+                removeAllAttributes(range: NSRange(location: 0, length: range.lowerBound))
                 
                 self.documentText.attributedText = self.documentAttributedText
             }
@@ -139,17 +131,22 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
         NotificationCenter.default.addObserver(self, selector: #selector(changedAudioSettings(_:)), name: NSNotification.Name("changedAudioSettings"), object: nil)
     }
     
+    func removeAllAttributes(range: NSRange) {
+        let newattributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.label, NSAttributedString.Key.font: UIFont.systemFont(ofSize: self.documentText.font!.pointSize, weight:.regular)]
+        
+        self.documentAttributedText?.setAttributes(newattributes, range: range)
+    }
+    
     @objc func changedAudioSettings(_ notification: Notification) {
         if audioState != .playing {
             self.audioState = .playing
             self.audioMenu.menu = self.returnAudioMenu()
         }
-    
+        removeAllAttributes(range: NSRange(location: 0, length: (self.document?.text!.count)!))
+
         audioManager?.stopSpeakingText()
-        self.audioManager?.speed = UserDefaults.standard.float(forKey: "speed")
-        self.audioManager?.volume = UserDefaults.standard.float(forKey: "volume")
-        self.audioManager?.pitch = UserDefaults.standard.float(forKey: "pitch")
-        audioManager?.startSpeakingText()
+        audioState = .notPlaying
+        playAudio()
     }
     
     @objc func copyText() {
@@ -205,7 +202,6 @@ class RecognizedTextViewController: UIViewController, AVSpeechSynthesizerDelegat
     }
     
     func returnAudioMenu() -> UIMenu {
-        
         let playPauseAction = UIAction(title:  self.audioState!.text, image:  self.audioState?.icon, identifier: .none, discoverabilityTitle: "Play Document Text", attributes: [], state: .off, handler: { _ in
            
             self.playAudio()
